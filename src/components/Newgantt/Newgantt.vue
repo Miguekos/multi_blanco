@@ -251,6 +251,7 @@ const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
 // const formattedDateStart = date.formatDate(timeStamp, 'ddd, DD MMM YYYY HH:mm:ss Z')
 const formattedDateStart = date.formatDate(timeStamp, "DD-MM-YYYY 00:00");
 const formattedDateEnd = date.formatDate(timeStamp, "DD-MM-YYYY 23:00");
+
 console.log("formattedString", formattedString);
 import Test from "./test.vue"; //你自己的gantt条容器
 import TestLeft from "./test-left.vue"; //你自己的行名称组件
@@ -321,8 +322,8 @@ export default {
         }
       ],
       categories: [],
-      date_ini: "14-07-2021 10:00",
-      date_fin: "14-07-2021 12:00",
+      date_ini: formattedDateStart,
+      date_fin: formattedDateStart,
       empleados_select: null,
       scaleList: scaleList,
       timeLines: [
