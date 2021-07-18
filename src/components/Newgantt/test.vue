@@ -1,27 +1,29 @@
 <template>
   <div>
-    <!--    <el-popover placement="bottom" trigger="hover">-->
     <div
       slot="reference"
       class="plan"
       :style="{
         'background-color': statusColor,
-        'margin-top': 0.1 * cellHeight + 'px'
+        'margin-top': 0.1 * cellHeight + 'px',
+        'margin-left': 0.1 * cellHeight + 'px',
+        'margin-right': 0.1 * cellHeight + 'px',
+        'height': 0.8 * cellHeight + 'px'
       }"
       @click="onClick"
     >
-      <div class="runTime">
-        <span>I:{{ startToString }}</span>
-        <span>F:{{ endToString }}</span>
-      </div>
-      <div class="middle">name: {{ item.name }}</div>
+<!--      <div class="runTime">-->
+<!--        <span>I:{{ startToString }}</span>-->
+<!--        <span>F:{{ endToString }}</span>-->
+<!--      </div>-->
+      <div class="middle">Registro: {{ item.name }}</div>
       <!-- <div class="passenger">{{item.passenger}}人</div> -->
     </div>
     <q-tooltip content-class="" :offset="[10, 10]">
       <div class="text-white">
         <div>
           <span class="header"
-            >{{ data.type }}{{ data.name }}{{ data.id }}</span
+            >{{ data.id }}</span
           >
         </div>
         <div>
@@ -31,7 +33,7 @@
           <span>Fin：</span><span>{{ endToString }}</span>
         </div>
         <div>
-          <span>Name：</span><span>{{ item.name }}</span>
+          <span>Comentario：</span><span>{{ item.comentario }}</span>
         </div>
 
         <!--        <ul>-->
@@ -47,7 +49,6 @@
         <!--        </ul>-->
       </div>
     </q-tooltip>
-    <!--    </el-popover>-->
   </div>
 </template>
 
@@ -94,7 +95,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.updateTimeLines(this.item.start, this.item.end);
+      this.updateTimeLines(this.item.start, this.item.end, this.item);
     }
   }
 };
@@ -114,7 +115,7 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  height: 80%;
+  //height: 80%;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
   color: #333333;

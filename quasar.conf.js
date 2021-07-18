@@ -22,8 +22,6 @@ module.exports = function (/* ctx */) {
     boot: [
       'i18n',
       'axios',
-      'vueApexCharts',
-      'highcharts',
       'vganttchart'
     ],
 
@@ -100,7 +98,7 @@ module.exports = function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify']
     },
 
     // animations: 'all', // --- includes all animations

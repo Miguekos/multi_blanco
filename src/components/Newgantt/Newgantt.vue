@@ -2,7 +2,7 @@
   <div class="q-pa-sm">
     <div class="q-pa-xs">
       <div class="row">
-        <div class="col-xs-12 col-md-4 q-pa-xs">
+        <div class="col-xs-12 col-md-2 q-pa-xs">
           <q-select
             stack-label
             dense
@@ -16,7 +16,7 @@
             label="Empleado"
           />
         </div>
-        <div class="col-xs-12 col-md-4 q-pa-xs">
+        <div class="col-xs-12 col-md-1 q-pa-xs">
           <!--          <q-select stack-label dense outlined v-model="model" :options="options" label="Outlined" />-->
           <q-input
             stack-label
@@ -24,6 +24,16 @@
             outlined
             v-model="id_registro"
             label="Registro"
+          />
+        </div>
+        <div class="col-xs-12 col-md-4 q-pa-xs">
+          <!--          <q-select stack-label dense outlined v-model="model" :options="options" label="Outlined" />-->
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="comentario"
+            label="Comentario"
           />
         </div>
         <div class="col-xs-12 col-md-2 q-pa-xs">
@@ -79,15 +89,15 @@
             </template>
           </q-input>
         </div>
-        <div class="col-12 text-center">
-          <q-btn @click="addTask" label="agregar"></q-btn>
-          <!--          <q-btn label="Recargar"></q-btn>-->
+        <div class="col-xs-12 col-md-1 q-pa-xs self-center">
+          <q-btn color="green" class="full-width" push @click="addTask" label="agregar"></q-btn>
         </div>
       </div>
     </div>
+    <q-separator color="red-3" class="q-pb-xs" />
     <div class="q-pa-xs">
       <div class="row">
-        <div class="col-2 q-pa-xs">
+        <div class="col-xs-12 col-md-2 q-pa-xs">
           <q-input
             label="Inicio"
             stack-label
@@ -128,7 +138,7 @@
             </template>
           </q-input>
         </div>
-        <div class="col-2 q-pa-xs">
+        <div class="col-xs-12 col-md-2 q-pa-xs">
           <q-input dense outlined label="Fin" stack-label v-model="date_end">
             <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
@@ -163,22 +173,27 @@
             </template>
           </q-input>
         </div>
-        <div class="col-2 q-pa-xs"></div>
-        <div class="col-2 q-pa-xs">
+        <div class="col-xs-12 col-md-2 q-pa-xs">
+          <q-input label="Buscar" v-model="id_buscar" dense outlined></q-input>
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-btn color="blue" class="full-width" push @click="buscar" label="buscar"></q-btn>
+        </div>
+        <div class="col-xs-6 col-md-2 q-pa-xs">
           <q-badge color="primary">
             Largo: {{ cellHeight }} (20 to 100, step 10)
           </q-badge>
           <q-slider
             style="width: 80%;"
             v-model="cellHeight"
-            :min="20"
+            :min="40"
             :max="100"
             :step="10"
             label
             color="light-blue"
           />
         </div>
-        <div class="col-2 q-pa-xs">
+        <div class="col-xs-6 col-md-2 q-pa-xs">
           <q-badge color="secondary">
             Ancho: {{ cellWidth }} (20 to 100, step 10)
           </q-badge>
@@ -192,7 +207,7 @@
             color="light-green"
           />
         </div>
-        <div class="col-2 q-pa-xs">
+        <div class="col-xs-12 col-md-1 q-pa-xs">
           <q-select
             outlined
             dense
@@ -207,6 +222,7 @@
         </div>
       </div>
     </div>
+    <q-separator color="red-3" class="q-pb-xs" />
     <div class="q-pa-xs">
       <v-gantt-chart
         :startTime="times[0]"
@@ -216,7 +232,7 @@
         :cellHeight="cellHeight"
         :timeLines="timeLines"
         :titleHeight="titleHeight"
-        ale="scale"
+        :scale="scale"
         tleWidth="titleWidth"
       >
         <template v-slot:block="{ data, item }">
@@ -240,6 +256,41 @@
         </template>
       </v-gantt-chart>
     </div>
+    <q-dialog v-model="bar2" persistent transition-show="flip-down" transition-hide="flip-up">
+      <q-card class="bg-primary text-white">
+        <q-bar>
+<!--          <q-icon name="network_wifi" />-->
+<!--          <q-icon name="network_cell" />-->
+<!--          <q-icon name="battery_full" />-->
+          <div>Detalle</div>
+
+          <q-space />
+
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip content-class="bg-white text-primary">Cerrar</q-tooltip>
+          </q-btn>
+        </q-bar>
+
+        <q-card-section>
+          <div class="text-h6">{{ bar2_data.name }}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="q-pb-md">
+            Registro: <b> {{ bar2_data.name }}</b>
+          </div>
+          <div class="q-pb-md">
+            Fecha de Inicio: <b> {{ bar2_data.start }}</b>
+          </div>
+          <div class="q-pb-md">
+            Fecha de Fin: <b> {{ bar2_data.end }}</b>
+          </div>
+          <div class="text-center">
+            Comentario: <b> {{ bar2_data.comentario }}</b>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -286,10 +337,14 @@ export default {
   computed: {},
   data() {
     return {
+      id_buscar: "",
+      bar2_data: "",
+      bar2: false,
       testdate: formattedDateStart,
       date_start: formattedDateStart,
       date_end: formattedDateEnd,
       id_registro: "",
+      comentario: "",
       currentTime: dayjs(),
       time_ini: "10:00",
       time_fin: "12:00",
@@ -363,6 +418,34 @@ export default {
     };
   },
   methods: {
+    buscar(){
+      if (this.id_buscar.length > 2){
+        const array = this.datas
+        // console.log("this.id_buscar", this.id_buscar)
+        const item_find = this.id_buscar
+        // console.log(this.datas)
+        let result = ""
+        for (let i = 0; i < array.length; i++) {
+          const element = array[i].gtArray
+          // console.log("element", element)
+          function esCereza(fruta) {
+            return fruta.name === `${item_find}`;
+          }
+          if (element.find(esCereza)) {
+            result = element.find(esCereza)
+          } else {
+            console.log("nada");
+          }
+        }
+        console.log(result)
+        this.updateTimeLines(result.start,result.end, result)
+      } else {
+        this.$q.notify({
+          message: "Campo de busqueda vacio.!"
+        })
+      }
+
+    },
     actualizzartime() {
       console.log("actualizzartime");
       // console.log("asd", this.date_start)
@@ -403,7 +486,9 @@ export default {
       //   // }
       // }
     },
-    updateTimeLines(timeA, timeB) {
+    updateTimeLines(timeA, timeB, item) {
+      console.log(item)
+      this.bar2_data = item
       this.timeLines = [
         {
           time: timeA
@@ -413,6 +498,7 @@ export default {
           color: "#747e80"
         }
       ];
+      this.bar2 = true
     },
     addTask() {
       for (let i = 0; i < this.datas.length; i++) {
@@ -424,6 +510,7 @@ export default {
         if (element.name === this.empleados_select) {
           element.gtArray.push({
             name: this.id_registro,
+            comentario: this.comentario,
             start: dayjs(
               `${this.date_ini} -05:00`,
               "DD-MM-YYYY HH:mm Z"
