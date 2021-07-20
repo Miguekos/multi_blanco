@@ -104,82 +104,80 @@
     <div class="q-pa-xs">
       <div class="row">
         <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-btn label="test" @click="doScrollToPostion"></q-btn>
-          <!--          <q-input-->
-          <!--            label="Inicio"-->
-          <!--            stack-label-->
-          <!--            dense-->
-          <!--            outlined-->
-          <!--            v-model="date_start"-->
-          <!--          >-->
-          <!--            <template v-slot:prepend>-->
-          <!--              <q-icon name="event" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-date-->
-          <!--                    v-model="date_start"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-date>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--            <template v-slot:append>-->
-          <!--              <q-icon name="access_time" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-time-->
-          <!--                    v-model="date_start"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    format24h-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-time>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--          </q-input>-->
+          <q-input
+            label="Inicio"
+            stack-label
+            dense
+            outlined
+            v-model="date_start"
+          >
+            <template v-slot:prepend>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy transition-show="scale" transition-hide="scale">
+                  <q-date
+                    v-model="date_start"
+                    mask="DD-MM-YYYY HH:mm"
+                    @input="() => actualizzartime()"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+            <template v-slot:append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy transition-show="scale" transition-hide="scale">
+                  <q-time
+                    v-model="date_start"
+                    mask="DD-MM-YYYY HH:mm"
+                    format24h
+                    @input="() => actualizzartime()"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </div>
         <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-btn label="test 2" @click="doScrollToTime"></q-btn>
-          <!--          <q-input dense outlined label="Fin" stack-label v-model="date_end">-->
-          <!--            <template v-slot:prepend>-->
-          <!--              <q-icon name="event" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-date-->
-          <!--                    v-model="date_end"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-date>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--            <template v-slot:append>-->
-          <!--              <q-icon name="access_time" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-time-->
-          <!--                    v-model="date_end"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    format24h-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-time>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--          </q-input>-->
+          <q-input dense outlined label="Fin" stack-label v-model="date_end">
+            <template v-slot:prepend>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy transition-show="scale" transition-hide="scale">
+                  <q-date
+                    v-model="date_end"
+                    mask="DD-MM-YYYY HH:mm"
+                    @input="() => actualizzartime()"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+            <template v-slot:append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy transition-show="scale" transition-hide="scale">
+                  <q-time
+                    v-model="date_end"
+                    mask="DD-MM-YYYY HH:mm"
+                    format24h
+                    @input="() => actualizzartime()"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </div>
         <div class="col-xs-12 col-md-2 q-pa-xs">
           <q-input label="Buscar" v-model="id_buscar" dense outlined></q-input>
@@ -237,34 +235,15 @@
       </div>
     </div>
     <q-separator color="red-3" class="q-pb-xs" />
-    <div
-      v-for="(item, index) in armando"
-      :key="index"
-      class="q-pa-md"
-      :id="`dia${index}`"
-      ref="input"
-    >
-      <!--      <div class="flex flex-center text-h5">-->
-      <!--        {{ item.name }}-->
-      <!--      </div>-->
+    <div class="q-pa-xs">
       <v-gantt-chart
-        ref="gantt"
-        :showCurrentTime="true"
-        :startTime="item.inicio"
-        :endTime="item.fin"
+        :startTime="times[0]"
+        :endTime="times[1]"
         :datas="datas"
         :cellWidth="cellWidth"
         :cellHeight="cellHeight"
         :timeLines="timeLines"
-        :hideHeader="false"
-        :hideXScrollBar="false"
-        :hideYScrollBar="false"
-        :enableGrab="false"
-        :customGenerateBlocks="false"
-        :timeRangeCorrection="true"
-        :preload="1"
         :titleHeight="titleHeight"
-        :titleWidth="180"
         :scale="scale"
         tleWidth="titleWidth"
       >
@@ -285,12 +264,9 @@
         </template>
         <template v-slot:title>
           <!-- El ensamblado de encabezado -->
-          <div class="text-h6">
-            <b>{{ item.name }}</b>
-          </div>
+          Planing
         </template>
       </v-gantt-chart>
-      <q-separator color="red-3" class="q-pb-xs" />
     </div>
     <q-dialog
       v-model="bar2"
@@ -378,7 +354,6 @@ export default {
   computed: {},
   data() {
     return {
-      armando: [],
       id_buscar: "",
       bar2_data: "",
       bar2: false,
@@ -436,16 +411,14 @@ export default {
       ],
       times: [
         dayjs()
-          .hour(7)
+          .hour(0)
           .minute(0)
           .second(0)
-          .add(1, "day")
           .toString(),
         dayjs()
-          .hour(18)
+          .hour(23)
           .minute(0)
           .second(0)
-          .add(1, "day")
           .toString()
         // dayjs().subtract(5, "hour").toString(),
         // dayjs().toString(),
@@ -462,16 +435,6 @@ export default {
     };
   },
   methods: {
-    doScrollToPostion() {
-      // this.$refs.gantt.focus()
-
-      // console.log("asdasd", this.$refs.input[6].focus())
-      // this.$refs.input[2].focus()
-      // this.$refs.gantt.scrollToPostionHandle({ x: 100, y: 100 });
-    },
-    doScrollToTime() {
-      this.$refs.gantt.scrollToTimehandle(dayjs().toString());
-    },
     buscar() {
       if (this.id_buscar.length > 2) {
         const array = this.datas;
@@ -586,26 +549,6 @@ export default {
     }
   },
   async created() {
-    for (let i = 0; i < 32; i++) {
-      // console.log("asdasdas", i)
-      this.armando.push({
-        name: dayjs()
-          .add(i, "day")
-          .format("DD/MM/YYYY"),
-        inicio: dayjs()
-          .hour(6)
-          .minute(0)
-          .second(0)
-          .add(i, "day")
-          .toString(),
-        fin: dayjs()
-          .hour(19)
-          .minute(0)
-          .second(0)
-          .add(i, "day")
-          .toString()
-      });
-    }
     console.log(
       "---->",
       dayjs()
