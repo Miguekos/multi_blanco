@@ -8,7 +8,12 @@
         <!--      <q-btn label="test 2" @click="doScrollToTime"></q-btn>-->
       </div>
       <div class="col-xs-12 col-md-2 q-pa-xs">
-        <q-input label="Buscar" v-model="id_buscar" dense outlined></q-input>
+        <q-input
+          label="Buscar por Registro"
+          v-model="id_buscar"
+          dense
+          outlined
+        ></q-input>
       </div>
       <div class="col-xs-12 col-md-1 q-pa-xs">
         <q-btn
@@ -20,46 +25,63 @@
         ></q-btn>
       </div>
       <div class="col-xs-6 col-md-2 q-pa-xs">
-        <q-badge color="primary">
-          Largo: {{ cellHeight }} (20 to 100, step 10)
-        </q-badge>
-        <q-slider
-          style="width: 80%;"
-          v-model="cellHeight"
-          :min="40"
-          :max="100"
-          :step="10"
-          label
-          color="light-blue"
-        />
+        <!--        <q-badge color="primary">-->
+        <!--          Largo: {{ cellHeight }} (20 to 100, step 10)-->
+        <!--        </q-badge>-->
+        <!--        <q-slider-->
+        <!--          style="width: 80%;"-->
+        <!--          v-model="cellHeight"-->
+        <!--          :min="40"-->
+        <!--          :max="100"-->
+        <!--          :step="10"-->
+        <!--          label-->
+        <!--          color="light-blue"-->
+        <!--        />-->
       </div>
-      <div class="col-xs-6 col-md-2 q-pa-xs">
-        <q-badge color="secondary">
-          Ancho: {{ cellWidth }} (20 to 100, step 10)
-        </q-badge>
-        <q-slider
-          style="width: 80%;"
-          v-model="cellWidth"
-          :min="20"
-          :max="100"
-          :step="10"
-          label
-          color="light-green"
-        />
+      <div class="col-xs-12 col-md-2 q-pa-xs">
+        <q-input
+          label="Buscar por Zipcode"
+          v-model="id_buscar"
+          dense
+          outlined
+        ></q-input>
       </div>
       <div class="col-xs-12 col-md-1 q-pa-xs">
-        <!--        <q-select-->
-        <!--          outlined-->
-        <!--          dense-->
-        <!--          label="Rango"-->
-        <!--          map-options-->
-        <!--          v-model="scale"-->
-        <!--          :options="scaleList"-->
-        <!--          option-value="value"-->
-        <!--          option-label="label"-->
-        <!--          emit-value-->
-        <!--        ></q-select>-->
+        <q-btn
+          color="blue"
+          class="full-width"
+          push
+          @click="buscar"
+          label="buscar"
+        ></q-btn>
       </div>
+      <!--      <div class="col-xs-6 col-md-2 q-pa-xs">-->
+      <!--        &lt;!&ndash;        <q-badge color="secondary">&ndash;&gt;-->
+      <!--        &lt;!&ndash;          Ancho: {{ cellWidth }} (20 to 100, step 10)&ndash;&gt;-->
+      <!--        &lt;!&ndash;        </q-badge>&ndash;&gt;-->
+      <!--        &lt;!&ndash;        <q-slider&ndash;&gt;-->
+      <!--        &lt;!&ndash;          style="width: 80%;"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          v-model="cellWidth"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          :min="20"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          :max="100"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          :step="10"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          label&ndash;&gt;-->
+      <!--        &lt;!&ndash;          color="light-green"&ndash;&gt;-->
+      <!--        &lt;!&ndash;        />&ndash;&gt;-->
+      <!--      </div>-->
+      <!--      <div class="col-xs-12 col-md-1 q-pa-xs">-->
+      <!--        &lt;!&ndash;        <q-select&ndash;&gt;-->
+      <!--        &lt;!&ndash;          outlined&ndash;&gt;-->
+      <!--        &lt;!&ndash;          dense&ndash;&gt;-->
+      <!--        &lt;!&ndash;          label="Rango"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          map-options&ndash;&gt;-->
+      <!--        &lt;!&ndash;          v-model="scale"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          :options="scaleList"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          option-value="value"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          option-label="label"&ndash;&gt;-->
+      <!--        &lt;!&ndash;          emit-value&ndash;&gt;-->
+      <!--        &lt;!&ndash;        ></q-select>&ndash;&gt;-->
+      <!--      </div>-->
     </div>
   </div>
 </template>
@@ -96,8 +118,8 @@ export default {
   },
   methods: {
     buscar() {
-      console.log("buscar")
-      this.$emit('click', this.id_buscar)
+      console.log("buscar");
+      this.$emit("click", this.id_buscar);
       // if (this.id_buscar.length > 2) {
       //   const array = this.datas;
       //   // console.log("this.id_buscar", this.id_buscar)

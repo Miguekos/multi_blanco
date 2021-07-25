@@ -137,11 +137,17 @@
             <div class="text-h5 q-mt-sm q-mb-xs">
               {{ bar2_data.registration_id }}
             </div>
-            <div class="text-caption text-grey">
-              {{ bar2_data.comentario }}
+            <div class="text-caption text-grey q-pb-sm">
+              .- {{ bar2_data.comentario }}
             </div>
             <div class="full-width">
-              <q-input v-model="text" filled type="textarea" />
+              <q-input
+                v-model="text"
+                label="Comentario Adicional"
+                stack-label
+                filled
+                type="textarea"
+              />
             </div>
           </q-card-section>
           <q-space />
@@ -168,7 +174,7 @@
           <!--          <q-separator vertical/>-->
 
           <div class="q-pr-lg">
-            <q-btn align="right" v-close-popup color="primary">
+            <q-btn align="right" @click="descargar" color="primary">
               Descargar
             </q-btn>
           </div>
@@ -343,6 +349,9 @@ export default {
   },
   methods: {
     ...mapActions("planing", ["cargar_datas"]),
+    descargar(){
+
+    },
     formartdatedialog(val) {
       return dayjs(`${val}`)
         .subtract(0, "hours")
