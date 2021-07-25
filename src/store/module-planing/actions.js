@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
-import { axios } from 'boot/axios'
+import { axios, api } from 'boot/axios'
 
 export async function cargar_datas({ commit }) {
   console.log("cargarDatas");
-  await axios
-    .get("http://95.111.235.214:8808/api/assigments")
+  await api
+    .get("/api/assigments")
     .then(resp => {
       console.log("resp", resp);
       commit("set_datas", resp.data.data);

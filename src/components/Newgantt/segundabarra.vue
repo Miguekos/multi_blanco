@@ -160,7 +160,7 @@ export default {
           console.log("jsonAdd", jsonAdd);
           console.log("element", element);
           await this.$axios
-            .post("http://95.111.235.214:8808/api/assigments", {
+            .post("https://api.apps.com.pe/api/assigments", {
               operator_id: this.empleados_select,
               registration_id: this.id_registro,
               comentario: this.comentario,
@@ -198,12 +198,12 @@ export default {
   },
   async created() {
     await this.$axios
-      .get("http://95.111.235.214:8808/api/users")
+      .get("https://api.apps.com.pe/api/users")
       .then(async resp => {
         console.log("resp_usuarios", resp);
         // this.persons_group = resp.data;
         this.$store.commit("planing/set_persons", resp.data.users);
-        await this.$router.push("/dia1");
+        // await this.$router.push("/dia1");
       })
       .catch(err => {
         console.error(err);
