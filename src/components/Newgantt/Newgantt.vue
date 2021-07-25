@@ -1,247 +1,40 @@
 <template>
   <div class="q-pa-sm">
-    <div class="q-pa-xs">
-      <div class="row">
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-select
-            stack-label
-            dense
-            outlined
-            v-model="empleados_select"
-            :options="empleados_group"
-            option-label="name"
-            option-value="id"
-            emit-value
-            map-options
-            label="Empleado"
-          />
-        </div>
-        <div class="col-xs-12 col-md-1 q-pa-xs">
-          <!--          <q-select stack-label dense outlined v-model="model" :options="options" label="Outlined" />-->
-          <q-input
-            stack-label
-            dense
-            outlined
-            v-model="id_registro"
-            label="Registro"
-          />
-        </div>
-        <div class="col-xs-12 col-md-4 q-pa-xs">
-          <!--          <q-select stack-label dense outlined v-model="model" :options="options" label="Outlined" />-->
-          <q-input
-            stack-label
-            dense
-            outlined
-            v-model="comentario"
-            label="Comentario"
-          />
-        </div>
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-input dense outlined v-model="date_ini">
-            <template v-slot:prepend>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-date v-model="date_ini" mask="DD-MM-YYYY HH:mm">
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-time v-model="date_ini" mask="DD-MM-YYYY HH:mm" format24h>
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </div>
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-input dense outlined v-model="date_fin">
-            <template v-slot:prepend>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-date v-model="date_fin" mask="DD-MM-YYYY HH:mm">
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
+    <q-header class="bg-white">
+      <q-toolbar class="bg-red-8">
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
 
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-time v-model="date_fin" mask="DD-MM-YYYY HH:mm" format24h>
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </div>
-        <div class="col-xs-12 col-md-1 q-pa-xs self-center">
-          <q-btn
-            color="green"
-            class="full-width"
-            push
-            @click="addTask"
-            label="agregar"
-          ></q-btn>
-        </div>
+        <q-toolbar-title>
+          Multiservicios Blanco
+        </q-toolbar-title>
+
+        <div>Quasar v{{ $q.version }}</div>
+      </q-toolbar>
+      <div class="text-white">
+        <SegundaLinea />
       </div>
-    </div>
-    <q-separator color="red-3" class="q-pb-xs" />
-    <div class="q-pa-xs">
-      <div class="row">
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-btn label="test" @click="doScrollToPostion"></q-btn>
-          <!--          <q-input-->
-          <!--            label="Inicio"-->
-          <!--            stack-label-->
-          <!--            dense-->
-          <!--            outlined-->
-          <!--            v-model="date_start"-->
-          <!--          >-->
-          <!--            <template v-slot:prepend>-->
-          <!--              <q-icon name="event" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-date-->
-          <!--                    v-model="date_start"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-date>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--            <template v-slot:append>-->
-          <!--              <q-icon name="access_time" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-time-->
-          <!--                    v-model="date_start"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    format24h-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-time>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--          </q-input>-->
-        </div>
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-btn label="test 2" @click="doScrollToTime"></q-btn>
-          <!--          <q-input dense outlined label="Fin" stack-label v-model="date_end">-->
-          <!--            <template v-slot:prepend>-->
-          <!--              <q-icon name="event" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-date-->
-          <!--                    v-model="date_end"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-date>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--            <template v-slot:append>-->
-          <!--              <q-icon name="access_time" class="cursor-pointer">-->
-          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
-          <!--                  <q-time-->
-          <!--                    v-model="date_end"-->
-          <!--                    mask="DD-MM-YYYY HH:mm"-->
-          <!--                    format24h-->
-          <!--                    @input="() => actualizzartime()"-->
-          <!--                  >-->
-          <!--                    <div class="row items-center justify-end">-->
-          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
-          <!--                    </div>-->
-          <!--                  </q-time>-->
-          <!--                </q-popup-proxy>-->
-          <!--              </q-icon>-->
-          <!--            </template>-->
-          <!--          </q-input>-->
-        </div>
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-input label="Buscar" v-model="id_buscar" dense outlined></q-input>
-        </div>
-        <div class="col-xs-12 col-md-1 q-pa-xs">
-          <q-btn
-            color="blue"
-            class="full-width"
-            push
-            @click="buscar"
-            label="buscar"
-          ></q-btn>
-        </div>
-        <div class="col-xs-6 col-md-2 q-pa-xs">
-          <q-badge color="primary">
-            Largo: {{ cellHeight }} (20 to 100, step 10)
-          </q-badge>
-          <q-slider
-            style="width: 80%;"
-            v-model="cellHeight"
-            :min="40"
-            :max="100"
-            :step="10"
-            label
-            color="light-blue"
-          />
-        </div>
-        <div class="col-xs-6 col-md-2 q-pa-xs">
-          <q-badge color="secondary">
-            Ancho: {{ cellWidth }} (20 to 100, step 10)
-          </q-badge>
-          <q-slider
-            style="width: 80%;"
-            v-model="cellWidth"
-            :min="20"
-            :max="100"
-            :step="10"
-            label
-            color="light-green"
-          />
-        </div>
-        <div class="col-xs-12 col-md-1 q-pa-xs">
-          <q-select
-            outlined
-            dense
-            label="Rango"
-            map-options
-            v-model="scale"
-            :options="scaleList"
-            option-value="value"
-            option-label="label"
-            emit-value
-          ></q-select>
-        </div>
+      <div>
+        <TerceraLinea @click="buscar" />
       </div>
-    </div>
-    <q-separator color="red-3" class="q-pb-xs" />
+      <q-separator color="red" class="q-pb-xs" />
+    </q-header>
+    <!--    {{ $store.state.planing.datas }}-->
+    <!--    {{$store.getters['planing/get_datas']}}-->
     <div
+      :style="{
+        // 'padding-top': '220px'
+      }"
       v-for="(item, index) in armando"
       :key="index"
       class="q-pa-md"
-      :id="`dia${index}`"
+      :id="`dia${item.name_month}${item.name_day}`"
       ref="input"
     >
       <!--      <div class="flex flex-center text-h5">-->
@@ -252,7 +45,7 @@
         :showCurrentTime="true"
         :startTime="item.inicio"
         :endTime="item.fin"
-        :datas="datas"
+        :datas="$store.getters['planing/get_datas']"
         :cellWidth="cellWidth"
         :cellHeight="cellHeight"
         :timeLines="timeLines"
@@ -298,38 +91,93 @@
       transition-show="flip-down"
       transition-hide="flip-up"
     >
-      <q-card class="bg-primary text-white">
-        <q-bar>
-          <!--          <q-icon name="network_wifi" />-->
-          <!--          <q-icon name="network_cell" />-->
-          <!--          <q-icon name="battery_full" />-->
-          <div>Detalle</div>
+      <!--      <q-card class="bg-primary text-white">-->
+      <!--        <q-bar>-->
+      <!--          &lt;!&ndash;          <q-icon name="network_wifi" />&ndash;&gt;-->
+      <!--          &lt;!&ndash;          <q-icon name="network_cell" />&ndash;&gt;-->
+      <!--          &lt;!&ndash;          <q-icon name="battery_full" />&ndash;&gt;-->
+      <!--          <div>Detalle</div>-->
+
+      <!--          <q-space />-->
+
+      <!--          <q-btn dense flat icon="close" v-close-popup>-->
+      <!--            <q-tooltip content-class="bg-white text-primary">Cerrar</q-tooltip>-->
+      <!--          </q-btn>-->
+      <!--        </q-bar>-->
+
+      <!--        <q-card-section>-->
+      <!--          <div class="text-h6">{{ bar2_data.name }}</div>-->
+      <!--        </q-card-section>-->
+
+      <!--        <q-card-section class="q-pt-none">-->
+      <!--          <div class="q-pb-md">-->
+      <!--            Registro: <b> {{ bar2_data.registration_id }}</b>-->
+      <!--          </div>-->
+      <!--          <div class="q-pb-md">-->
+      <!--            Fecha de Inicio: <b> {{ formartdatedialog(bar2_data.start) }}</b>-->
+      <!--          </div>-->
+      <!--          <div class="q-pb-md">-->
+      <!--            Fecha de Fin: <b> {{ formartdatedialog(bar2_data.end) }}</b>-->
+      <!--          </div>-->
+      <!--          <div class="text-center">-->
+      <!--            Comentario:-->
+      <!--            <div>-->
+      <!--              <b> {{ bar2_data.comentario }}</b>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--          <q-card-actions>-->
+      <!--            -->
+      <!--          </q-card-actions>-->
+      <!--        </q-card-section>-->
+      <!--      </q-card>-->
+      <q-card class="my-card" flat bordered>
+        <q-card-section horizontal>
+          <q-card-section class="q-pt-xs">
+            <div class="text-overline">{{ bar2_data.name }}</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">
+              {{ bar2_data.registration_id }}
+            </div>
+            <div class="text-caption text-grey">
+              {{ bar2_data.comentario }}
+            </div>
+            <div class="full-width">
+              <q-input v-model="text" filled type="textarea" />
+            </div>
+          </q-card-section>
+          <q-space />
+          <q-separator vertical />
+          <q-card-section class="col-5 flex flex-center">
+            <q-img class="rounded-borders" src="logo_multi_blanco.png" />
+          </q-card-section>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions>
+          <q-btn flat round icon="event" />
+          <div class="q-pr-lg">
+            Inicio: <b> {{ formartdatedialog(bar2_data.start) }}</b>
+          </div>
+
+          <q-separator vertical />
+
+          <div class="q-pl-lg q-pr-lg">
+            Fin: <b> {{ formartdatedialog(bar2_data.end) }}</b>
+          </div>
+
+          <!--          <q-separator vertical/>-->
+
+          <div class="q-pr-lg">
+            <q-btn align="right" v-close-popup color="primary">
+              Descargar
+            </q-btn>
+          </div>
 
           <q-space />
-
-          <q-btn dense flat icon="close" v-close-popup>
-            <q-tooltip content-class="bg-white text-primary">Cerrar</q-tooltip>
+          <q-btn align="right" v-close-popup flat color="red">
+            Cerrar
           </q-btn>
-        </q-bar>
-
-        <q-card-section>
-          <div class="text-h6">{{ bar2_data.name }}</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <div class="q-pb-md">
-            Registro: <b> {{ bar2_data.name }}</b>
-          </div>
-          <div class="q-pb-md">
-            Fecha de Inicio: <b> {{ bar2_data.start }}</b>
-          </div>
-          <div class="q-pb-md">
-            Fecha de Fin: <b> {{ bar2_data.end }}</b>
-          </div>
-          <div class="text-center">
-            Comentario: <b> {{ bar2_data.comentario }}</b>
-          </div>
-        </q-card-section>
+        </q-card-actions>
       </q-card>
     </q-dialog>
   </div>
@@ -337,6 +185,7 @@
 
 <script>
 import { date } from "quasar";
+import { mapActions } from "vuex";
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
@@ -350,6 +199,8 @@ import TestLeft from "./test-left.vue"; //你自己的行名称组件
 // import { mockDatas } from "@src/mock/index.js"; //伪造的数据
 import dayjs from "dayjs"; //时间库
 import "dayjs/locale/es";
+import { cargar_datas } from "src/store/module-planing/actions";
+
 dayjs.locale("es");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -372,12 +223,65 @@ const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4
     };
   });
 
+function sscroll(id) {
+  // (A) SCROLL PARAMETERS
+  var speed = 100, // Less = faster
+    step = 30, // Less = smoother but slower
+    click = 0;
+
+  // (B) GET CURRENT Y POSITION + TARGET Y POSITION
+  // console.log("ididid", id)
+  var fromY = self.pageYOffset ? self.pageYOffset : document.body.scrollTop;
+  var target = document.getElementById(id);
+  // console.log("target",target)
+  var toY = target.offsetTop;
+  while (target.offsetParent && target.offsetParent != document.body) {
+    target = target.offsetParent;
+    toY += target.offsetTop;
+  }
+
+  window.scrollTo(0, toY - 190);
+
+  // console.log("toY", toY + 190)
+
+  // (C) SCROLL ANIMATION - DOWNWARDS
+  // if (fromY < toY) {
+  //   for (var i = fromY; i <= toY; i += step) {
+  //     if (i + step > toY) {
+  //       setTimeout("window.scrollTo(0, " + toY + ")", click * speed);
+  //     } else {
+  //       setTimeout("window.scrollTo(0, " + i + ")", click * speed);
+  //     }
+  //     click++;
+  //   }
+  // }
+
+  // (D) SCROLL ANIMATION - UPWARDS
+  // else {
+  //   for (var i = fromY; i >= toY; i -= step) {
+  //     if (i - step < toY) {
+  //       setTimeout("window.scrollTo(0, " + toY + ")", click * speed);
+  //     } else {
+  //       setTimeout("window.scrollTo(0, " + i + ")", click * speed);
+  //     }
+  //     click++;
+  //   }
+  // }
+}
+
 export default {
   name: "App",
-  components: { Test, TestLeft },
+  components: {
+    Test,
+    TestLeft,
+    SegundaLinea: () => import("src/components/Newgantt/segundabarra"),
+    TerceraLinea: () => import("src/components/Newgantt/tercerabarra")
+  },
   computed: {},
   data() {
     return {
+      text: "",
+      leftDrawerOpen: false,
       armando: [],
       id_buscar: "",
       bar2_data: "",
@@ -392,32 +296,8 @@ export default {
       time_fin: "12:00",
       updateArgs: [true, true, { duration: 1000 }],
       options_employed: [],
-      empleados_group: [
-        {
-          id: 1,
-          name: "Miguel R"
-        },
-        {
-          id: 2,
-          name: "Alex F"
-        },
-        {
-          id: 3,
-          name: "Juan B"
-        },
-        {
-          id: 4,
-          name: "Carlos F"
-        },
-        {
-          id: 5,
-          name: "David H"
-        },
-        {
-          id: 6,
-          name: "Diego P"
-        }
-      ],
+      persons_group: [],
+      empleados_group: [],
       categories: [],
       date_ini: formattedDateStart,
       date_fin: formattedDateStart,
@@ -455,44 +335,51 @@ export default {
       cellHeight: 50,
       titleHeight: 40,
       titleWidth: 250,
-      scale: 60,
+      scale: 60
       // startTime: dayjs().hour(0).toString(),
       // endTime: dayjs().hour(23).toString(),
-      datas: []
+      // datas: []
     };
   },
   methods: {
-    doScrollToPostion() {
-      // this.$refs.gantt.focus()
-
-      // console.log("asdasd", this.$refs.input[6].focus())
-      // this.$refs.input[2].focus()
-      // this.$refs.gantt.scrollToPostionHandle({ x: 100, y: 100 });
+    ...mapActions("planing", ["cargar_datas"]),
+    formartdatedialog(val) {
+      return dayjs(`${val}`)
+        .subtract(0, "hours")
+        .format("HH:mm");
     },
+    boton() {
+      location.href = `#dia12`;
+    },
+    doScrollToPostion() {},
     doScrollToTime() {
       this.$refs.gantt.scrollToTimehandle(dayjs().toString());
     },
-    buscar() {
-      if (this.id_buscar.length > 2) {
-        const array = this.datas;
-        // console.log("this.id_buscar", this.id_buscar)
-        const item_find = this.id_buscar;
-        // console.log(this.datas)
+    buscar(val) {
+      console.log("Buscar 2", val);
+      if (val.length > 2) {
+        const array = this.$store.getters["planing/get_datas"];
+        // console.log("val", val)
+        const item_find = val;
+        // console.log(this.$store.getters['planing/get_datas'])
         let result = "";
         for (let i = 0; i < array.length; i++) {
           const element = array[i].gtArray;
+
           // console.log("element", element)
           function esCereza(fruta) {
-            return fruta.name === `${item_find}`;
+            return fruta.registration_id === `${item_find}`;
           }
+
           if (element.find(esCereza)) {
             result = element.find(esCereza);
+            this.updateTimeLines(result.start, result.end, result);
           } else {
             console.log("nada");
           }
         }
         console.log(result);
-        this.updateTimeLines(result.start, result.end, result);
+        // this.updateTimeLines(result.start, result.end, result);
       } else {
         this.$q.notify({
           message: "Campo de busqueda vacio.!"
@@ -501,46 +388,31 @@ export default {
     },
     actualizzartime() {
       console.log("actualizzartime");
-      // console.log("asd", this.date_start)
-      // console.log("asd", typeof this.date_start)
-      // console.log("this.times[0]", this.times[0]);
       if (this.date_start == null) {
         console.log("la misma fecha");
       } else {
-        // let unit = 'days'
-        // let diff = date.getDateDiff(this.date_end, this.date_start, unit)
-        // console.log("diff", diff)
         this.times[0] = dayjs(
           `${this.date_start} -00:00`,
           "DD-MM-YYYY HH:mm Z"
         ).toString();
-        // console.log("this.times[0] - 2", this.times[0]);
         this.times[1] = dayjs(
           `${this.date_end} -00:00`,
           "DD-MM-YYYY HH:mm Z"
         ).toString();
       }
-      // if (date.isValid(this.times[0])) {
-      //   console.log("date_validated", this.date_start)
-      //   // Do something with date string
-      //   console.log("this.times[0] - 1", this.times[0]);
-      //   // if (this.times[0]) {
-      //   this.times[0] = dayjs(
-      //     `${this.date_start} -00:00`,
-      //     "DD-MM-YYYY HH:mm Z"
-      //   ).toString();
-      //   console.log("this.times[0] - 2", this.times[0]);
-      //   this.times[1] = dayjs(
-      //     `${this.date_end} -00:00`,
-      //     "DD-MM-YYYY HH:mm Z"
-      //   ).toString();
-      //   // } else {
-      //   //   console.log("Error controlado");
-      //   // }
-      // }
     },
     updateTimeLines(timeA, timeB, item) {
-      console.log(item);
+      // window.scrollTo(xCoord, yCoord);
+      console.log("item", item.start);
+      const fecha = dayjs(item.start);
+      console.log("asdasda", dayjs(`${item.start}`).get("date"));
+      console.log(
+        "dayjs",
+        dayjs(`${item.start}`, "DD-MM-YYYY HH:mm Z").toString()
+      );
+      console.log(`#dia${fecha.get("month")}${fecha.get("date")}`);
+      sscroll(`dia${fecha.get("month")}${fecha.get("date")}`);
+      // location.href = `#dia${fecha.get('month')}${fecha.get('date')}`;
       this.bar2_data = item;
       this.timeLines = [
         {
@@ -586,9 +458,26 @@ export default {
     }
   },
   async created() {
+    // await this.$axios
+    //   .get("http://127.0.0.1:8000/persons")
+    //   .then(resp => {
+    //     console.log(resp);
+    //     this.persons_group = resp.data;
+    //     this.$store.commit("planing/set_persons", resp.data);
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //     console.log("Error");
+    //   });
+
+    await this.cargar_datas();
+
     for (let i = 0; i < 32; i++) {
       // console.log("asdasdas", i)
+      const fecha = dayjs().add(i, "day");
       this.armando.push({
+        name_day: fecha.get("date"),
+        name_month: fecha.get("month"),
         name: dayjs()
           .add(i, "day")
           .format("DD/MM/YYYY"),
@@ -614,39 +503,64 @@ export default {
         .second(0)
         .toString()
     );
-    // console.log("-->", dayjs(`${this.date_start} -00:00`, 'DD-MM-YYYY Z').toString())
-    // console.log("----->",dayjs(`${this.date_ini} -00:00`, 'DD-MM-YYYY HH:mm Z').toString())
-    // console.log(dayjs().hour(6).minute(0).second(0).toString())
-    // console.log("String", dayjs('05/02/2021 1:02:03 PM -05:00', 'MM/DD/YY H:mm:ss A Z').toString())
-    this.categories = this.empleados_group;
-    this.cant_categories = this.empleados_group.length;
-    // let employed = []
-    for (let i = 0; i < this.cant_categories; i++) {
-      const element = this.empleados_group[i];
-      const color1 = Math.floor(Math.random() * 255 + 1);
-      const color2 = Math.floor(Math.random() * 255 + 1);
-      const color3 = Math.floor(Math.random() * 255 + 1);
-      this.datas.push({
-        id: element.name,
-        type: "",
-        speed: "",
-        name: element.id,
-        // ''
-        colorPair: {
-          dark: `rgb(${color1}, ${color2}, ${color3},0.8)`,
-          light: `rgb(${color1}, ${color2}, ${color3},0.1)`
-        },
-        gtArray: [
-          //La matriz predeterminada que debe representarse
-          // {
-          //   name:'test',
-          //   "start": dayjs().hour(6).minute(0).second(0).toString(),
-          //   "end": dayjs().hour(8).minute(0).second(0).toString(),
-          // }
-        ]
-      });
+    // this.categories = this.persons_group;
+    // this.cant_categories = this.persons_group.length;
+    // let datas = [];
+    // for (let i = 0; i < this.cant_categories; i++) {
+    //   const element = this.persons_group[i];
+    //   const color1 = Math.floor(Math.random() * 255 + 1);
+    //   const color2 = Math.floor(Math.random() * 255 + 1);
+    //   const color3 = Math.floor(Math.random() * 255 + 1);
+    //   datas.push({
+    //     id: element.name,
+    //     category: "",
+    //     name: element.registro,
+    //     // ''
+    //     colorPair: {
+    //       dark: `rgb(${color1}, ${color2}, ${color3},0.8)`,
+    //       light: `rgb(${color1}, ${color2}, ${color3},0.1)`
+    //     },
+    //     gtArray: []
+    //   });
+    // }
+    // await this.$axios
+    //   .get("http://127.0.0.1:8000/planing")
+    //   .then(async resp => {
+    //     const datainfo = resp.data;
+    //     console.log(datainfo);
+    //     for (let index = 0; index < datainfo.length; index++) {
+    //       for (let i = 0; i < datas.length; i++) {
+    //         const element = datas[i];
+    //         if (element.name === datainfo[index].id) {
+    //           const start = dayjs(
+    //             `${this.date_ini} -05:00`,
+    //             "DD-MM-YYYY HH:mm Z"
+    //           );
+    //           const end = dayjs(
+    //             `${this.date_fin} -05:00`,
+    //             "DD-MM-YYYY HH:mm Z"
+    //           );
+    //           element.gtArray.push(datainfo[index].gtArray);
+    //           // console.log("jsonAdd", jsonAdd);
+    //           console.log("element", element);
+    //         }
+    //       }
+    //     }
+    //     console.log("datas",datas)
+    //     this.$store.commit("planing/set_datas", datas);
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //     console.log("Error");
+    //   });
+    console.log("this.$route.params", this.$route.params);
+    if (this.$route.params.id) {
+      console.log("this.$route.params", this.$route.params.id);
+      // await this.$router.push("/dia1");
+    } else {
+      console.log("this.$route.params", this.$route.params.id);
+      await this.$router.push("/dia1");
     }
-    // this.options_employed = employed
   }
 };
 </script>
@@ -654,5 +568,20 @@ export default {
 <style>
 .gantt-header-title {
   border-radius: 12px;
+}
+
+.scroll-container {
+  /*width: 350px;*/
+  /*height: 200px;*/
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.scroll-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 5em;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
-  <q-layout view="hhh lpR fFf">
-    <q-header>
+<!--  <q-layout view="hhh lpR fFf">-->
+  <q-layout view="hHh lpR fFf">
+    <q-header class="bg-white">
       <q-toolbar class="bg-red-8">
         <q-btn
           flat
@@ -17,6 +18,13 @@
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+<!--      <div class="text-white">-->
+<!--        <SegundaLinea />-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <TerceraLinea />-->
+<!--      </div>-->
+<!--      <q-separator color="red" class="q-pb-xs" />-->
     </q-header>
 
     <!--    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-1">-->
@@ -89,7 +97,11 @@ const linksData = [
 
 export default {
   name: "MainLayout",
-  components: { EssentialLink },
+  components: {
+    EssentialLink,
+    // SegundaLinea: () => import('src/components/Newgantt/segundabarra'),
+    // TerceraLinea: () => import('src/components/Newgantt/tercerabarra')
+  },
   data() {
     return {
       leftDrawerOpen: false,

@@ -3,6 +3,7 @@
     <div
       slot="reference"
       class="plan"
+      :id="`dia${item.registration_id}`"
       :style="{
         'background-color': statusColor,
         'margin-top': 0.1 * cellHeight + 'px',
@@ -16,13 +17,14 @@
       <!--        <span>I:{{ startToString }}</span>-->
       <!--        <span>F:{{ endToString }}</span>-->
       <!--      </div>-->
-      <div class="middle">Registro: {{ item.name }}</div>
+<!--      <div class="middle">Registro: {{ item.registration_id }}</div>-->
+      <div class="middle">Registro: {{ item.registration_id }}</div>
       <!-- <div class="passenger">{{item.passenger}}人</div> -->
     </div>
     <q-tooltip content-class="" :offset="[10, 10]">
       <div class="text-white">
         <div>
-          <span class="header">{{ data.id }}</span>
+          <span class="header">{{ data.name }}</span>
         </div>
         <div>
           <span>Inicio：</span><span>{{ startToString }}</span>
@@ -146,5 +148,18 @@ export default {
     span:last-child {
     }
   }
+}
+.scroll-container {
+  width: 350px;
+  height: 200px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+.scroll-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 5em;
 }
 </style>
