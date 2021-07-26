@@ -366,7 +366,8 @@ export default {
           const url = `${resp.data.message}`;
           var element = document.createElement("a");
           element.setAttribute("href", url);
-          element.setAttribute("download", url);
+          element.setAttribute("target", "_blank");
+          element.setAttribute("download", "reporte");
 
           element.style.display = "none";
           document.body.appendChild(element);
