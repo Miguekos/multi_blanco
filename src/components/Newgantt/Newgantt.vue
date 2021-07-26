@@ -91,45 +91,6 @@
       transition-show="flip-down"
       transition-hide="flip-up"
     >
-      <!--      <q-card class="bg-primary text-white">-->
-      <!--        <q-bar>-->
-      <!--          &lt;!&ndash;          <q-icon name="network_wifi" />&ndash;&gt;-->
-      <!--          &lt;!&ndash;          <q-icon name="network_cell" />&ndash;&gt;-->
-      <!--          &lt;!&ndash;          <q-icon name="battery_full" />&ndash;&gt;-->
-      <!--          <div>Detalle</div>-->
-
-      <!--          <q-space />-->
-
-      <!--          <q-btn dense flat icon="close" v-close-popup>-->
-      <!--            <q-tooltip content-class="bg-white text-primary">Cerrar</q-tooltip>-->
-      <!--          </q-btn>-->
-      <!--        </q-bar>-->
-
-      <!--        <q-card-section>-->
-      <!--          <div class="text-h6">{{ bar2_data.name }}</div>-->
-      <!--        </q-card-section>-->
-
-      <!--        <q-card-section class="q-pt-none">-->
-      <!--          <div class="q-pb-md">-->
-      <!--            Registro: <b> {{ bar2_data.registration_id }}</b>-->
-      <!--          </div>-->
-      <!--          <div class="q-pb-md">-->
-      <!--            Fecha de Inicio: <b> {{ formartdatedialog(bar2_data.start) }}</b>-->
-      <!--          </div>-->
-      <!--          <div class="q-pb-md">-->
-      <!--            Fecha de Fin: <b> {{ formartdatedialog(bar2_data.end) }}</b>-->
-      <!--          </div>-->
-      <!--          <div class="text-center">-->
-      <!--            Comentario:-->
-      <!--            <div>-->
-      <!--              <b> {{ bar2_data.comentario }}</b>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          <q-card-actions>-->
-      <!--            -->
-      <!--          </q-card-actions>-->
-      <!--        </q-card-section>-->
-      <!--      </q-card>-->
       <q-card class="my-card" flat bordered>
         <q-card-section horizontal>
           <q-card-section class="q-pt-xs">
@@ -229,9 +190,24 @@ const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4
     };
   });
 
-function sscroll(id) {
+// function move() {
+// var elem = document.getElementById("myBar");
+// var width = 0;
+// var id = setInterval(frame, 10);
+// function frame() {
+//   if (width === 100) {
+//     clearInterval(id);
+//   } else {
+//     width++;
+//     console.log("width", width)
+//     // elem.style.width = width + '%';
+//   }
+// }
+// }
+
+async function sscroll(id) {
   // (A) SCROLL PARAMETERS
-  var speed = 100, // Less = faster
+  var speed = 50, // Less = faster
     step = 30, // Less = smoother but slower
     click = 0;
 
@@ -251,12 +227,33 @@ function sscroll(id) {
   // console.log("toY", toY + 190)
 
   // (C) SCROLL ANIMATION - DOWNWARDS
+
+  // var width = 0;
+  // var id = setInterval(frame, 1);
+  // async function frame() {
+  //   if (width > toY) {
+  //     clearInterval(id);
+  //   } else {
+  //     // width++;
+  //
+  //     console.log("width", width)
+  //     window.scrollTo(0, width - 190);
+  //     width = width + 10;
+  //     // elem.style.width = width + '%';
+  //   }
+  // }
+
+  // for (let i = 0; i < toY; i++) {
+  //   setTimeout(() => {
+  //     window.scrollTo(0, i - 190);
+  //   }, 1000);
+  // }
   // if (fromY < toY) {
   //   for (var i = fromY; i <= toY; i += step) {
   //     if (i + step > toY) {
-  //       setTimeout("window.scrollTo(0, " + toY + ")", click * speed);
+  //       setTimeout("window.scrollTo(0, " + toY + 190 +")", click * speed);
   //     } else {
-  //       setTimeout("window.scrollTo(0, " + i + ")", click * speed);
+  //       setTimeout("window.scrollTo(0, " + i + 190 +")", click * speed);
   //     }
   //     click++;
   //   }
@@ -266,9 +263,9 @@ function sscroll(id) {
   // else {
   //   for (var i = fromY; i >= toY; i -= step) {
   //     if (i - step < toY) {
-  //       setTimeout("window.scrollTo(0, " + toY + ")", click * speed);
+  //       setTimeout("window.scrollTo(0, " + toY + 190 +")", click * speed);
   //     } else {
-  //       setTimeout("window.scrollTo(0, " + i + ")", click * speed);
+  //       setTimeout("window.scrollTo(0, " + i + 190 +")", click * speed);
   //     }
   //     click++;
   //   }
@@ -349,8 +346,37 @@ export default {
   },
   methods: {
     ...mapActions("planing", ["cargar_datas"]),
-    descargar(){
+    descargar() {
+      this.$axios
+        .post(`https://api.apps.com.pe/generarreporte/2`, {
+          id: "17826378",
+          operario: "SANTIAGO",
+          temerario: "JORGE",
+          expediente: "21620883",
+          cita: "21/07/21 9.00 AM",
+          asegurado: "CP VENTURA RODRIGUEZ 11",
+          direccion: "CL VENTURA RODRIGUEZ 11 28008",
+          detalles:
+            "PINATR TECHO SALON BLANCO LISO TELEFONO 660439343 TERMINAR TRABAJOS",
+          importante:
+            "PEDIR TODOS LOS DATOS NOMBRE Y DNI DE PERJUDICADOS O CIF DE LA COMUNIDAD"
+        })
+        .then(async resp => {
+          console.log("generarreporte", resp.data);
+          const url = `${resp.data.message}`;
+          var element = document.createElement("a");
+          element.setAttribute("href", url);
+          element.setAttribute("download", url);
 
+          element.style.display = "none";
+          document.body.appendChild(element);
+
+          element.click();
+          document.body.removeChild(element);
+        })
+        .catch(async err => {
+          console.log(err);
+        });
     },
     formartdatedialog(val) {
       return dayjs(`${val}`)
@@ -410,7 +436,7 @@ export default {
         ).toString();
       }
     },
-    updateTimeLines(timeA, timeB, item) {
+    async updateTimeLines(timeA, timeB, item) {
       // window.scrollTo(xCoord, yCoord);
       console.log("item", item.start);
       const fecha = dayjs(item.start);
@@ -420,7 +446,7 @@ export default {
         dayjs(`${item.start}`, "DD-MM-YYYY HH:mm Z").toString()
       );
       console.log(`#dia${fecha.get("month")}${fecha.get("date")}`);
-      sscroll(`dia${fecha.get("month")}${fecha.get("date")}`);
+      await sscroll(`dia${fecha.get("month")}${fecha.get("date")}`);
       // location.href = `#dia${fecha.get('month')}${fecha.get('date')}`;
       this.bar2_data = item;
       this.timeLines = [
@@ -568,7 +594,7 @@ export default {
       // await this.$router.push("/dia1");
     } else {
       console.log("this.$route.params", this.$route.params.id);
-      await this.$router.push("/dia1");
+      // await this.$router.push("/dia1");
     }
   }
 };
