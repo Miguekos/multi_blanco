@@ -18,12 +18,12 @@
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
       <div class="text-white">
-        <SegundaLinea />
+        <SegundaLinea @click="buscar" />
       </div>
-      <div>
-        <TerceraLinea @click="buscar" />
-      </div>
-      <q-separator color="red" class="q-pb-xs" />
+      <!--      <div>-->
+      <!--        <TerceraLinea @click="buscar" />-->
+      <!--      </div>-->
+      <q-separator color="red" />
     </q-header>
     <!--    {{ $store.state.planing.datas }}-->
     <!--    {{$store.getters['planing/get_datas']}}-->
@@ -92,31 +92,119 @@
       transition-hide="flip-up"
     >
       <q-card class="my-card" flat bordered>
-        <q-card-section horizontal>
-          <q-card-section class="q-pt-xs">
-            <div class="text-overline">{{ bar2_data.name }}</div>
-            <div class="text-h5 q-mt-sm q-mb-xs">
+        <!--        {{ bar2_data }}-->
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <img src="logo_multi_blanco.png" />
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Miguel</q-item-label>
+            <q-item-label caption>
               {{ bar2_data.registration_id }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-item-label>
+              <q-btn
+                icon="close"
+                rounded
+                align="right"
+                v-close-popup
+                flat
+                color="red"
+              >
+              </q-btn>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-separator />
+
+        <q-card-section style="max-height: 80vh" class="scroll">
+          <div class="row q-pb-lg">
+            <div class="col-12 q-pa-xs">
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Direccion:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    {{ bar2_data.address }}
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Codigo Portal:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    {{ bar2_data.zip_code }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-separator />
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Telefono:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    {{ bar2_data.phone }}
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Asgurado:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    {{ bar2_data.customer }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-separator />
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Detalle:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    {{ bar2_data.description }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
             </div>
-            <div class="text-caption text-grey q-pb-sm">
-              .- {{ bar2_data.comentario }}
-            </div>
-            <div class="full-width">
+          </div>
+          <div class="row">
+            <div class="col-12 q-pa-xs">
               <q-input
-                v-model="text"
+                v-model="comment"
                 label="Comentario Adicional"
                 stack-label
                 filled
                 type="textarea"
               />
             </div>
-          </q-card-section>
-          <q-space />
-          <q-separator vertical />
-          <q-card-section class="col-5 flex flex-center">
-            <q-img class="rounded-borders" src="logo_multi_blanco.png" />
-          </q-card-section>
+            <div class="col-12 q-pa-xs">
+              <q-uploader
+                label="Adjuntar Sustento"
+                class="full-width"
+                v-model="imagen"
+                :factory="factoryFnF"
+                auto-upload
+                @uploaded="uploaded"
+              />
+            </div>
+          </div>
         </q-card-section>
+
+        <q-card-section horizontal></q-card-section>
 
         <q-separator />
 
@@ -141,9 +229,15 @@
           </div>
 
           <q-space />
-          <q-btn align="right" v-close-popup flat color="red">
-            Cerrar
-          </q-btn>
+          <q-btn
+            icon="edit"
+            @click="editar_task"
+            color="orange"
+            rounded
+          ></q-btn>
+          <!--          <q-btn align="right" v-close-popup flat color="red">-->
+          <!--            Cerrar-->
+          <!--          </q-btn>-->
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -153,6 +247,7 @@
 <script>
 import { date } from "quasar";
 import { mapActions } from "vuex";
+
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
@@ -277,12 +372,15 @@ export default {
   components: {
     Test,
     TestLeft,
-    SegundaLinea: () => import("src/components/Newgantt/segundabarra"),
-    TerceraLinea: () => import("src/components/Newgantt/tercerabarra")
+    SegundaLinea: () => import("src/components/Newgantt/segundabarra")
+    // TerceraLinea: () => import("src/components/Newgantt/tercerabarra")
   },
   computed: {},
   data() {
     return {
+      comment: "",
+      imagen: "",
+      nombre: "",
       text: "",
       leftDrawerOpen: false,
       armando: [],
@@ -346,20 +444,51 @@ export default {
   },
   methods: {
     ...mapActions("planing", ["cargar_datas"]),
+    editar_task() {
+      this.$q.notify({
+        message: "Proximamente"
+      });
+    },
+    uploaded(files) {
+      console.log("subio");
+      console.log(files);
+      const img = JSON.parse(files.xhr.response).name;
+      console.log("name", img);
+      this.imagen = img;
+    },
+    factoryFnF(files) {
+      // returning a Promise
+      return new Promise(resolve => {
+        // simulating a delay of 2 seconds
+        // setTimeout(() => {
+
+        resolve({
+          url: "https://api.apps.com.pe/servermultiblanco/upload"
+        });
+        // console.log(files[0].__progressLabel);
+
+        // }, 2000)
+      }).then(asd => {
+        console.log("asd", asd);
+        console.log("Files", files[0].__progressLabel);
+        return asd;
+      });
+    },
     descargar() {
       this.$axios
         .post(`https://api.apps.com.pe/generarreporte/2`, {
-          id: "17826378",
-          operario: "SANTIAGO",
-          temerario: "JORGE",
-          expediente: "21620883",
-          cita: "21/07/21 9.00 AM",
-          asegurado: "CP VENTURA RODRIGUEZ 11",
-          direccion: "CL VENTURA RODRIGUEZ 11 28008",
-          detalles:
-            "PINATR TECHO SALON BLANCO LISO TELEFONO 660439343 TERMINAR TRABAJOS",
-          importante:
-            "PEDIR TODOS LOS DATOS NOMBRE Y DNI DE PERJUDICADOS O CIF DE LA COMUNIDAD"
+          id: this.bar2_data.id,
+          operario: this.bar2_data.operator,
+          temerario: this.bar2_data.processor,
+          expediente: this.bar2_data.registration_id,
+          cita: this.bar2_data.date,
+          asegurado: this.bar2_data.customer,
+          direccion: this.bar2_data.address,
+          detalles: this.bar2_data.description,
+          codigo_postal: this.bar2_data.description,
+          telf: this.bar2_data.phone,
+          importante: this.comment,
+          img: this.imagen ? this.imagen : ""
         })
         .then(async resp => {
           console.log("generarreporte", resp.data);
@@ -367,7 +496,7 @@ export default {
           var element = document.createElement("a");
           element.setAttribute("href", url);
           element.setAttribute("target", "_blank");
-          element.setAttribute("download", "reporte");
+          element.setAttribute("download", `${this.registration_id}`);
 
           element.style.display = "none";
           document.body.appendChild(element);
@@ -391,12 +520,14 @@ export default {
     doScrollToTime() {
       this.$refs.gantt.scrollToTimehandle(dayjs().toString());
     },
-    buscar(val) {
-      console.log("Buscar 2", val);
-      if (val.length > 2) {
+    buscar(val, val2) {
+      console.log("Buscar", val);
+      console.log("Buscar 2", val2);
+      if (val.length > 2 || val2.length > 2) {
         const array = this.$store.getters["planing/get_datas"];
         // console.log("val", val)
         const item_find = val;
+        const item_zip_code = val2;
         // console.log(this.$store.getters['planing/get_datas'])
         let result = "";
         for (let i = 0; i < array.length; i++) {
@@ -409,6 +540,21 @@ export default {
 
           if (element.find(esCereza)) {
             result = element.find(esCereza);
+            this.updateTimeLines(result.start, result.end, result);
+          } else {
+            console.log("nada");
+          }
+        }
+        for (let i = 0; i < array.length; i++) {
+          const element = array[i].gtArray;
+
+          // console.log("element", element)
+          function findJson(arg) {
+            return arg.zip_code === `${item_zip_code}`;
+          }
+
+          if (element.find(findJson)) {
+            result = element.find(findJson);
             this.updateTimeLines(result.start, result.end, result);
           } else {
             console.log("nada");
@@ -600,24 +746,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.gantt-header-title {
-  border-radius: 12px;
-}
-
-.scroll-container {
-  /*width: 350px;*/
-  /*height: 200px;*/
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-}
-
-.scroll-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  font-size: 5em;
-}
-</style>

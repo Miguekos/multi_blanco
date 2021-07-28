@@ -3,40 +3,122 @@
     <div class="q-pa-xs">
       <!--      {{$store.state.planing.persons}}-->
       <div class="row">
-        <div class="col-xs-12 col-md-2 q-pa-xs text-black">
+        <div class="col-xs-12 col-md-1 q-pa-xs text-black">
           <q-select
             stack-label
             dense
             outlined
-            v-model="empleados_select"
+            v-model="json_send.operator_id"
             :options="$store.state.planing.persons"
             option-label="name"
             option-value="id"
             emit-value
             map-options
-            label="Empleado"
+            label="Operario"
           />
         </div>
         <div class="col-xs-12 col-md-1 q-pa-xs">
-          <!--          <q-select stack-label dense outlined v-model="model" :options="options" label="Outlined" />-->
           <q-input
             stack-label
             dense
             outlined
-            v-model="id_registro"
+            v-model="json_send.processor"
+            label="Temerario"
+          />
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="json_send.registration_id"
+            label="Expediente"
+          />
+        </div>
+        <div class="col-xs-12 col-md-2 q-pa-xs">
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="json_send.customer"
+            label="Asegurado"
+          />
+        </div>
+        <div class="col-xs-12 col-md-2 q-pa-xs">
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="json_send.address"
+            label="Direccion"
+          />
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="json_send.zip_code"
+            label="Codigo postal"
+          />
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="json_send.phone"
+            label="Telefono"
+          />
+        </div>
+        <div class="col-xs-12 col-md-3 q-pa-xs">
+          <q-input
+            stack-label
+            dense
+            outlined
+            v-model="json_send.description"
+            label="Detalles"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-input
             label="Registro"
-          />
-        </div>
-        <div class="col-xs-12 col-md-4 q-pa-xs">
-          <!--          <q-select stack-label dense outlined v-model="model" :options="options" label="Outlined" />-->
-          <q-input
-            stack-label
+            v-model="id_buscar"
             dense
             outlined
-            v-model="comentario"
-            label="Comentario"
-          />
+          ></q-input>
         </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-btn
+            color="blue"
+            class="full-width"
+            push
+            @click="buscar"
+            label="buscar"
+          ></q-btn>
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-input
+            label="Zipcode"
+            v-model="id_zipcode"
+            dense
+            outlined
+          ></q-input>
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <q-btn
+            color="blue"
+            class="full-width"
+            push
+            @click="buscar"
+            label="buscar"
+          ></q-btn>
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs"></div>
+        <div class="col-xs-12 col-md-1 q-pa-xs"></div>
+        <div class="col-xs-12 col-md-1 q-pa-xs"></div>
         <div class="col-xs-12 col-md-2 q-pa-xs">
           <q-input dense outlined v-model="date_ini">
             <template v-slot:prepend>
@@ -95,6 +177,7 @@
             color="green"
             class="full-width"
             push
+            glossy
             :loading="botonesload"
             @click="addTask"
             label="agregar"
@@ -125,73 +208,122 @@ export default {
   name: "segundabarra",
   data() {
     return {
+      json_send: {
+        operator_id: "",
+        processor: "",
+        registration_id: "",
+        date: "", //cita
+        customer: "",
+        address: "",
+        zip_code: "",
+        phone: "",
+        details: "",
+        comment: "",
+        policy_number: ""
+      },
       botonesload: false,
-      empleados_select: null,
+      processor: "",
+      registration_id: "",
       date_ini: formattedDateStart,
       date_fin: formattedDateStart,
       id_registro: "",
-      comentario: ""
+      id_zipcode: "",
+      id_buscar: ""
     };
   },
   methods: {
     ...mapActions("planing", ["cargar_datas"]),
+    buscar() {
+      this.$emit("click", this.id_buscar, this.id_zipcode);
+      this.id_buscar = "";
+      this.id_zipcode = "";
+    },
     async addTask() {
       this.botonesload = true;
       this.$q.loading.show();
       console.log("addTask");
-      for (let i = 0; i < this.$store.state.planing.datas.length; i++) {
-        const element = this.$store.state.planing.datas[i];
-        // console.log("element", element);
-        // console.log(
-        //   dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z").toString()
-        // );
-        // console.log(element.name, this.empleados_select)
-        if (element.id === this.empleados_select) {
-          const start = dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z");
-          const end = dayjs(`${this.date_fin} -05:00`, "DD-MM-YYYY HH:mm Z");
-          const jsonAdd = {
-            name: this.id_registro,
-            zipcode: "",
-            comentario: this.comentario,
-            start: start.toString(),
-            end: end.toString()
-          };
-          // element.gtArray.push(jsonAdd);
-          console.log("jsonAdd", jsonAdd);
-          console.log("element", element);
-          await this.$axios
-            .post("https://api.apps.com.pe/api/assigments", {
-              operator_id: this.empleados_select,
-              registration_id: this.id_registro,
-              comentario: this.comentario,
-              // gtArray: jsonAdd,
-              start: start,
-              end: end
-            })
-            .then(async resp => {
-              console.log(resp);
-              await this.cargar_datas();
-              // this.persons_group = resp.data;
-              this.botonesload = false;
-              this.$q.loading.hide();
-            })
-            .catch(err => {
-              console.error(err);
-              console.log("Error");
-              this.botonesload = false;
-              this.$q.loading.hide();
-            });
-        } else {
+      const start = dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z");
+      const end = dayjs(`${this.date_fin} -05:00`, "DD-MM-YYYY HH:mm Z");
+      await this.$axios
+        .post("https://api.apps.com.pe/api/assigments", {
+          ...this.json_send,
+          start: start,
+          end: end
+        })
+        .then(async resp => {
+          console.log(resp);
+          this.$store.commit("planing/set_datas", resp.data.data);
+          // await this.cargar_datas();
+          // this.persons_group = resp.data;
           this.botonesload = false;
           this.$q.loading.hide();
-        }
-      }
+        })
+        .catch(err => {
+          console.error(err);
+          console.log("Error");
+          this.botonesload = false;
+          this.$q.loading.hide();
+        });
+      // for (let i = 0; i < this.$store.state.planing.datas.length; i++) {
+      //   const element = this.$store.state.planing.datas[i];
+      //   // console.log("element", element);
+      //   // console.log(
+      //   //   dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z").toString()
+      //   // );
+      //   // console.log(element.name, this.json_send.operator_id)
+      //   if (element.id === this.json_send.operator_id) {
+      //     const start = dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z");
+      //     const end = dayjs(`${this.date_fin} -05:00`, "DD-MM-YYYY HH:mm Z");
+      //     // const jsonAdd = {
+      //     //   name: this.id_registro,
+      //     //   zipcode: "",
+      //     //   comentario: this.comentario,
+      //     //   start: start.toString(),
+      //     //   end: end.toString()
+      //     // };
+      //     // element.gtArray.push(jsonAdd);
+      //     // console.log("jsonAdd", jsonAdd);
+      //     // console.log("element", element);
+      //     await this.$axios
+      //       .post("https://api.apps.com.pe/api/assigments", {
+      //         ...this.json_send,
+      //         start: start,
+      //         end: end
+      //       })
+      //       .then(async resp => {
+      //         console.log(resp);
+      //         await this.cargar_datas();
+      //         // this.persons_group = resp.data;
+      //         this.botonesload = false;
+      //         this.$q.loading.hide();
+      //       })
+      //       .catch(err => {
+      //         console.error(err);
+      //         console.log("Error");
+      //         this.botonesload = false;
+      //         this.$q.loading.hide();
+      //       });
+      //   } else {
+      //     this.botonesload = false;
+      //     this.$q.loading.hide();
+      //   }
+      // }
       this.resetParams();
     },
     resetParams() {
-      this.empleados_select = "";
-      this.id_registro = "";
-      this.comentario = "";
+      this.json_send = {
+        operator_id: "",
+        processor: "",
+        registration_id: "",
+        date: new Date(), //cita
+        customer: "",
+        address: "",
+        zip_code: "",
+        phone: "",
+        details: "",
+        comment: "",
+        policy_number: ""
+      };
       this.date_ini = formattedDateStart;
       this.date_fin = formattedDateStart;
     }

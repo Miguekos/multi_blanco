@@ -5,7 +5,7 @@
       class="plan"
       :id="`dia${item.registration_id}`"
       :style="{
-        'background-color': statusColor,
+        'background-color': nuevoColor,
         'margin-top': 0.1 * cellHeight + 'px',
         'margin-left': 0.1 * cellHeight + 'px',
         'margin-right': 0.1 * cellHeight + 'px',
@@ -17,7 +17,7 @@
       <!--        <span>I:{{ startToString }}</span>-->
       <!--        <span>F:{{ endToString }}</span>-->
       <!--      </div>-->
-<!--      <div class="middle">Registro: {{ item.registration_id }}</div>-->
+      <!--      <div class="middle">Registro: {{ item.registration_id }}</div>-->
       <div class="middle">Registro: {{ item.registration_id }}</div>
       <!-- <div class="passenger">{{item.passenger}}人</div> -->
     </div>
@@ -56,8 +56,8 @@
 import dayjs from "dayjs";
 
 const NOW_PLAN = "#D5F8EA";
-const FUTHER_PLAN = "#BFF2FE";
-const PAST_PLAN = "#F2F2F2";
+const FUTHER_PLAN = "#b0eafd";
+const PAST_PLAN = "#e6e6e6";
 export default {
   name: "Test",
   props: {
@@ -70,10 +70,19 @@ export default {
   },
   data() {
     return {
+      id: "",
+      color: "",
       dayjs: dayjs
     };
   },
   computed: {
+    nuevoColor() {
+      if (this.id.length > 1) {
+        return this.color;
+      } else {
+        return this.statusColor;
+      }
+    },
     statusColor() {
       let { item, currentTime } = this;
       let start = dayjs(item.start);
@@ -94,8 +103,14 @@ export default {
     }
   },
   methods: {
-    onClick() {
-      this.updateTimeLines(this.item.start, this.item.end, this.item);
+    onClick(id, color) {
+      console.log("onClick");
+      this.id = id;
+      this.color = color;
+      this.updateTimeLines(this.item.start, this.item.end, {
+        ...this.item,
+        operator: this.data.name
+      });
     }
   }
 };

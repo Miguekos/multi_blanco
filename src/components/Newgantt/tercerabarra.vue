@@ -2,10 +2,13 @@
   <div>
     <div class="row">
       <div class="col-xs-12 col-md-2 q-pa-xs">
-        <!--      <q-btn label="test" @click="doScrollToPostion"></q-btn>-->
+
       </div>
       <div class="col-xs-12 col-md-2 q-pa-xs">
-        <!--      <q-btn label="test 2" @click="doScrollToTime"></q-btn>-->
+
+      </div>
+      <div class="col-xs-6 col-md-2 q-pa-xs">
+
       </div>
       <div class="col-xs-12 col-md-2 q-pa-xs">
         <q-input
@@ -24,20 +27,6 @@
           label="buscar"
         ></q-btn>
       </div>
-      <div class="col-xs-6 col-md-2 q-pa-xs">
-        <!--        <q-badge color="primary">-->
-        <!--          Largo: {{ cellHeight }} (20 to 100, step 10)-->
-        <!--        </q-badge>-->
-        <!--        <q-slider-->
-        <!--          style="width: 80%;"-->
-        <!--          v-model="cellHeight"-->
-        <!--          :min="40"-->
-        <!--          :max="100"-->
-        <!--          :step="10"-->
-        <!--          label-->
-        <!--          color="light-blue"-->
-        <!--        />-->
-      </div>
       <div class="col-xs-12 col-md-2 q-pa-xs">
         <q-input
           label="Buscar por Zipcode"
@@ -55,33 +44,6 @@
           label="buscar"
         ></q-btn>
       </div>
-      <!--      <div class="col-xs-6 col-md-2 q-pa-xs">-->
-      <!--        &lt;!&ndash;        <q-badge color="secondary">&ndash;&gt;-->
-      <!--        &lt;!&ndash;          Ancho: {{ cellWidth }} (20 to 100, step 10)&ndash;&gt;-->
-      <!--        &lt;!&ndash;        </q-badge>&ndash;&gt;-->
-      <!--        &lt;!&ndash;        <q-slider&ndash;&gt;-->
-      <!--        &lt;!&ndash;          style="width: 80%;"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          v-model="cellWidth"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          :min="20"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          :max="100"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          :step="10"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          label&ndash;&gt;-->
-      <!--        &lt;!&ndash;          color="light-green"&ndash;&gt;-->
-      <!--        &lt;!&ndash;        />&ndash;&gt;-->
-      <!--      </div>-->
-      <!--      <div class="col-xs-12 col-md-1 q-pa-xs">-->
-      <!--        &lt;!&ndash;        <q-select&ndash;&gt;-->
-      <!--        &lt;!&ndash;          outlined&ndash;&gt;-->
-      <!--        &lt;!&ndash;          dense&ndash;&gt;-->
-      <!--        &lt;!&ndash;          label="Rango"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          map-options&ndash;&gt;-->
-      <!--        &lt;!&ndash;          v-model="scale"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          :options="scaleList"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          option-value="value"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          option-label="label"&ndash;&gt;-->
-      <!--        &lt;!&ndash;          emit-value&ndash;&gt;-->
-      <!--        &lt;!&ndash;        ></q-select>&ndash;&gt;-->
-      <!--      </div>-->
     </div>
   </div>
 </template>
