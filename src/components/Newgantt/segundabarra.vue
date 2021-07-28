@@ -242,8 +242,8 @@ export default {
       this.botonesload = true;
       this.$q.loading.show();
       console.log("addTask");
-      const start = dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z");
-      const end = dayjs(`${this.date_fin} -05:00`, "DD-MM-YYYY HH:mm Z");
+      const start = dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z");
+      const end = dayjs(`${this.date_fin} +02:00`, "DD-MM-YYYY HH:mm Z");
       await this.$axios
         .post("https://api.apps.com.pe/api/assigments", {
           ...this.json_send,
@@ -268,12 +268,12 @@ export default {
       //   const element = this.$store.state.planing.datas[i];
       //   // console.log("element", element);
       //   // console.log(
-      //   //   dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z").toString()
+      //   //   dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z").toString()
       //   // );
       //   // console.log(element.name, this.json_send.operator_id)
       //   if (element.id === this.json_send.operator_id) {
-      //     const start = dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z");
-      //     const end = dayjs(`${this.date_fin} -05:00`, "DD-MM-YYYY HH:mm Z");
+      //     const start = dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z");
+      //     const end = dayjs(`${this.date_fin} +02:00`, "DD-MM-YYYY HH:mm Z");
       //     // const jsonAdd = {
       //     //   name: this.id_registro,
       //     //   zipcode: "",

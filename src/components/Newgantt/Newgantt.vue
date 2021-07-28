@@ -611,7 +611,7 @@ export default {
       for (let i = 0; i < this.datas.length; i++) {
         const element = this.datas[i];
         console.log(
-          dayjs(`${this.date_ini} -05:00`, "DD-MM-YYYY HH:mm Z").toString()
+          dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z").toString()
         );
         // console.log(element.name, this.empleados_select)
         if (element.name === this.empleados_select) {
@@ -619,11 +619,11 @@ export default {
             name: this.id_registro,
             comentario: this.comentario,
             start: dayjs(
-              `${this.date_ini} -05:00`,
+              `${this.date_ini} +02:00`,
               "DD-MM-YYYY HH:mm Z"
             ).toString(),
             end: dayjs(
-              `${this.date_fin} -05:00`,
+              `${this.date_fin} +02:00`,
               "DD-MM-YYYY HH:mm Z"
             ).toString()
           });
@@ -715,11 +715,11 @@ export default {
     //         const element = datas[i];
     //         if (element.name === datainfo[index].id) {
     //           const start = dayjs(
-    //             `${this.date_ini} -05:00`,
+    //             `${this.date_ini} +02:00`,
     //             "DD-MM-YYYY HH:mm Z"
     //           );
     //           const end = dayjs(
-    //             `${this.date_fin} -05:00`,
+    //             `${this.date_fin} +02:00`,
     //             "DD-MM-YYYY HH:mm Z"
     //           );
     //           element.gtArray.push(datainfo[index].gtArray);
