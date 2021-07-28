@@ -492,11 +492,11 @@ export default {
         })
         .then(async resp => {
           console.log("generarreporte", resp.data);
-          const url = `${resp.data.message}`;
+          const url = `https://api.apps.com.pe/fileserver/${this.bar2_data.registration_id}.pdf`;
           var element = document.createElement("a");
           element.setAttribute("href", url);
           element.setAttribute("target", "_blank");
-          element.setAttribute("download", `${this.registration_id}`);
+          element.setAttribute("download", `${this.bar2_data.registration_id}`);
 
           element.style.display = "none";
           document.body.appendChild(element);
