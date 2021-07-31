@@ -40,3 +40,14 @@ https://infectoone.github.io/vue-ganttastic-homepage/#/example
 https://github.com/w1301625107/Vue-Gantt-chart
 https://www.grapecity.com/wijmo/demos/Chart/Special/GanttRepeat/vue
 ```
+
+
+
+https://www.vuescript.com/dropdown-time-picker-vue-2-x/
+https://vuejsexamples.net/vue2-timepicker/
+https://alexiscolin.github.io/vue-timeselector/
+https://shishirraven.github.io/animate-on-scroll/demo.html
+https://bootstrap-vue.org/docs/components/time
+
+https://github.com/mariomka/vue-datetime
+

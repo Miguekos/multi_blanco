@@ -1,5 +1,10 @@
 import dayjs from "dayjs";
-import { axios, api } from 'boot/axios'
+import { axios, api } from "boot/axios";
+
+function delete_id(val) {
+  delete val.id;
+  return val;
+}
 
 export async function cargar_datas({ commit }) {
   console.log("cargarDatas");
@@ -15,11 +20,34 @@ export async function cargar_datas({ commit }) {
     });
 }
 
+export async function edit_datas({ commit }, payload) {
+  console.log("cargarDatas");
+  await api
+    .put(`/api/assigments/${payload.id}`, {
+      ...delete_id(payload)
+    })
+    .then(resp => {
+      console.log("resp", resp);
+      return resp.data;
+      // commit("set_datas", resp.data.data);
+    })
+    .catch(err => {
+      console.error(err);
+      console.log("Error");
+    });
+}
 
-// export function register ({commit}, form) {
-//   return api.post('/auth/register', form)
-//     .then(response => {
-//       api.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
-//       commit('login', {token: response.data.token, user: response.data.user})
-//     })
-// }
+export async function delete_datas({ commit }, payload) {
+  console.log("cargarDatas");
+  await api
+    .delete(`/api/assigments/${payload}`)
+    .then(resp => {
+      console.log("resp", resp);
+      return resp.data;
+      // commit("set_datas", resp.data.data);
+    })
+    .catch(err => {
+      console.error(err);
+      console.log("Error");
+    });
+}

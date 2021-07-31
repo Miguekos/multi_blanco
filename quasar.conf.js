@@ -22,7 +22,8 @@ module.exports = function (/* ctx */) {
     boot: [
       'i18n',
       'axios',
-      'vganttchart'
+      'vganttchart',
+      'datePicker'
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -98,7 +99,7 @@ module.exports = function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'Loading']
+      plugins: ['Notify', 'Loading', 'Dialog']
     },
 
     // animations: 'all', // --- includes all animations

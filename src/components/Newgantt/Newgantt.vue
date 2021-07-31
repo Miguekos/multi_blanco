@@ -229,12 +229,20 @@
           </div>
 
           <q-space />
-          <q-btn
-            icon="edit"
-            @click="editar_task"
-            color="orange"
-            rounded
-          ></q-btn>
+          <div class="q-gutter-xs">
+            <q-btn
+              icon="edit"
+              @click="edit_task"
+              color="orange"
+              rounded
+            ></q-btn>
+            <q-btn
+              icon="delete"
+              @click="delete_task"
+              color="red"
+              rounded
+            ></q-btn>
+          </div>
           <!--          <q-btn align="right" v-close-popup flat color="red">-->
           <!--            Cerrar-->
           <!--          </q-btn>-->
@@ -247,7 +255,6 @@
 <script>
 import { date } from "quasar";
 import { mapActions } from "vuex";
-
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
@@ -256,12 +263,11 @@ const formattedDateStart = date.formatDate(timeStamp, "DD-MM-YYYY 00:00");
 const formattedDateEnd = date.formatDate(timeStamp, "DD-MM-YYYY 23:00");
 
 console.log("formattedString", formattedString);
-import Test from "./test.vue"; //你自己的gantt条容器
-import TestLeft from "./test-left.vue"; //你自己的行名称组件
-// import { mockDatas } from "@src/mock/index.js"; //伪造的数据
-import dayjs from "dayjs"; //时间库
+import Test from "./test.vue"; //los tuyos propios gantt contenedor
+import TestLeft from "./test-left.vue"; //Su propio componente de nombre de línea
+// import { mockDatas } from "@src/mock/index.js"; //Datos falsos
+import dayjs from "dayjs"; //La biblioteca del tiempo
 import "dayjs/locale/es";
-import { cargar_datas } from "src/store/module-planing/actions";
 
 dayjs.locale("es");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
@@ -285,21 +291,6 @@ const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4
     };
   });
 
-// function move() {
-// var elem = document.getElementById("myBar");
-// var width = 0;
-// var id = setInterval(frame, 10);
-// function frame() {
-//   if (width === 100) {
-//     clearInterval(id);
-//   } else {
-//     width++;
-//     console.log("width", width)
-//     // elem.style.width = width + '%';
-//   }
-// }
-// }
-
 async function sscroll(id) {
   // (A) SCROLL PARAMETERS
   var speed = 50, // Less = faster
@@ -307,10 +298,8 @@ async function sscroll(id) {
     click = 0;
 
   // (B) GET CURRENT Y POSITION + TARGET Y POSITION
-  // console.log("ididid", id)
   var fromY = self.pageYOffset ? self.pageYOffset : document.body.scrollTop;
   var target = document.getElementById(id);
-  // console.log("target",target)
   var toY = target.offsetTop;
   while (target.offsetParent && target.offsetParent != document.body) {
     target = target.offsetParent;
@@ -318,53 +307,6 @@ async function sscroll(id) {
   }
 
   window.scrollTo(0, toY - 190);
-
-  // console.log("toY", toY + 190)
-
-  // (C) SCROLL ANIMATION - DOWNWARDS
-
-  // var width = 0;
-  // var id = setInterval(frame, 1);
-  // async function frame() {
-  //   if (width > toY) {
-  //     clearInterval(id);
-  //   } else {
-  //     // width++;
-  //
-  //     console.log("width", width)
-  //     window.scrollTo(0, width - 190);
-  //     width = width + 10;
-  //     // elem.style.width = width + '%';
-  //   }
-  // }
-
-  // for (let i = 0; i < toY; i++) {
-  //   setTimeout(() => {
-  //     window.scrollTo(0, i - 190);
-  //   }, 1000);
-  // }
-  // if (fromY < toY) {
-  //   for (var i = fromY; i <= toY; i += step) {
-  //     if (i + step > toY) {
-  //       setTimeout("window.scrollTo(0, " + toY + 190 +")", click * speed);
-  //     } else {
-  //       setTimeout("window.scrollTo(0, " + i + 190 +")", click * speed);
-  //     }
-  //     click++;
-  //   }
-  // }
-
-  // (D) SCROLL ANIMATION - UPWARDS
-  // else {
-  //   for (var i = fromY; i >= toY; i -= step) {
-  //     if (i - step < toY) {
-  //       setTimeout("window.scrollTo(0, " + toY + 190 +")", click * speed);
-  //     } else {
-  //       setTimeout("window.scrollTo(0, " + i + 190 +")", click * speed);
-  //     }
-  //     click++;
-  //   }
-  // }
 }
 
 export default {
@@ -443,11 +385,69 @@ export default {
     };
   },
   methods: {
-    ...mapActions("planing", ["cargar_datas"]),
-    editar_task() {
-      this.$q.notify({
-        message: "Proximamente"
-      });
+    ...mapActions("planing", ["cargar_datas", "delete_datas"]),
+    edit_task(val) {
+      this.$q
+        .dialog({
+          title: "Editar",
+          message: "Desea editar este registro?",
+          cancel: true,
+          persistent: true
+        })
+        .onOk(() => {
+          // console.log('>>>> OK')
+          this.$q.notify({
+            message: "Proximamente"
+          });
+        })
+        .onOk(() => {
+          // console.log('>>>> second OK catcher')
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    },
+    delete_task() {
+      console.log("val", this.bar2_data);
+      this.$q
+        .dialog({
+          title: "Eliminar",
+          message: "Desea eliminar este registro?",
+          cancel: true,
+          persistent: true
+        })
+        .onOk(async () => {
+          // console.log('>>>> OK')
+          try {
+            this.$q.loading.show()
+            const resp_delete = await this.delete_datas(this.bar2_data.id);
+            console.log("resp_delete.data", resp_delete);
+            await this.cargar_datas();
+            this.bar2 = false;
+            this.$q.notify({
+              message: "Eliminado"
+            });
+            this.$q.loading.hide()
+          } catch (e) {
+            console.log("resp_delete_error", e);
+            this.$q.loading.hide()
+          }
+        })
+        .onOk(() => {
+          // console.log('>>>> second OK catcher')
+          this.$q.loading.hide()
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+          this.$q.loading.hide()
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+          this.$q.loading.hide()
+        });
     },
     uploaded(files) {
       console.log("subio");
@@ -463,7 +463,7 @@ export default {
         // setTimeout(() => {
 
         resolve({
-          url: "https://api.apps.com.pe/servermultiblanco/upload"
+          url: `${process.env.IMAGEN}servermultiblanco/upload`
         });
         // console.log(files[0].__progressLabel);
 
@@ -476,7 +476,7 @@ export default {
     },
     descargar() {
       this.$axios
-        .post(`https://api.apps.com.pe/generarreporte/2`, {
+        .post(`${process.env.IMAGEN}generarreporte/2`, {
           id: this.bar2_data.id,
           operario: this.bar2_data.operator,
           temerario: this.bar2_data.processor,
@@ -492,7 +492,7 @@ export default {
         })
         .then(async resp => {
           console.log("generarreporte", resp.data);
-          const url = `https://api.apps.com.pe/fileserver/${this.bar2_data.registration_id}.pdf`;
+          const url = `${process.env.IMAGEN}fileserver/${this.bar2_data.registration_id}.pdf`;
           var element = document.createElement("a");
           element.setAttribute("href", url);
           element.setAttribute("target", "_blank");
@@ -640,20 +640,7 @@ export default {
     }
   },
   async created() {
-    // await this.$axios
-    //   .get("http://127.0.0.1:8000/persons")
-    //   .then(resp => {
-    //     console.log(resp);
-    //     this.persons_group = resp.data;
-    //     this.$store.commit("planing/set_persons", resp.data);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     console.log("Error");
-    //   });
-
     await this.cargar_datas();
-
     for (let i = 0; i < 32; i++) {
       // console.log("asdasdas", i)
       const fecha = dayjs().add(i, "day");
@@ -685,56 +672,6 @@ export default {
         .second(0)
         .toString()
     );
-    // this.categories = this.persons_group;
-    // this.cant_categories = this.persons_group.length;
-    // let datas = [];
-    // for (let i = 0; i < this.cant_categories; i++) {
-    //   const element = this.persons_group[i];
-    //   const color1 = Math.floor(Math.random() * 255 + 1);
-    //   const color2 = Math.floor(Math.random() * 255 + 1);
-    //   const color3 = Math.floor(Math.random() * 255 + 1);
-    //   datas.push({
-    //     id: element.name,
-    //     category: "",
-    //     name: element.registro,
-    //     // ''
-    //     colorPair: {
-    //       dark: `rgb(${color1}, ${color2}, ${color3},0.8)`,
-    //       light: `rgb(${color1}, ${color2}, ${color3},0.1)`
-    //     },
-    //     gtArray: []
-    //   });
-    // }
-    // await this.$axios
-    //   .get("http://127.0.0.1:8000/planing")
-    //   .then(async resp => {
-    //     const datainfo = resp.data;
-    //     console.log(datainfo);
-    //     for (let index = 0; index < datainfo.length; index++) {
-    //       for (let i = 0; i < datas.length; i++) {
-    //         const element = datas[i];
-    //         if (element.name === datainfo[index].id) {
-    //           const start = dayjs(
-    //             `${this.date_ini} +02:00`,
-    //             "DD-MM-YYYY HH:mm Z"
-    //           );
-    //           const end = dayjs(
-    //             `${this.date_fin} +02:00`,
-    //             "DD-MM-YYYY HH:mm Z"
-    //           );
-    //           element.gtArray.push(datainfo[index].gtArray);
-    //           // console.log("jsonAdd", jsonAdd);
-    //           console.log("element", element);
-    //         }
-    //       }
-    //     }
-    //     console.log("datas",datas)
-    //     this.$store.commit("planing/set_datas", datas);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     console.log("Error");
-    //   });
     console.log("this.$route.params", this.$route.params);
     if (this.$route.params.id) {
       console.log("this.$route.params", this.$route.params.id);

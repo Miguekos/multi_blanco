@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="q-pa-xs">
-      <!--      {{$store.state.planing.persons}}-->
       <div class="row">
         <div class="col-xs-12 col-md-1 q-pa-xs text-black">
           <q-select
@@ -118,13 +117,13 @@
         </div>
         <div class="col-xs-12 col-md-1 q-pa-xs"></div>
         <div class="col-xs-12 col-md-1 q-pa-xs"></div>
-        <div class="col-xs-12 col-md-1 q-pa-xs"></div>
+        <div class="col-xs-12 col-md-1 q-pa-xs text-black"></div>
         <div class="col-xs-12 col-md-2 q-pa-xs">
           <q-input dense outlined v-model="date_ini">
             <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-date v-model="date_ini" mask="DD-MM-YYYY HH:mm">
+                  <q-date v-model="date_ini" mask="DD-MM-YYYY">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -132,47 +131,98 @@
                 </q-popup-proxy>
               </q-icon>
             </template>
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-time v-model="date_ini" mask="DD-MM-YYYY HH:mm" format24h>
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
+            <!--            <template v-slot:append>-->
+            <!--              <q-icon name="access_time" class="cursor-pointer">-->
+            <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+            <!--                  <q-time v-model="date_ini" mask="DD-MM-YYYY HH:mm">-->
+            <!--                    <div class="row items-center justify-end">-->
+            <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+            <!--                    </div>-->
+            <!--                  </q-time>-->
+            <!--                </q-popup-proxy>-->
+            <!--              </q-icon>-->
+            <!--            </template>-->
           </q-input>
         </div>
-        <div class="col-xs-12 col-md-2 q-pa-xs">
-          <q-input dense outlined v-model="date_fin">
-            <template v-slot:prepend>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-date v-model="date_fin" mask="DD-MM-YYYY HH:mm">
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-time v-model="date_fin" mask="DD-MM-YYYY HH:mm" format24h>
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+        <!--        <div class="col-xs-12 col-md-2 q-pa-xs">-->
+        <!--          <q-input dense outlined v-model="date_ini">-->
+        <!--            <template v-slot:prepend>-->
+        <!--              <q-icon name="event" class="cursor-pointer">-->
+        <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+        <!--                  <q-date v-model="date_ini" mask="DD-MM-YYYY">-->
+        <!--                    <div class="row items-center justify-end">-->
+        <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+        <!--                    </div>-->
+        <!--                  </q-date>-->
+        <!--                </q-popup-proxy>-->
+        <!--              </q-icon>-->
+        <!--            </template>-->
+        <!--            &lt;!&ndash;            <template v-slot:append>&ndash;&gt;-->
+        <!--            &lt;!&ndash;              <q-icon name="access_time" class="cursor-pointer">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                <q-popup-proxy transition-show="scale" transition-hide="scale">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                  <q-time v-model="date_fin" mask="DD-MM-YYYY HH:mm">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                    <div class="row items-center justify-end">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                      <q-btn v-close-popup label="Close" color="primary" flat />&ndash;&gt;-->
+        <!--            &lt;!&ndash;                    </div>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                  </q-time>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                </q-popup-proxy>&ndash;&gt;-->
+        <!--            &lt;!&ndash;              </q-icon>&ndash;&gt;-->
+        <!--            &lt;!&ndash;            </template>&ndash;&gt;-->
+        <!--          </q-input>-->
+        <!--        </div>-->
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <vue-timepicker
+            v-model="time_ini"
+            :hour-range="[7, [8, 18], 19]"
+            :minute-interval="60"
+          ></vue-timepicker>
+          <!--          <q-input-->
+          <!--            dense-->
+          <!--            outlined-->
+          <!--            v-model="time_ini"-->
+          <!--            mask="time"-->
+          <!--            :rules="['time']"-->
+          <!--          >-->
+          <!--            <template v-slot:append>-->
+          <!--              <q-icon name="access_time" class="cursor-pointer">-->
+          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+          <!--                  <q-time v-model="time_ini">-->
+          <!--                    <div class="row items-center justify-end">-->
+          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+          <!--                    </div>-->
+          <!--                  </q-time>-->
+          <!--                </q-popup-proxy>-->
+          <!--              </q-icon>-->
+          <!--            </template>-->
+          <!--          </q-input>-->
         </div>
-        <div class="col-xs-12 col-md-1 q-pa-xs self-center">
+        <div class="col-xs-12 col-md-1 q-pa-xs">
+          <vue-timepicker
+            v-model="time_fin"
+            :hour-range="[7, [8, 18], 19]"
+            :minute-interval="60"
+          ></vue-timepicker>
+          <!--          <q-input-->
+          <!--            dense-->
+          <!--            outlined-->
+          <!--            v-model="time_fin"-->
+          <!--            mask="time"-->
+          <!--            :rules="['time']"-->
+          <!--          >-->
+          <!--            <template v-slot:append>-->
+          <!--              <q-icon name="access_time" class="cursor-pointer">-->
+          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+          <!--                  <q-time v-model="time_fin">-->
+          <!--                    <div class="row items-center justify-end">-->
+          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+          <!--                    </div>-->
+          <!--                  </q-time>-->
+          <!--                </q-popup-proxy>-->
+          <!--              </q-icon>-->
+          <!--            </template>-->
+          <!--          </q-input>-->
+        </div>
+        <div class="col-xs-12 col-md-1 q-pa-xs">
           <q-btn
             color="green"
             class="full-width"
@@ -196,7 +246,7 @@ const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
 // const formattedDateStart = date.formatDate(timeStamp, 'ddd, DD MMM YYYY HH:mm:ss Z')
-const formattedDateStart = date.formatDate(timeStamp, "DD-MM-YYYY 00:00");
+const formattedDateStart = date.formatDate(timeStamp, "DD-MM-YYYY");
 const formattedDateEnd = date.formatDate(timeStamp, "DD-MM-YYYY 23:00");
 
 export default {
@@ -208,6 +258,10 @@ export default {
   name: "segundabarra",
   data() {
     return {
+      simpleStringValue: "07:00",
+      time_ini: "07:00",
+      time_fin: "12:00",
+      yourValue: "",
       json_send: {
         operator_id: "",
         processor: "",
@@ -241,11 +295,19 @@ export default {
     async addTask() {
       this.botonesload = true;
       this.$q.loading.show();
-      console.log("addTask");
-      const start = dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z");
-      const end = dayjs(`${this.date_fin} +02:00`, "DD-MM-YYYY HH:mm Z");
+      console.log("addTask", `${this.date_ini} ${this.time_ini}`);
+      const start = dayjs(
+        `${this.date_ini} ${this.time_ini} +02:00`,
+        "DD-MM-YYYY HH:mm Z"
+      );
+      const end = dayjs(
+        `${this.date_ini} ${this.time_fin} +02:00`,
+        "DD-MM-YYYY HH:mm Z"
+      );
+      console.log("start", start);
+      console.log("end", end);
       await this.$axios
-        .post("https://api.apps.com.pe/api/assigments", {
+        .post(`${process.env.IP}api/assigments`, {
           ...this.json_send,
           start: start,
           end: end
@@ -264,50 +326,6 @@ export default {
           this.botonesload = false;
           this.$q.loading.hide();
         });
-      // for (let i = 0; i < this.$store.state.planing.datas.length; i++) {
-      //   const element = this.$store.state.planing.datas[i];
-      //   // console.log("element", element);
-      //   // console.log(
-      //   //   dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z").toString()
-      //   // );
-      //   // console.log(element.name, this.json_send.operator_id)
-      //   if (element.id === this.json_send.operator_id) {
-      //     const start = dayjs(`${this.date_ini} +02:00`, "DD-MM-YYYY HH:mm Z");
-      //     const end = dayjs(`${this.date_fin} +02:00`, "DD-MM-YYYY HH:mm Z");
-      //     // const jsonAdd = {
-      //     //   name: this.id_registro,
-      //     //   zipcode: "",
-      //     //   comentario: this.comentario,
-      //     //   start: start.toString(),
-      //     //   end: end.toString()
-      //     // };
-      //     // element.gtArray.push(jsonAdd);
-      //     // console.log("jsonAdd", jsonAdd);
-      //     // console.log("element", element);
-      //     await this.$axios
-      //       .post("https://api.apps.com.pe/api/assigments", {
-      //         ...this.json_send,
-      //         start: start,
-      //         end: end
-      //       })
-      //       .then(async resp => {
-      //         console.log(resp);
-      //         await this.cargar_datas();
-      //         // this.persons_group = resp.data;
-      //         this.botonesload = false;
-      //         this.$q.loading.hide();
-      //       })
-      //       .catch(err => {
-      //         console.error(err);
-      //         console.log("Error");
-      //         this.botonesload = false;
-      //         this.$q.loading.hide();
-      //       });
-      //   } else {
-      //     this.botonesload = false;
-      //     this.$q.loading.hide();
-      //   }
-      // }
       this.resetParams();
     },
     resetParams() {
@@ -315,7 +333,7 @@ export default {
         operator_id: "",
         processor: "",
         registration_id: "",
-        date: new Date(), //cita
+        date: "", //cita
         customer: "",
         address: "",
         zip_code: "",
@@ -330,7 +348,7 @@ export default {
   },
   async created() {
     await this.$axios
-      .get("https://api.apps.com.pe/api/users")
+      .get(`${process.env.IP}api/users`)
       .then(async resp => {
         console.log("resp_usuarios", resp);
         // this.persons_group = resp.data;
@@ -345,4 +363,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style></style>

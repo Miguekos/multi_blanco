@@ -2,7 +2,7 @@
   <div class="name" :style="{ background: data.colorPair.light }">
     <div class="colorBar" :style="{ background: data.colorPair.dark }" />
     <div class="type">{{ data.type }}</div>
-    <div class="carId">{{ data.name }} {{ data.id }}</div>
+    <div class="carId">{{ data.name }}</div>
     <div class="speed">{{ data.speed }}</div>
   </div>
 </template>
