@@ -239,6 +239,7 @@
             <q-btn
               icon="delete"
               @click="delete_task"
+              :loading="del_load"
               color="red"
               rounded
             ></q-btn>
@@ -320,6 +321,7 @@ export default {
   computed: {},
   data() {
     return {
+      del_load: false,
       comment: "",
       imagen: "",
       nombre: "",
@@ -386,7 +388,13 @@ export default {
   },
   methods: {
     ...mapActions("planing", ["cargar_datas", "delete_datas"]),
-    edit_task(val) {
+    async page_loading_ini() {
+      await this.$q.loading.show();
+    },
+    async page_loading_end() {
+      await this.$q.loading.hide();
+    },
+    async edit_task() {
       this.$q
         .dialog({
           title: "Editar",
@@ -410,7 +418,7 @@ export default {
           // console.log('I am triggered on both OK and Cancel')
         });
     },
-    delete_task() {
+    async delete_task() {
       console.log("val", this.bar2_data);
       this.$q
         .dialog({
@@ -421,32 +429,36 @@ export default {
         })
         .onOk(async () => {
           // console.log('>>>> OK')
-          try {
-            this.$q.loading.show()
-            const resp_delete = await this.delete_datas(this.bar2_data.id);
-            console.log("resp_delete.data", resp_delete);
-            await this.cargar_datas();
-            this.bar2 = false;
-            this.$q.notify({
-              message: "Eliminado"
+          this.del_load = true;
+          await this.delete_datas(this.bar2_data.id)
+            .then(async resp_delete => {
+              await this.page_loading_ini();
+              console.log("resp_delete.data", resp_delete);
+              await this.cargar_datas();
+              this.$q.notify({
+                message: "Eliminado"
+              });
+              await this.page_loading_end();
+              this.del_load = false;
+              this.bar2 = false;
+              // this.$q.loading.hide();
+            })
+            .catch(async err => {
+              console.log("resp_delete_error", err);
+              this.$q.loading.hide();
             });
-            this.$q.loading.hide()
-          } catch (e) {
-            console.log("resp_delete_error", e);
-            this.$q.loading.hide()
-          }
         })
         .onOk(() => {
           // console.log('>>>> second OK catcher')
-          this.$q.loading.hide()
+          this.$q.loading.hide();
         })
         .onCancel(() => {
           // console.log('>>>> Cancel')
-          this.$q.loading.hide()
+          this.$q.loading.hide();
         })
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
-          this.$q.loading.hide()
+          this.$q.loading.hide();
         });
     },
     uploaded(files) {
@@ -529,38 +541,65 @@ export default {
         const item_find = val;
         const item_zip_code = val2;
         // console.log(this.$store.getters['planing/get_datas'])
-        let result = "";
+        let result = [];
         for (let i = 0; i < array.length; i++) {
           const element = array[i].gtArray;
-
-          // console.log("element", element)
           function esCereza(fruta) {
             return fruta.registration_id === `${item_find}`;
           }
 
           if (element.find(esCereza)) {
             result = element.find(esCereza);
+            console.log("result", result);
             this.updateTimeLines(result.start, result.end, result);
           } else {
-            console.log("nada");
+            // console.log("nada");
           }
         }
         for (let i = 0; i < array.length; i++) {
           const element = array[i].gtArray;
-
           // console.log("element", element)
           function findJson(arg) {
-            return arg.zip_code === `${item_zip_code}`;
+            // console.log("item_zip_code", item_zip_code);
+            // console.log(
+            //   "new_find",
+            //   i,
+            //   element.filter(
+            //     item =>
+            //       item.phone.toLowerCase().indexOf(`${item_zip_code}`) > -1
+            //   )
+            // );
+            // console.log(arg.phone === `${item_zip_code}`);
+            const finder = element.filter(
+              item => item.address.toLowerCase().indexOf(`${item_zip_code}`) > -1
+            );
+            if (finder.length > 0) {
+              result.push(finder[0]);
+            } else {
+              // console.log("nothing");
+            }
+            return element.filter(
+              item => item.phone.toLowerCase().indexOf(`${item_zip_code}`) > -1
+            );
           }
 
           if (element.find(findJson)) {
-            result = element.find(findJson);
-            this.updateTimeLines(result.start, result.end, result);
+            // result = element.find(findJson);
+            element.find(findJson);
+            console.log("result_result_result", result);
           } else {
-            console.log("nada");
+            // console.log("nada");
           }
         }
-        console.log(result);
+        console.log("result.length", result.length);
+        // console.log(result[0]);
+        // console.log(typeof result[0]);
+        if (result.length > 0) {
+          console.log("if");
+          this.updateTimeLines(result[0].start, result[0].end, result[0]);
+        } else {
+          console.log("Nothing here");
+        }
         // this.updateTimeLines(result.start, result.end, result);
       } else {
         this.$q.notify({
@@ -640,6 +679,7 @@ export default {
     }
   },
   async created() {
+    this.$q.loading.show();
     await this.cargar_datas();
     for (let i = 0; i < 32; i++) {
       // console.log("asdasdas", i)
@@ -664,14 +704,6 @@ export default {
           .toString()
       });
     }
-    console.log(
-      "---->",
-      dayjs()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .toString()
-    );
     console.log("this.$route.params", this.$route.params);
     if (this.$route.params.id) {
       console.log("this.$route.params", this.$route.params.id);
@@ -680,6 +712,7 @@ export default {
       console.log("this.$route.params", this.$route.params.id);
       // await this.$router.push("/dia1");
     }
+    this.$q.loading.hide();
   }
 };
 </script>

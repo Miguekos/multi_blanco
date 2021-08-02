@@ -18,7 +18,7 @@
       <!--        <span>F:{{ endToString }}</span>-->
       <!--      </div>-->
       <!--      <div class="middle">Registro: {{ item.registration_id }}</div>-->
-      <div class="middle">Registro: {{ item.registration_id }}</div>
+      <div class="middle">Registro: {{ item.address }}</div>
       <!-- <div class="passenger">{{item.passenger}}人</div> -->
     </div>
     <q-tooltip content-class="" :offset="[10, 10]">
