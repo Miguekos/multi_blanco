@@ -95,6 +95,8 @@ export default {
       name: "Miguel"
     };
   },
-  mounted() {}
+  mounted() {
+    this.$router.push('/planing')
+  }
 };
 </script>
