@@ -498,6 +498,8 @@ export default {
           direccion: this.bar2_data.address,
           detalles: this.bar2_data.description,
           codigo_postal: this.bar2_data.description,
+          start: this.bar2_data.start,
+          insurance_company: this.bar2_data.insurance_company,
           telf: this.bar2_data.phone,
           importante: this.comment,
           img: this.imagen ? this.imagen : ""
