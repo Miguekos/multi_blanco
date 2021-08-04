@@ -138,10 +138,10 @@
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="text-red">
-                    Codigo Portal:
+                    Empresa:
                   </q-item-label>
                   <q-item-label caption class="text-black">
-                    {{ bar2_data.zip_code }}
+                    {{ bar2_data.specialty }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -493,13 +493,13 @@ export default {
           operario: this.bar2_data.operator,
           temerario: this.bar2_data.processor,
           expediente: this.bar2_data.registration_id,
-          cita: this.bar2_data.date,
+          cita: dayjs(this.bar2_data.start).format('DD/MM/YYYY HH:mm'),
           asegurado: this.bar2_data.customer,
           direccion: this.bar2_data.address,
           detalles: this.bar2_data.description,
           codigo_postal: this.bar2_data.description,
           start: this.bar2_data.start,
-          insurance_company: this.bar2_data.insurance_company,
+          specialty: this.bar2_data.specialty,
           telf: this.bar2_data.phone,
           importante: this.comment,
           img: this.imagen ? this.imagen : ""
@@ -573,7 +573,8 @@ export default {
             // );
             // console.log(arg.phone === `${item_zip_code}`);
             const finder = element.filter(
-              item => item.address.toLowerCase().indexOf(`${item_zip_code}`) > -1
+              item =>
+                item.address.toLowerCase().indexOf(`${item_zip_code}`) > -1
             );
             if (finder.length > 0) {
               result.push(finder[0]);

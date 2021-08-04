@@ -70,7 +70,7 @@
               stack-label
               dense
               outlined
-              v-model="json_send.insurance_company"
+              v-model="json_send.specialty"
               label="Empresa"
             />
           </div>
@@ -303,7 +303,7 @@ export default {
         customer: "",
         address: "",
         zip_code: "",
-        insurance_company: "",
+        specialty: "",
         phone: "",
         details: "",
         comment: "",
@@ -415,7 +415,7 @@ export default {
         customer: "",
         address: "",
         zip_code: "",
-        insurance_company: "",
+        specialty: "",
         phone: "",
         details: "",
         comment: "",
