@@ -717,6 +717,7 @@ export default {
 
           element.click();
           document.body.removeChild(element);
+          this.imagen = ""
           await this.page_loading_end();
         })
         .catch(async err => {
