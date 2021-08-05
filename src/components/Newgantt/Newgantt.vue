@@ -96,7 +96,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img src="logo_multi_blanco.png" />
+              <q-img alt="logo" src="logo_multi_blanco.png" />
             </q-avatar>
           </q-item-section>
 
@@ -114,6 +114,7 @@
                 rounded
                 align="right"
                 v-close-popup
+                @click="active_edit_task = false"
                 flat
                 color="red"
               >
@@ -124,7 +125,164 @@
 
         <q-separator />
 
-        <q-card-section style="max-height: 80vh" class="scroll">
+        <q-card-section
+          v-if="active_edit_task"
+          style="max-height: 80vh"
+          class="scroll bg-orange-1"
+        >
+          <div class="row q-pb-lg">
+            <div class="col-12 q-pa-xs">
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Direccion:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="bar2_data.address"
+                    ></q-input>
+                    <!--                    {{ bar2_data.address }}-->
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Empresa:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="bar2_data.specialty"
+                    ></q-input>
+                    <!--                    {{ bar2_data.specialty }}-->
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-separator />
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Telefono:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <q-input dense outlined v-model="bar2_data.phone"></q-input>
+                    <!--                    {{ bar2_data.phone }}-->
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Asgurado:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="bar2_data.customer"
+                    ></q-input>
+                    <!--                    {{ bar2_data.customer }}-->
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-separator />
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Detalle:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="bar2_data.description"
+                    ></q-input>
+                    <!--                    {{ bar2_data.description }}-->
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Detalle:
+                  </q-item-label>
+                  <!--                  {{bar2_data}}-->
+                  <q-item-label caption class="text-black">
+                    <q-input dense outlined v-model="bar2_data.date_ini">
+                      <template v-slot:prepend>
+                        <q-icon name="event" class="cursor-pointer">
+                          <q-popup-proxy
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="bar2_data.date_ini"
+                              mask="DD-MM-YYYY"
+                            >
+                              <div class="row items-center justify-end">
+                                <q-btn
+                                  v-close-popup
+                                  label="Close"
+                                  color="primary"
+                                  flat
+                                />
+                              </div>
+                            </q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <div class="row">
+                      <div class="col">
+                        <vue-timepicker
+                          v-model="bar2_data.time_ini"
+                          :hour-range="[7, [8, 18], 19]"
+                          :minute-interval="30"
+                        ></vue-timepicker>
+                      </div>
+                      <div class="col">
+                        <vue-timepicker
+                          v-model="bar2_data.time_fin"
+                          :hour-range="[7, [8, 18], 19]"
+                          :minute-interval="30"
+                        ></vue-timepicker>
+                      </div>
+                    </div>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 q-pa-xs">
+              <q-input
+                v-model="comment"
+                label="Comentario Adicional"
+                stack-label
+                filled
+                type="textarea"
+              />
+            </div>
+            <div class="col-12 q-pa-xs">
+              <q-uploader
+                label="Adjuntar Sustento"
+                class="full-width"
+                v-model="imagen"
+                :factory="factoryFnF"
+                auto-upload
+                @uploaded="uploaded"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section v-else style="max-height: 80vh" class="scroll">
           <div class="row q-pb-lg">
             <div class="col-12 q-pa-xs">
               <q-item>
@@ -231,8 +389,16 @@
           <q-space />
           <div class="q-gutter-xs">
             <q-btn
-              icon="edit"
+              v-if="active_edit_task"
+              icon="check"
               @click="edit_task"
+              color="info"
+              rounded
+            ></q-btn>
+            <q-btn
+              v-if="!active_edit_task"
+              icon="edit"
+              @click="change_active_edit"
               color="orange"
               rounded
             ></q-btn>
@@ -258,7 +424,7 @@ import { date } from "quasar";
 import { mapActions } from "vuex";
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
-const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
+// const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
 // const formattedDateStart = date.formatDate(timeStamp, 'ddd, DD MMM YYYY HH:mm:ss Z')
 const formattedDateStart = date.formatDate(timeStamp, "DD-MM-YYYY 00:00");
 const formattedDateEnd = date.formatDate(timeStamp, "DD-MM-YYYY 23:00");
@@ -292,17 +458,17 @@ const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4
     };
   });
 
-async function sscroll(id) {
+async function scroll(id) {
   // (A) SCROLL PARAMETERS
-  var speed = 50, // Less = faster
-    step = 30, // Less = smoother but slower
-    click = 0;
+  // const speed = 50,
+  //   step = 30,
+  //   click = 0;
 
   // (B) GET CURRENT Y POSITION + TARGET Y POSITION
-  var fromY = self.pageYOffset ? self.pageYOffset : document.body.scrollTop;
-  var target = document.getElementById(id);
-  var toY = target.offsetTop;
-  while (target.offsetParent && target.offsetParent != document.body) {
+  // const fromY = self.pageYOffset ? self.pageYOffset : document.body.scrollTop;
+  let target = document.getElementById(id);
+  let toY = target.offsetTop;
+  while (target.offsetParent && target.offsetParent !== document.body) {
     target = target.offsetParent;
     toY += target.offsetTop;
   }
@@ -321,6 +487,8 @@ export default {
   computed: {},
   data() {
     return {
+      json_edit: {},
+      active_edit_task: false,
       del_load: false,
       comment: "",
       imagen: "",
@@ -329,7 +497,7 @@ export default {
       leftDrawerOpen: false,
       armando: [],
       id_buscar: "",
-      bar2_data: "",
+      bar2_data: {},
       bar2: false,
       testdate: formattedDateStart,
       date_start: formattedDateStart,
@@ -337,7 +505,7 @@ export default {
       id_registro: "",
       comentario: "",
       currentTime: dayjs(),
-      time_ini: "10:00",
+      time_ini: "07:00",
       time_fin: "12:00",
       updateArgs: [true, true, { duration: 1000 }],
       options_employed: [],
@@ -380,14 +548,14 @@ export default {
       cellHeight: 50,
       titleHeight: 40,
       titleWidth: 250,
-      scale: 60
+      scale: 30
       // startTime: dayjs().hour(0).toString(),
       // endTime: dayjs().hour(23).toString(),
       // datas: []
     };
   },
   methods: {
-    ...mapActions("planing", ["cargar_datas", "delete_datas"]),
+    ...mapActions("planing", ["cargar_datas", "delete_datas", "edit_datas"]),
     async page_loading_ini() {
       await this.$q.loading.show();
     },
@@ -395,6 +563,37 @@ export default {
       await this.$q.loading.hide();
     },
     async edit_task() {
+      try {
+        await this.page_loading_ini();
+        const start = dayjs(
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini} +02:00`,
+          "DD-MM-YYYY HH:mm Z"
+        );
+        const end = dayjs(
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin} +02:00`,
+          "DD-MM-YYYY HH:mm Z"
+        );
+        await this.edit_datas({
+          ...this.bar2_data,
+          start: start,
+          end: end
+        })
+          .then(async () => {
+            this.$q.notify({
+              message: "Editado Correctamente"
+            });
+            await this.page_loading_end();
+            this.active_edit_task = false;
+            this.bar2 = false;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } catch (e) {
+        console.log("edit_task", e);
+      }
+    },
+    async change_active_edit() {
       this.$q
         .dialog({
           title: "Editar",
@@ -402,11 +601,12 @@ export default {
           cancel: true,
           persistent: true
         })
-        .onOk(() => {
+        .onOk(async () => {
           // console.log('>>>> OK')
-          this.$q.notify({
-            message: "Proximamente"
-          });
+          this.active_edit_task = true;
+          // this.$q.notify({
+          //   message: "Coming"
+          // });
         })
         .onOk(() => {
           // console.log('>>>> second OK catcher')
@@ -486,14 +686,15 @@ export default {
         return asd;
       });
     },
-    descargar() {
-      this.$axios
+    async descargar() {
+      await this.page_loading_ini();
+      await this.$axios
         .post(`${process.env.IMAGEN}generarreporte/2`, {
           id: this.bar2_data.id,
           operario: this.bar2_data.operator,
           temerario: this.bar2_data.processor,
           expediente: this.bar2_data.registration_id,
-          cita: dayjs(this.bar2_data.start).format('DD/MM/YYYY HH:mm'),
+          cita: dayjs(this.bar2_data.start).format("DD/MM/YYYY HH:mm"),
           asegurado: this.bar2_data.customer,
           direccion: this.bar2_data.address,
           detalles: this.bar2_data.description,
@@ -507,19 +708,20 @@ export default {
         .then(async resp => {
           console.log("generarreporte", resp.data);
           const url = `${process.env.IMAGEN}fileserver/${this.bar2_data.registration_id}.pdf`;
-          var element = document.createElement("a");
+          const element = document.createElement("a");
           element.setAttribute("href", url);
           element.setAttribute("target", "_blank");
           element.setAttribute("download", `${this.bar2_data.registration_id}`);
-
           element.style.display = "none";
           document.body.appendChild(element);
 
           element.click();
           document.body.removeChild(element);
+          await this.page_loading_end();
         })
         .catch(async err => {
           console.log(err);
+          await this.page_loading_end();
         });
     },
     formartdatedialog(val) {
@@ -561,7 +763,7 @@ export default {
         for (let i = 0; i < array.length; i++) {
           const element = array[i].gtArray;
           // console.log("element", element)
-          function findJson(arg) {
+          function findJson() {
             // console.log("item_zip_code", item_zip_code);
             // console.log(
             //   "new_find",
@@ -629,15 +831,21 @@ export default {
       // window.scrollTo(xCoord, yCoord);
       console.log("item", item.start);
       const fecha = dayjs(item.start);
+      console.log("fecha", fecha.format("HH:mm"));
       console.log("asdasda", dayjs(`${item.start}`).get("date"));
       console.log(
         "dayjs",
         dayjs(`${item.start}`, "DD-MM-YYYY HH:mm Z").toString()
       );
       console.log(`#dia${fecha.get("month")}${fecha.get("date")}`);
-      await sscroll(`dia${fecha.get("month")}${fecha.get("date")}`);
+      await scroll(`dia${fecha.get("month")}${fecha.get("date")}`);
       // location.href = `#dia${fecha.get('month')}${fecha.get('date')}`;
-      this.bar2_data = item;
+      this.bar2_data = {
+        ...item,
+        time_ini: this.formartdatedialog(item.start),
+        time_fin: this.formartdatedialog(item.end),
+        date_ini: fecha.format("DD-MM-YYYY")
+      };
       this.timeLines = [
         {
           time: timeA
@@ -676,16 +884,15 @@ export default {
   watch: {
     rowNum: "updateData",
     colNum: "updateData",
-    times: "updateData",
-    scrollToY(val) {
-      this.positionA = { x: val };
-    }
+    times: "updateData"
+    // scrollToY(val) {
+    //   this.positionA = { x: val };
+    // }
   },
   async created() {
     this.$q.loading.show();
     await this.cargar_datas();
     for (let i = 0; i < 32; i++) {
-      // console.log("asdasdas", i)
       const fecha = dayjs().add(i, "day");
       this.armando.push({
         name_day: fecha.get("date"),

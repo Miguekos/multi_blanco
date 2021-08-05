@@ -129,6 +129,7 @@
             ></q-btn>
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs"></div>
+          <!--          <div class="col-xs-12 col-md-1 q-pa-xs"></div>-->
           <div class="col-xs-12 col-md-1 q-pa-xs text-black"></div>
           <div class="col-xs-12 col-md-2 q-pa-xs">
             <q-input dense outlined v-model="date_ini">
@@ -151,14 +152,70 @@
                   </q-popup-proxy>
                 </q-icon>
               </template>
+              <!--            <template v-slot:append>-->
+              <!--              <q-icon name="access_time" class="cursor-pointer">-->
+              <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+              <!--                  <q-time v-model="date_ini" mask="DD-MM-YYYY HH:mm">-->
+              <!--                    <div class="row items-center justify-end">-->
+              <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+              <!--                    </div>-->
+              <!--                  </q-time>-->
+              <!--                </q-popup-proxy>-->
+              <!--              </q-icon>-->
+              <!--            </template>-->
             </q-input>
           </div>
+          <!--        <div class="col-xs-12 col-md-2 q-pa-xs">-->
+          <!--          <q-input dense outlined v-model="date_ini">-->
+          <!--            <template v-slot:prepend>-->
+          <!--              <q-icon name="event" class="cursor-pointer">-->
+          <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+          <!--                  <q-date v-model="date_ini" mask="DD-MM-YYYY">-->
+          <!--                    <div class="row items-center justify-end">-->
+          <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+          <!--                    </div>-->
+          <!--                  </q-date>-->
+          <!--                </q-popup-proxy>-->
+          <!--              </q-icon>-->
+          <!--            </template>-->
+          <!--            &lt;!&ndash;            <template v-slot:append>&ndash;&gt;-->
+          <!--            &lt;!&ndash;              <q-icon name="access_time" class="cursor-pointer">&ndash;&gt;-->
+          <!--            &lt;!&ndash;                <q-popup-proxy transition-show="scale" transition-hide="scale">&ndash;&gt;-->
+          <!--            &lt;!&ndash;                  <q-time v-model="date_fin" mask="DD-MM-YYYY HH:mm">&ndash;&gt;-->
+          <!--            &lt;!&ndash;                    <div class="row items-center justify-end">&ndash;&gt;-->
+          <!--            &lt;!&ndash;                      <q-btn v-close-popup label="Close" color="primary" flat />&ndash;&gt;-->
+          <!--            &lt;!&ndash;                    </div>&ndash;&gt;-->
+          <!--            &lt;!&ndash;                  </q-time>&ndash;&gt;-->
+          <!--            &lt;!&ndash;                </q-popup-proxy>&ndash;&gt;-->
+          <!--            &lt;!&ndash;              </q-icon>&ndash;&gt;-->
+          <!--            &lt;!&ndash;            </template>&ndash;&gt;-->
+          <!--          </q-input>-->
+          <!--        </div>-->
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <vue-timepicker
               v-model="time_ini"
               :hour-range="[7, [8, 18], 19]"
               :minute-interval="30"
             ></vue-timepicker>
+            <!--          <q-input-->
+            <!--            dense-->
+            <!--            outlined-->
+            <!--            v-model="time_ini"-->
+            <!--            mask="time"-->
+            <!--            :rules="['time']"-->
+            <!--          >-->
+            <!--            <template v-slot:append>-->
+            <!--              <q-icon name="access_time" class="cursor-pointer">-->
+            <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+            <!--                  <q-time v-model="time_ini">-->
+            <!--                    <div class="row items-center justify-end">-->
+            <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+            <!--                    </div>-->
+            <!--                  </q-time>-->
+            <!--                </q-popup-proxy>-->
+            <!--              </q-icon>-->
+            <!--            </template>-->
+            <!--          </q-input>-->
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <vue-timepicker
@@ -166,6 +223,25 @@
               :hour-range="[7, [8, 18], 19]"
               :minute-interval="30"
             ></vue-timepicker>
+            <!--          <q-input-->
+            <!--            dense-->
+            <!--            outlined-->
+            <!--            v-model="time_fin"-->
+            <!--            mask="time"-->
+            <!--            :rules="['time']"-->
+            <!--          >-->
+            <!--            <template v-slot:append>-->
+            <!--              <q-icon name="access_time" class="cursor-pointer">-->
+            <!--                <q-popup-proxy transition-show="scale" transition-hide="scale">-->
+            <!--                  <q-time v-model="time_fin">-->
+            <!--                    <div class="row items-center justify-end">-->
+            <!--                      <q-btn v-close-popup label="Close" color="primary" flat />-->
+            <!--                    </div>-->
+            <!--                  </q-time>-->
+            <!--                </q-popup-proxy>-->
+            <!--              </q-icon>-->
+            <!--            </template>-->
+            <!--          </q-input>-->
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <q-btn
