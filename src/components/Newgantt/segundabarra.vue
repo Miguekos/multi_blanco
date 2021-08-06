@@ -21,12 +21,17 @@
             />
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
-            <q-input
+            <q-select
+              :options="options_operator"
+              option-label="name"
+              option-value="id"
+              emit-value
+              map-options
               stack-label
               dense
               outlined
               v-model="json_send.processor"
-              label="Tramitados"
+              label="Tramitador"
             />
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
@@ -66,9 +71,14 @@
           <!--          />-->
           <!--        </div>-->
           <div class="col-xs-12 col-md-1 q-pa-xs">
-            <q-input
+            <q-select
               stack-label
               dense
+              :options="options_enterprise"
+              option-label="name"
+              option-value="id"
+              emit-value
+              map-options
               outlined
               v-model="json_send.specialty"
               label="Empresa"
@@ -214,6 +224,30 @@ export default {
   name: "segundabarra",
   data() {
     return {
+      options_operator: [
+        {
+          name: "Jorge",
+          id: 1
+        },
+        {
+          name: "Santi",
+          id: 2
+        }
+      ],
+      options_enterprise: [
+        {
+          name: "Promatec",
+          id: 1
+        },
+        {
+          name: "Sigma",
+          id: 2
+        },
+        {
+          name: "Funciona",
+          id: 3
+        }
+      ],
       id_address: "",
       simpleStringValue: "07:00",
       time_ini: "07:00",
