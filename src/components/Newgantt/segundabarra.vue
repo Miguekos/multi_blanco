@@ -14,7 +14,7 @@
               v-model="json_send.operator_id"
               :options="$store.state.planing.persons"
               option-label="name"
-              option-value="id"
+              option-value="name"
               emit-value
               map-options
               label="Operario"
@@ -24,7 +24,7 @@
             <q-select
               :options="options_operator"
               option-label="name"
-              option-value="id"
+              option-value="name"
               emit-value
               map-options
               stack-label
