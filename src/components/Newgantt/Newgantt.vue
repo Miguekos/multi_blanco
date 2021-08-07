@@ -381,6 +381,9 @@
           <!--          <q-separator vertical/>-->
 
           <div class="q-pr-lg">
+            <!--            <form method="get" action="https://api.apps.com.pe/fileserver/33242.pdf">-->
+            <!--              <button type="submit">Download!</button>-->
+            <!--            </form>-->
             <q-btn align="right" @click="descargar" color="primary">
               Descargar
             </q-btn>
@@ -689,7 +692,7 @@ export default {
     async descargar() {
       await this.page_loading_ini();
       await this.$axios
-        .post(`${process.env.IMAGEN}generarreporte/2`, {
+        .post(`${process.env.IMAGEN}generarreporte/1`, {
           id: this.bar2_data.id,
           operario: this.bar2_data.operator,
           temerario: this.bar2_data.processor,
@@ -717,7 +720,7 @@ export default {
 
           element.click();
           document.body.removeChild(element);
-          this.imagen = ""
+          this.imagen = "";
           await this.page_loading_end();
         })
         .catch(async err => {

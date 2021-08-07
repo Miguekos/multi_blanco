@@ -51,3 +51,5 @@ https://bootstrap-vue.org/docs/components/time
 
 https://github.com/mariomka/vue-datetime
 
+https://jqueryfiledownload.apphb.com/
+https://github.com/johnculviner/jquery.fileDownload
