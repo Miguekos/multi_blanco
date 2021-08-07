@@ -691,8 +691,9 @@ export default {
     },
     async descargar() {
       await this.page_loading_ini();
-      await this.$axios
-        .post(`${process.env.IMAGEN}generarreporte/1`, {
+      fetch(`${process.env.IMAGEN}generarreporte/1`, {
+        method: "POST", // or 'PUT'
+        body: JSON.stringify({
           id: this.bar2_data.id,
           operario: this.bar2_data.operator,
           temerario: this.bar2_data.processor,
@@ -707,22 +708,37 @@ export default {
           telf: this.bar2_data.phone,
           importante: this.comment,
           img: this.imagen ? this.imagen : ""
-        })
-        .then(async resp => {
-          console.log("generarreporte", resp.data);
-          const url = `${process.env.IMAGEN}fileserver/${this.bar2_data.registration_id}.pdf`;
-          const element = document.createElement("a");
-          element.setAttribute("href", url);
-          element.setAttribute("target", "_blank");
-          element.setAttribute("download", `${this.bar2_data.registration_id}`);
-          element.style.display = "none";
-          document.body.appendChild(element);
-
-          element.click();
-          document.body.removeChild(element);
-          this.imagen = "";
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(async response => response.blob())
+        .then(async blob => {
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = `${this.bar2_data.registration_id}.pdf`;
+          a.click();
+          a.remove();
+          setTimeout(() => window.URL.revokeObjectURL(url), 100);
           await this.page_loading_end();
         })
+        // .then(async resp => {
+        //   console.log("generarreporte", resp.data);
+        //   const url = `${process.env.IMAGEN}fileserver/${this.bar2_data.registration_id}.pdf`;
+        //   const element = document.createElement("a");
+        //   element.setAttribute("href", url);
+        //   element.setAttribute("target", "_blank");
+        //   element.setAttribute("download", `${this.bar2_data.registration_id}`);
+        //   element.style.display = "none";
+        //   document.body.appendChild(element);
+        //
+        //   element.click();
+        //   document.body.removeChild(element);
+        //   this.imagen = "";
+        //   await this.page_loading_end();
+        // })
         .catch(async err => {
           console.log(err);
           await this.page_loading_end();
