@@ -76,7 +76,7 @@
               dense
               :options="options_enterprise"
               option-label="name"
-              option-value="id"
+              option-value="name"
               emit-value
               map-options
               outlined
