@@ -1,5 +1,5 @@
 <template>
-<!--  <q-layout view="hhh lpR fFf">-->
+  <!--  <q-layout view="hhh lpR fFf">-->
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-white">
       <q-toolbar class="bg-red-8">
@@ -7,9 +7,9 @@
           flat
           dense
           round
-          icon="menu"
+          icon="home"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="set_state_leftDrawerOpen"
         />
 
         <q-toolbar-title>
@@ -18,20 +18,24 @@
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
-<!--      <div class="text-white">-->
-<!--        <SegundaLinea />-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <TerceraLinea />-->
-<!--      </div>-->
-<!--      <q-separator color="red" class="q-pb-xs" />-->
+      <!--      <div class="text-white">-->
+      <!--        <SegundaLinea />-->
+      <!--      </div>-->
+      <!--      <div>-->
+      <!--        <TerceraLinea />-->
+      <!--      </div>-->
+      <!--      <q-separator color="red" class="q-pb-xs" />-->
     </q-header>
 
     <!--    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-1">-->
-    <q-drawer bordered content-class="bg-grey-1">
+    <q-drawer
+      v-model="$store.state.planing.leftDrawerOpen"
+      bordered
+      content-class="bg-grey-1"
+    >
       <q-list>
         <q-item-label header class="text-grey-8">
-          Essential Links
+          Menu
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -52,61 +56,54 @@ import EssentialLink from "components/EssentialLink.vue";
 
 const linksData = [
   {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev"
+    title: "Planing",
+    caption: "Planing del mes",
+    icon: "date_range",
+    link: "#/planing"
   },
   {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
+    title: "Planing pasados",
+    caption: "Planing del mes",
+    icon: "event_note",
+    link: "#/searchplaning"
+  },
+  {
+    title: "Empresas",
+    caption: "Control de empresas ",
+    icon: "business_center",
     link: "https://github.com/quasarframework"
   },
   {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
+    title: "Operarios",
+    caption: "Control de operarios",
+    icon: "groups",
     link: "https://chat.quasar.dev"
   },
   {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
+    title: "Usuarios",
+    caption: "Controla de usuarios",
+    icon: "group",
     link: "https://forum.quasar.dev"
   },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev"
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev"
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev"
-  }
 ];
 
 export default {
   name: "MainLayout",
   components: {
-    EssentialLink,
+    EssentialLink
     // SegundaLinea: () => import('src/components/Newgantt/segundabarra'),
     // TerceraLinea: () => import('src/components/Newgantt/tercerabarra')
   },
   data() {
     return {
-      leftDrawerOpen: false,
+      leftDrawerOpen: true,
       essentialLinks: linksData
     };
+  },
+  methods: {
+    async set_state_leftDrawerOpen() {
+      this.$store.commit("planing/set_leftDrawerOpen", true);
+    }
   }
 };
 </script>

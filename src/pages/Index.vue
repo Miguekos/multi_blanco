@@ -1,59 +1,8 @@
 <template>
-  <div>
-    Inicio
-    <!--    <VueCtkDateTimePicker-->
-    <!--      id="DateTimePicker"-->
-    <!--      format="YYYY-MM-DD HH:mm"-->
-    <!--      formatted="YYYY-MM-DD HH:mm"-->
-    <!--      v-model="date_ini"-->
-    <!--      inline-->
-    <!--    />-->
-
-<!--    <vue-timepicker :second-interval="10"></vue-timepicker>-->
-    <vue-timepicker :minute-interval="60"></vue-timepicker>
-
-    <!--    <VueTimepicker :second-interval="10"></VueTimepicker>-->
-
-<!--    <VueTimepicker></VueTimepicker>-->
-
-    <q-separator />
-
-    <div class="q-pa-md">
-      <q-input filled v-model="time_ini" mask="time" :rules="['time']">
-        <template v-slot:append>
-          <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy transition-show="scale" transition-hide="scale">
-              <q-time v-model="time_ini">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-time>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <q-separator />
-      <q-input filled v-model="time_fin" mask="time" :rules="['time']">
-        <template v-slot:append>
-          <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy transition-show="scale" transition-hide="scale">
-              <q-time v-model="time_fin">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-time>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <div class="timepicker">asd</div>
-    </div>
-  </div>
+  <div></div>
 </template>
 
 <script>
-import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
-
 // we import all of `date`
 import { date } from "quasar";
 // destructuring to keep only what is needed
@@ -79,7 +28,6 @@ export default {
     }
   },
   components: {
-    VueTimepicker,
     // Timeline: () => import('src/components/TimeLine'),
     // GanttHight: () => import('src/components/TestHightCharts'),
     // NewGantt: () => import("components/Newgantt/Newgantt")
@@ -95,8 +43,9 @@ export default {
       name: "Miguel"
     };
   },
-  mounted() {
-    this.$router.push('/planing')
+  async created() {
+    await this.$router.push("/planing");
+    await this.$store.commit("planing/set_leftDrawerOpen", true);
   }
 };
 </script>

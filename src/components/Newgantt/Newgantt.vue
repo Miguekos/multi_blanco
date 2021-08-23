@@ -6,9 +6,9 @@
           flat
           dense
           round
-          icon="menu"
+          icon="arrow_back"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="go_to_home"
         />
 
         <q-toolbar-title>
@@ -419,6 +419,39 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="status_result_search">
+      <q-card>
+        <!--        {{ result_search }}-->
+        <div class="q-pa-xs">
+          <q-table
+            title="Buscando"
+            dense
+            :data="result_search"
+            :columns="columns_search"
+            row-key="name"
+            :pagination="initialPagination"
+          >
+            <template v-slot:body-cell="props">
+              <q-td
+                class="cursor-pointer"
+                @click="click_and_find(props.row)"
+                :props="props"
+              >
+                {{ props.value }}
+              </q-td>
+            </template>
+            <template v-slot:body-cell-start="props">
+              <q-td :props="props">
+                <div class="my-table-details">
+                  {{ generic_format_date(props.row.start) }}
+                </div>
+              </q-td>
+            </template>
+          </q-table>
+        </div>
+        <!--        {{ result_search }}-->
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -461,6 +494,40 @@ const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4
     };
   });
 
+const columns_search = [
+  {
+    name: "name",
+    required: true,
+    label: "Registro",
+    align: "left",
+    field: row => row.registration_id,
+    format: val => `${val}`,
+    sortable: true
+  },
+  {
+    name: "specialty",
+    align: "left",
+    label: "Empresa",
+    field: "specialty",
+    sortable: true
+  },
+  {
+    name: "processor",
+    align: "left",
+    label: "Tramitador",
+    field: "processor",
+    sortable: true
+  },
+  { name: "phone", align: "left", label: "Telf.", field: "phone" },
+  { name: "address", align: "left", label: "Direccion", field: "address" },
+  {
+    name: "start",
+    align: "right",
+    label: "Fecha",
+    field: "start"
+  }
+];
+
 async function scroll(id) {
   // (A) SCROLL PARAMETERS
   // const speed = 50,
@@ -490,6 +557,16 @@ export default {
   computed: {},
   data() {
     return {
+      initialPagination: {
+        sortBy: "start",
+        descending: false,
+        page: 1,
+        rowsPerPage: 20
+        // rowsNumber: xx if getting data from a server
+      },
+      columns_search,
+      result_search: [],
+      status_result_search: false,
       json_edit: {},
       active_edit_task: false,
       del_load: false,
@@ -559,6 +636,11 @@ export default {
   },
   methods: {
     ...mapActions("planing", ["cargar_datas", "delete_datas", "edit_datas"]),
+    async go_to_home() {
+      this.$store.commit("planing/set_leftDrawerOpen", false);
+      await this.$router.replace("/");
+      await this.$router.go();
+    },
     async page_loading_ini() {
       await this.$q.loading.show();
     },
@@ -767,6 +849,7 @@ export default {
         // console.log(this.$store.getters['planing/get_datas'])
         let result = [];
         for (let i = 0; i < array.length; i++) {
+          console.log("primer for");
           const element = array[i].gtArray;
           function esCereza(fruta) {
             return fruta.registration_id === `${item_find}`;
@@ -799,7 +882,8 @@ export default {
                 item.address.toLowerCase().indexOf(`${item_zip_code}`) > -1
             );
             if (finder.length > 0) {
-              result.push(finder[0]);
+              console.log("finder", finder);
+              result.push(finder);
             } else {
               // console.log("nothing");
             }
@@ -821,7 +905,9 @@ export default {
         // console.log(typeof result[0]);
         if (result.length > 0) {
           console.log("if");
-          this.updateTimeLines(result[0].start, result[0].end, result[0]);
+          this.result_search = result[0];
+          this.status_result_search = true;
+          // this.updateTimeLines(result[0].start, result[0].end, result[0]);
         } else {
           console.log("Nothing here");
         }
@@ -831,6 +917,10 @@ export default {
           message: "Campo de busqueda vacio.!"
         });
       }
+    },
+    async click_and_find(result) {
+      console.log("result", result);
+      await this.updateTimeLines(result.start, result.end, result);
     },
     actualizzartime() {
       console.log("actualizzartime");
@@ -847,6 +937,10 @@ export default {
         ).toString();
       }
     },
+    generic_format_date(time) {
+      const fecha = dayjs(time);
+      return `${fecha.format("DD-MM-YYYY HH:mm")}`;
+    },
     async updateTimeLines(timeA, timeB, item) {
       // window.scrollTo(xCoord, yCoord);
       console.log("item", item.start);
@@ -858,24 +952,34 @@ export default {
         dayjs(`${item.start}`, "DD-MM-YYYY HH:mm Z").toString()
       );
       console.log(`#dia${fecha.get("month")}${fecha.get("date")}`);
-      await scroll(`dia${fecha.get("month")}${fecha.get("date")}`);
-      // location.href = `#dia${fecha.get('month')}${fecha.get('date')}`;
-      this.bar2_data = {
-        ...item,
-        time_ini: this.formartdatedialog(item.start),
-        time_fin: this.formartdatedialog(item.end),
-        date_ini: fecha.format("DD-MM-YYYY")
-      };
-      this.timeLines = [
-        {
-          time: timeA
-        },
-        {
-          time: timeB,
-          color: "#747e80"
-        }
-      ];
-      this.bar2 = true;
+      try {
+        await scroll(`dia${fecha.get("month")}${fecha.get("date")}`);
+        // location.href = `#dia${fecha.get('month')}${fecha.get('date')}`;
+        this.bar2_data = {
+          ...item,
+          time_ini: this.formartdatedialog(item.start),
+          time_fin: this.formartdatedialog(item.end),
+          date_ini: fecha.format("DD-MM-YYYY")
+        };
+        this.timeLines = [
+          {
+            time: timeA
+          },
+          {
+            time: timeB,
+            color: "#747e80"
+          }
+        ];
+        this.bar2 = true;
+      } catch (e) {
+        this.bar2_data = {
+          ...item,
+          time_ini: this.formartdatedialog(item.start),
+          time_fin: this.formartdatedialog(item.end),
+          date_ini: fecha.format("DD-MM-YYYY")
+        };
+        this.bar2 = true;
+      }
     },
     addTask() {
       for (let i = 0; i < this.datas.length; i++) {
@@ -911,6 +1015,7 @@ export default {
   },
   async created() {
     this.$q.loading.show();
+    this.$store.commit("planing/set_leftDrawerOpen", false);
     await this.cargar_datas();
     for (let i = 0; i < 32; i++) {
       const fecha = dayjs().add(i, "day");
