@@ -15,7 +15,7 @@
           Multiservicios Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Quasar v{{ $q.version }}-1</div>
       </q-toolbar>
       <div class="text-white">
         <SegundaLinea @click="buscar" />
@@ -419,7 +419,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="status_result_search">
+    <q-dialog v-model="status_result_search" full-width>
       <q-card>
         <!--        {{ result_search }}-->
         <div class="q-pa-xs">
@@ -883,14 +883,14 @@ export default {
                 item.address.toLowerCase().indexOf(`${item_zip_code}`) > -1
             );
             if (finder.length > 0) {
-              console.log("finder", finder);
+              console.log("finder", JSON.stringify(finder));
               result.push(finder);
             } else {
               // console.log("nothing");
             }
-            return element.filter(
-              item => item.phone.toLowerCase().indexOf(`${item_zip_code}`) > -1
-            );
+            // return element.filter(
+            //   item => item.phone.toLowerCase().indexOf(`${item_zip_code}`) > -1
+            // );
           }
 
           if (element.find(findJson)) {
