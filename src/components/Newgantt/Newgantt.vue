@@ -458,6 +458,7 @@
 <script>
 import { date } from "quasar";
 import { mapActions } from "vuex";
+
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 // const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
@@ -526,6 +527,43 @@ const columns_search = [
     label: "Fecha",
     sortable: true,
     field: "start"
+  }
+];
+
+const data_test = [
+  {
+    id: 71,
+    registration_id: "21627396",
+    status: "Asignado",
+    specialty: "Sigma",
+    processor: "Jorge",
+    customer: "Pedir Toso Los Datos",
+    address: "Lagasca 51 4º Izq 28001",
+    zip_code: null,
+    phone: "650045297",
+    description:
+      "Pintar trastero entero blanco temple hablar con conserge telefono 650045297",
+    comment: "",
+    date: null,
+    start: "Tue, 17 Aug 2021 07:00:00 GMT",
+    end: "Tue, 17 Aug 2021 16:00:00 GMT"
+  },
+  {
+    id: 106,
+    registration_id: "1734065",
+    status: "Asignado",
+    specialty: "Sigma",
+    processor: "Jorge",
+    customer: "Pedir Toso Lso Datos Ndi Firmas",
+    address: "Calle Goya 34 -2º H 28001",
+    zip_code: null,
+    phone: "622413264",
+    description:
+      "1 pintar en entrada de pasillo , color blanco liso solo manchas avisar a oficina  de las medidas de las manchas",
+    comment: "",
+    date: null,
+    start: "Mon, 23 Aug 2021 11:00:00 GMT",
+    end: "Mon, 23 Aug 2021 14:00:00 GMT"
   }
 ];
 
@@ -839,7 +877,107 @@ export default {
     doScrollToTime() {
       this.$refs.gantt.scrollToTimehandle(dayjs().toString());
     },
+    taskFiltered(values, state) {
+      let taskFiltered = {};
+      if (state) {
+        Object.keys(values).forEach(function(key) {
+          let task = values[key],
+            taskNameLowerCase = task.address.toLowerCase(),
+            searchLowerCase = state.toLowerCase();
+          if (taskNameLowerCase.includes(searchLowerCase)) {
+            taskFiltered[key] = task;
+          }
+        });
+        return taskFiltered;
+      }
+      return values;
+    },
+    get_registry(values, val) {
+      let taskFiltered = this.taskFiltered(values, `${val}`);
+      let tasks = [];
+      // console.log("taskFiltered", JSON.stringify(taskFiltered));
+      // console.log("state.Registros", values);
+      // return state.Registros;
+      // let tasks = {};
+      Object.keys(taskFiltered).forEach(function(key) {
+        let task = taskFiltered[key];
+        // console.log(task);
+        if (!task.completed) {
+          tasks[key] = task;
+        }
+      });
+      // return taskFiltered;
+      return tasks;
+    },
     buscar(val, val2) {
+      console.log("Buscar", val);
+      console.log("Buscar 2", val2);
+      if (val.length > 2 || val2.length > 2) {
+        const array = this.$store.getters["planing/get_datas"];
+        // console.log("val", val)
+        const item_find = val;
+        const item_zip_code = val2;
+        // console.log(this.$store.getters['planing/get_datas'])
+        let result = [];
+        for (let i = 0; i < array.length; i++) {
+          // console.log("primer for");
+          const element = array[i].gtArray;
+
+          function esCereza(fruta) {
+            return fruta.registration_id === `${item_find}`;
+          }
+
+          if (element.find(esCereza)) {
+            result = element.find(esCereza);
+            // console.log("result", result);
+            this.updateTimeLines(result.start, result.end, result);
+          } else {
+            // console.log("nada");
+          }
+        }
+        for (let i = 0; i < array.length; i++) {
+          const element = array[i].gtArray;
+          const find_element = this.get_registry(element, item_zip_code);
+          // console.log("result_nuevo", find_element);
+          for (let j = 0; j < find_element.length; j++) {
+            let last_finder = find_element[j];
+            // console.log("last_finder", last_finder);
+            if (last_finder === undefined) {
+              // console.log("undefined", last_finder);
+            } else {
+              // console.log("no undefined", last_finder);
+              result.push(last_finder);
+            }
+          }
+          // result = [ ...result, ...find_element ]
+          // console.log("result->", result)
+        }
+
+        console.log("result.length", result.length);
+        // console.log("find_element", result);
+        // for (let i = 0; i < result.length; i++) {
+        //   for (let j = 0; j < ; j++) {
+        //
+        //   }
+        //   const last_element = result[i]
+        //   console.log("last_element", last_element)
+        // }
+        if (result.length > 0) {
+          console.log("if");
+          this.result_search = result;
+          this.status_result_search = true;
+          // this.updateTimeLines(result[0].start, result[0].end, result[0]);
+        } else {
+          console.log("Nothing here");
+        }
+        // this.updateTimeLines(result.start, result.end, result);
+      } else {
+        this.$q.notify({
+          message: "Campo de busqueda vacio.!"
+        });
+      }
+    },
+    buscar_back(val, val2) {
       console.log("Buscar", val);
       console.log("Buscar 2", val2);
       if (val.length > 2 || val2.length > 2) {
@@ -852,6 +990,7 @@ export default {
         for (let i = 0; i < array.length; i++) {
           console.log("primer for");
           const element = array[i].gtArray;
+
           function esCereza(fruta) {
             return fruta.registration_id === `${item_find}`;
           }
@@ -866,18 +1005,9 @@ export default {
         }
         for (let i = 0; i < array.length; i++) {
           const element = array[i].gtArray;
+
           // console.log("element", element)
           function findJson() {
-            // console.log("item_zip_code", item_zip_code);
-            // console.log(
-            //   "new_find",
-            //   i,
-            //   element.filter(
-            //     item =>
-            //       item.phone.toLowerCase().indexOf(`${item_zip_code}`) > -1
-            //   )
-            // );
-            // console.log(arg.phone === `${item_zip_code}`);
             const finder = element.filter(
               item =>
                 item.address.toLowerCase().indexOf(`${item_zip_code}`) > -1
