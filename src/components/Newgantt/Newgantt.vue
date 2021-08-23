@@ -524,6 +524,7 @@ const columns_search = [
     name: "start",
     align: "right",
     label: "Fecha",
+    sortable: true,
     field: "start"
   }
 ];
