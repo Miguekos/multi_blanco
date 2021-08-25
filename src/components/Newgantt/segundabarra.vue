@@ -389,7 +389,16 @@ export default {
       .then(async resp => {
         console.log("resp_usuarios", resp);
         // this.persons_group = resp.data;
-        this.$store.commit("planing/set_persons", resp.data.users);
+        let result = [];
+        const array = resp.data.users;
+        for (let i = 0; i < array.length; i++) {
+          const element = array[i];
+          if (element.name === "Admin" || element.name === "Processor") {
+          } else {
+            result.push(element);
+          }
+        }
+        this.$store.commit("planing/set_persons", result);
         // await this.$router.push("/dia1");
       })
       .catch(err => {

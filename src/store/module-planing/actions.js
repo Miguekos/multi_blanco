@@ -16,7 +16,7 @@ function create_datas(array) {
         console.log("no found element");
       } else {
         const color = JSON.parse(element.colorPair);
-        console.log("color", color);
+        // console.log("color", color);
         delete element.colorPair;
         datas.push({
           colorPair: color,

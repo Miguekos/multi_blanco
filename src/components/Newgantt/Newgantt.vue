@@ -15,7 +15,7 @@
           Multiservicios Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-1</div>
+        <div>Quasar v{{ $q.version }}-2</div>
       </q-toolbar>
       <div class="text-white">
         <SegundaLinea @click="buscar" />
@@ -101,7 +101,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Miguel</q-item-label>
+            <q-item-label>{{ bar2_data.operator }}</q-item-label>
             <q-item-label caption>
               {{ bar2_data.registration_id }}
             </q-item-label>
@@ -132,6 +132,28 @@
         >
           <div class="row q-pb-lg">
             <div class="col-12 q-pa-xs">
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-red">
+                    Operador:
+                  </q-item-label>
+                  <q-item-label caption class="text-black">
+                    <q-select
+                      stack-label
+                      dense
+                      outlined
+                      v-model="bar2_data.operator"
+                      :options="$store.state.planing.persons"
+                      option-label="name"
+                      option-value="id"
+                      emit-value
+                      map-options
+                      label="Operario"
+                    />
+                    <!--                    {{ bar2_data.address }}-->
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="text-red">
@@ -424,7 +446,7 @@
         <!--        {{ result_search }}-->
         <div class="q-pa-xs">
           <q-table
-            title="Buscando"
+            title="Resultado de la busqueda"
             dense
             :data="result_search"
             :columns="columns_search"
@@ -517,6 +539,13 @@ const columns_search = [
     align: "left",
     label: "Tramitador",
     field: "processor",
+    sortable: true
+  },
+  {
+    name: "operator",
+    align: "left",
+    label: "Operador",
+    field: "operator",
     sortable: true
   },
   { name: "phone", align: "left", label: "Telf.", field: "phone" },
@@ -697,7 +726,9 @@ export default {
           `${this.bar2_data.date_ini} ${this.bar2_data.time_fin} +02:00`,
           "DD-MM-YYYY HH:mm Z"
         );
+        console.log("this.bar2_data", this.bar2_data);
         await this.edit_datas({
+          operator_id: this.bar2_data.operator,
           ...this.bar2_data,
           start: start,
           end: end
@@ -922,7 +953,7 @@ export default {
         for (let i = 0; i < array.length; i++) {
           // console.log("primer for");
           const element = array[i].gtArray;
-
+          const operator = array[i].name;
           function esCereza(fruta) {
             return fruta.registration_id === `${item_find}`;
           }
@@ -930,13 +961,19 @@ export default {
           if (element.find(esCereza)) {
             result = element.find(esCereza);
             // console.log("result", result);
-            this.updateTimeLines(result.start, result.end, result);
+            this.updateTimeLines(result.start, result.end, {
+              ...result,
+              operator: operator
+            });
           } else {
             // console.log("nada");
           }
         }
         for (let i = 0; i < array.length; i++) {
           const element = array[i].gtArray;
+          const operator = array[i].name;
+          // console.log("element", element)
+          // console.log("operator", operator)
           const find_element = this.get_registry(element, item_zip_code);
           // console.log("result_nuevo", find_element);
           for (let j = 0; j < find_element.length; j++) {
@@ -946,7 +983,10 @@ export default {
               // console.log("undefined", last_finder);
             } else {
               // console.log("no undefined", last_finder);
-              result.push(last_finder);
+              result.push({
+                ...last_finder,
+                operator: operator
+              });
             }
           }
           // result = [ ...result, ...find_element ]
@@ -1074,7 +1114,7 @@ export default {
     },
     async updateTimeLines(timeA, timeB, item) {
       // window.scrollTo(xCoord, yCoord);
-      console.log("item", item.start);
+      console.log("item", item);
       const fecha = dayjs(item.start);
       console.log("fecha", fecha.format("HH:mm"));
       console.log("asdasda", dayjs(`${item.start}`).get("date"));
