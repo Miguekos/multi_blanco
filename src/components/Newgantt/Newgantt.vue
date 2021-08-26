@@ -15,7 +15,7 @@
           Multiservicios Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-2</div>
+        <div>Quasar v{{ $q.version }}-3</div>
       </q-toolbar>
       <div class="text-white">
         <SegundaLinea @click="buscar" />
@@ -101,7 +101,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ bar2_data.operator }}</q-item-label>
+            <q-item-label>{{ bar2_data.operator_name }}</q-item-label>
             <q-item-label caption>
               {{ bar2_data.registration_id }}
             </q-item-label>
@@ -150,7 +150,7 @@
                       map-options
                       label="Operario"
                     />
-                    <!--                    {{ bar2_data.address }}-->
+                    <!--                    {{ bar2_data }}-->
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -230,7 +230,7 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="text-red">
-                    Detalle:
+                    Fecha:
                   </q-item-label>
                   <!--                  {{bar2_data}}-->
                   <q-item-label caption class="text-black">

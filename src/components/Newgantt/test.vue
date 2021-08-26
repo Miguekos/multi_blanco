@@ -109,7 +109,7 @@ export default {
       this.color = color;
       this.updateTimeLines(this.item.start, this.item.end, {
         ...this.item,
-        operator: this.data.name
+        operator_name: this.data.name
       });
     }
   }
