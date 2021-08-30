@@ -127,6 +127,9 @@ export default {
           // this.persons_group = resp.data;
           // await this.$router.push("/dia1");
           await this.$store.dispatch("planing/load_operator");
+          this.json_send = {
+            role_id: 3
+          };
           this.$q.loading.hide();
         })
         .catch(err => {
