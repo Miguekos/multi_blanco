@@ -61,30 +61,30 @@ const linksData = [
     icon: "date_range",
     link: "#/planing"
   },
-  {
-    title: "Planing pasados",
-    caption: "Planing del mes",
-    icon: "event_note",
-    link: "#/searchplaning"
-  },
-  {
-    title: "Empresas",
-    caption: "Control de empresas ",
-    icon: "business_center",
-    link: "https://github.com/quasarframework"
-  },
+  // {
+  //   title: "Planing pasados",
+  //   caption: "Planing del mes",
+  //   icon: "event_note",
+  //   link: "#/searchplaning"
+  // },
+  // {
+  //   title: "Empresas",
+  //   caption: "Control de empresas ",
+  //   icon: "business_center",
+  //   link: ""
+  // },
   {
     title: "Operarios",
     caption: "Control de operarios",
     icon: "groups",
-    link: "https://chat.quasar.dev"
+    link: "#/operario"
   },
-  {
-    title: "Usuarios",
-    caption: "Controla de usuarios",
-    icon: "group",
-    link: "https://forum.quasar.dev"
-  },
+  // {
+  //   title: "Usuarios",
+  //   caption: "Controla de usuarios",
+  //   icon: "group",
+  //   link: ""
+  // },
 ];
 
 export default {

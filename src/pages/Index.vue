@@ -44,7 +44,7 @@ export default {
     };
   },
   async created() {
-    await this.$router.push("/planing");
+    // await this.$router.push("/planing");
     await this.$store.commit("planing/set_leftDrawerOpen", true);
   }
 };

@@ -6,6 +6,7 @@ function delete_id(val) {
   return val;
 }
 
+
 function create_datas(array) {
   let datas = [];
   for (let i = 0; i < array.length; i++) {
@@ -85,6 +86,30 @@ export async function delete_datas({ commit }, payload) {
       console.log("resp", resp);
       return resp.data;
       // commit("set_datas", resp.data.data);
+    })
+    .catch(err => {
+      console.error(err);
+      console.log("Error");
+    });
+}
+
+export async function load_operator({commit}){
+  await api
+    .get(`/api/users`)
+    .then(async resp => {
+      // console.log("resp_usuarios", resp);
+      // this.persons_group = resp.data;
+      let result = [];
+      const array = resp.data.users;
+      for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        if (element.name === "Admin" || element.name === "Processor") {
+        } else {
+          result.push(element);
+        }
+      }
+      commit("set_persons", result);
+      // await this.$router.push("/dia1");
     })
     .catch(err => {
       console.error(err);
