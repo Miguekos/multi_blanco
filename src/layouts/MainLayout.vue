@@ -16,7 +16,7 @@
           Multiservicios Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-4</div>
+        <div>Quasar v{{ $q.version }}-5</div>
       </q-toolbar>
       <!--      <div class="text-white">-->
       <!--        <SegundaLinea />-->

@@ -118,6 +118,7 @@ export default {
       this.update_data = this.data_update;
     },
     async save_operator() {
+      this.$q.loading.show();
       console.log("json_send", this.json_send);
       await this.$axios
         .post(`${process.env.IP}api/users`, this.json_send)
@@ -125,10 +126,13 @@ export default {
           console.log("resp_usuarios", resp);
           // this.persons_group = resp.data;
           // await this.$router.push("/dia1");
+          await this.$store.dispatch("planing/load_operator");
+          this.$q.loading.hide();
         })
         .catch(err => {
           console.error(err);
           console.log("Error");
+          this.$q.loading.hide();
         });
     },
     async update_operator() {
