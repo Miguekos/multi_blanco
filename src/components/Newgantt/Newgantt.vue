@@ -15,7 +15,7 @@
           Multiservicios Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-5</div>
+        <div>Quasar v{{ $q.version }}-6</div>
       </q-toolbar>
       <div class="text-white">
         <SegundaLinea @click="buscar" />
@@ -542,10 +542,10 @@ const columns_search = [
     sortable: true
   },
   {
-    name: "operator",
+    name: "operator_name",
     align: "left",
     label: "Operador",
-    field: "operator",
+    field: "operator_name",
     sortable: true
   },
   { name: "phone", align: "left", label: "Telf.", field: "phone" },
@@ -973,7 +973,7 @@ export default {
           const element = array[i].gtArray;
           const operator = array[i].name;
           // console.log("element", element)
-          // console.log("operator", operator)
+          // console.log("operator", array[i]);
           const find_element = this.get_registry(element, item_zip_code);
           // console.log("result_nuevo", find_element);
           for (let j = 0; j < find_element.length; j++) {
@@ -985,7 +985,7 @@ export default {
               // console.log("no undefined", last_finder);
               result.push({
                 ...last_finder,
-                operator: operator
+                operator_name: operator
               });
             }
           }
@@ -1090,7 +1090,7 @@ export default {
       }
     },
     async click_and_find(result) {
-      console.log("result", result);
+      // console.log("result", result);
       await this.updateTimeLines(result.start, result.end, result);
     },
     actualizzartime() {
