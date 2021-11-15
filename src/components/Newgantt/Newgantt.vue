@@ -719,11 +719,11 @@ export default {
       try {
         await this.page_loading_ini();
         const start = dayjs(
-          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini} +01:00`,
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini} -01:00`,
           "DD-MM-YYYY HH:mm Z"
         );
         const end = dayjs(
-          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin} +01:00`,
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin} -01:00`,
           "DD-MM-YYYY HH:mm Z"
         );
         console.log("this.bar2_data", this.bar2_data);
@@ -1156,7 +1156,7 @@ export default {
       for (let i = 0; i < this.datas.length; i++) {
         const element = this.datas[i];
         console.log(
-          dayjs(`${this.date_ini} +01:00`, "DD-MM-YYYY HH:mm Z").toString()
+          dayjs(`${this.date_ini} -01:00`, "DD-MM-YYYY HH:mm Z").toString()
         );
         // console.log(element.name, this.empleados_select)
         if (element.name === this.empleados_select) {
@@ -1164,11 +1164,11 @@ export default {
             name: this.id_registro,
             comentario: this.comentario,
             start: dayjs(
-              `${this.date_ini} +01:00`,
+              `${this.date_ini} -01:00`,
               "DD-MM-YYYY HH:mm Z"
             ).toString(),
             end: dayjs(
-              `${this.date_fin} +01:00`,
+              `${this.date_fin} -01:00`,
               "DD-MM-YYYY HH:mm Z"
             ).toString()
           });

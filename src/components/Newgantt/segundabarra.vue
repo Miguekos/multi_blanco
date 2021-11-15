@@ -292,11 +292,11 @@ export default {
       this.$q.loading.show();
       console.log("addTask", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} -01:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} -01:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       console.log("start", start);
@@ -334,11 +334,11 @@ export default {
       this.$q.loading.show();
       console.log("addTask", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} -01:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} -01:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       console.log("start", start);
