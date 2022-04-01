@@ -566,7 +566,7 @@ export default {
       for (let i = 0; i < this.datas.length; i++) {
         const element = this.datas[i];
         console.log(
-          dayjs(`${this.date_ini} +01:00`, "DD-MM-YYYY HH:mm Z").toString()
+          dayjs(`${this.date_ini} +00:00`, "DD-MM-YYYY HH:mm Z").toString()
         );
         // console.log(element.name, this.empleados_select)
         if (element.name === this.empleados_select) {
@@ -574,11 +574,11 @@ export default {
             name: this.id_registro,
             comentario: this.comentario,
             start: dayjs(
-              `${this.date_ini} +01:00`,
+              `${this.date_ini} +00:00`,
               "DD-MM-YYYY HH:mm Z"
             ).toString(),
             end: dayjs(
-              `${this.date_fin} +01:00`,
+              `${this.date_fin} +00:00`,
               "DD-MM-YYYY HH:mm Z"
             ).toString()
           });
@@ -626,7 +626,7 @@ export default {
     // console.log("-->", dayjs(`${this.date_start} -00:00`, 'DD-MM-YYYY Z').toString())
     // console.log("----->",dayjs(`${this.date_ini} -00:00`, 'DD-MM-YYYY HH:mm Z').toString())
     // console.log(dayjs().hour(6).minute(0).second(0).toString())
-    // console.log("String", dayjs('05/02/2021 1:02:03 PM +01:00', 'MM/DD/YY H:mm:ss A Z').toString())
+    // console.log("String", dayjs('05/02/2021 1:02:03 PM +00:00', 'MM/DD/YY H:mm:ss A Z').toString())
     this.categories = this.empleados_group;
     this.cant_categories = this.empleados_group.length;
     // let employed = []
