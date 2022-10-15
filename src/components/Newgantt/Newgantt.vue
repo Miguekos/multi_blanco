@@ -1188,7 +1188,7 @@ export default {
     this.$q.loading.show();
     this.$store.commit("planing/set_leftDrawerOpen", false);
     await this.cargar_datas();
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < 92; i++) {
       const fecha = dayjs().add(i, "day");
       this.armando.push({
         name_day: fecha.get("date"),
