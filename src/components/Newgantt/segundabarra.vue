@@ -227,7 +227,7 @@ export default {
     return {
       options_operator: [
         {
-          name: "Jorge",
+          name: "David",
           id: 1
         },
         {
@@ -245,8 +245,12 @@ export default {
           id: 2
         },
         {
-          name: "Funciona",
+          name: "Kliperton",
           id: 3
+        },
+        {
+          name: "Cuida Casa",
+          id: 4
         }
       ],
       id_address: "",
