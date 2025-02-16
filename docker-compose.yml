@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - "8765:80"
     container_name: multi_blanco
     expose:
       - "80"
