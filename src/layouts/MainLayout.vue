@@ -16,7 +16,9 @@
           Reparalia Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-6</div>
+        <div>
+          <BotonSalir/>
+        </div>
       </q-toolbar>
       <!--      <div class="text-white">-->
       <!--        <SegundaLinea />-->
@@ -96,7 +98,8 @@ const linksData = [
 export default {
   name: "MainLayout",
   components: {
-    EssentialLink
+    EssentialLink,
+    BotonSalir: () => import("src/components/LogoutButton.vue")
     // SegundaLinea: () => import('src/components/Newgantt/segundabarra'),
     // TerceraLinea: () => import('src/components/Newgantt/tercerabarra')
   },

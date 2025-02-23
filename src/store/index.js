@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import planing from "./module-planing";
+import auth from "./module-auth";
 
 Vue.use(Vuex);
 
@@ -14,10 +15,11 @@ Vue.use(Vuex);
  * with the Store instance.
  */
 
-export default function(/* { ssrContext } */) {
+export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      planing
+      planing,
+      auth
     },
 
     // enable strict mode (adds overhead!)

@@ -398,32 +398,7 @@ export default {
   },
   async created() {
     this.$store.dispatch("planing/load_companies");
-    await this.$axios
-      .get(`${process.env.IP}api/users`)
-      .then(async resp => {
-        console.log("resp_usuarios", resp);
-        // this.persons_group = resp.data;
-        let result = [];
-        const array = resp.data.users;
-        for (let i = 0; i < array.length; i++) {
-          const element = array[i];
-          if (element.name === "Admin" || element.name === "Processor") {
-          } else {
-            result.push(element);
-          }
-        }
-        this.$store.commit("planing/set_persons", result);
-        const filteredUsers = result.filter(user => user.role_id === 3);
-        this.$store.commit("planing/set_operator", filteredUsers);
-        const filteredTramitadores = result.filter(user => user.role_id === 1);
-        this.$store.commit("planing/set_tramitadores", filteredTramitadores);
-
-        // await this.$router.push("/dia1");
-      })
-      .catch(err => {
-        console.error(err);
-        console.log("Error");
-      });
+    this.$store.dispatch("planing/load_operator");
   }
 };
 </script>

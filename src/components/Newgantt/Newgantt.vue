@@ -15,15 +15,17 @@
           Reparalia Blanco
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-6</div>
+        <div>
+          <BotonSalir/>
+        </div>
       </q-toolbar>
       <div class="text-white">
-        <SegundaLinea @click="buscar" />
+        <SegundaLinea @click="buscar"/>
       </div>
       <!--      <div>-->
       <!--        <TerceraLinea @click="buscar" />-->
       <!--      </div>-->
-      <q-separator color="red" />
+      <q-separator color="red"/>
     </q-header>
     <!--    {{ $store.state.planing.datas }}-->
     <!--    {{$store.getters['planing/get_datas']}}-->
@@ -83,7 +85,7 @@
           </div>
         </template>
       </v-gantt-chart>
-      <q-separator color="red-3" class="q-pb-xs" />
+      <q-separator color="red-3" class="q-pb-xs"/>
     </div>
     <q-dialog
       v-model="bar2"
@@ -96,7 +98,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <q-img alt="logo" src="logo_multi_blanco.png" />
+              <q-img alt="logo" src="logo_multi_blanco.png"/>
             </q-avatar>
           </q-item-section>
 
@@ -123,7 +125,7 @@
           </q-item-section>
         </q-item>
 
-        <q-separator />
+        <q-separator/>
 
         <q-card-section
           v-if="active_edit_task"
@@ -183,7 +185,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -210,7 +212,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -304,7 +306,7 @@
           </div>
         </q-card-section>
 
-        <q-card-section v-else style="max-height: 80vh" class="scroll">
+        <q-card-section v-else style="max-height: 95vh" class="scroll">
           <div class="row q-pb-lg">
             <div class="col-12 q-pa-xs">
               <q-item>
@@ -326,7 +328,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -347,7 +349,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -386,15 +388,15 @@
 
         <q-card-section horizontal></q-card-section>
 
-        <q-separator />
+        <q-separator/>
 
         <q-card-actions>
-          <q-btn flat round icon="event" />
+          <q-btn flat round icon="event"/>
           <div class="q-pr-lg">
             Inicio: <b> {{ formartdatedialog(bar2_data.start) }}</b>
           </div>
 
-          <q-separator vertical />
+          <q-separator vertical/>
 
           <div class="q-pl-lg q-pr-lg">
             Fin: <b> {{ formartdatedialog(bar2_data.end) }}</b>
@@ -402,16 +404,20 @@
 
           <!--          <q-separator vertical/>-->
 
-          <div class="q-pr-lg">
+          <!--          <div class="q-pr-lg">-->
+          <div class="q-pr-lg q-gutter-sm">
             <!--            <form method="get" action="https://api.apps.com.pe/fileserver/33242.pdf">-->
             <!--              <button type="submit">Download!</button>-->
             <!--            </form>-->
             <q-btn align="right" @click="descargar" color="primary">
               Descargar
             </q-btn>
+            <q-btn align="right" @click="whatsapp" color="green">
+              Whatsapp
+            </q-btn>
           </div>
 
-          <q-space />
+          <q-space/>
           <div class="q-gutter-xs">
             <q-btn
               v-if="active_edit_task"
@@ -478,8 +484,8 @@
 </template>
 
 <script>
-import { date } from "quasar";
-import { mapActions } from "vuex";
+import {date} from "quasar";
+import {mapActions} from "vuex";
 
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
@@ -548,8 +554,8 @@ const columns_search = [
     field: "operator_name",
     sortable: true
   },
-  { name: "phone", align: "left", label: "Telf.", field: "phone" },
-  { name: "address", align: "left", label: "Direccion", field: "address" },
+  {name: "phone", align: "left", label: "Telf.", field: "phone"},
+  {name: "address", align: "left", label: "Direccion", field: "address"},
   {
     name: "start",
     align: "right",
@@ -619,7 +625,8 @@ export default {
   components: {
     Test,
     TestLeft,
-    SegundaLinea: () => import("src/components/Newgantt/segundabarra")
+    SegundaLinea: () => import("src/components/Newgantt/segundabarra"),
+    BotonSalir: () => import("src/components/LogoutButton.vue")
     // TerceraLinea: () => import("src/components/Newgantt/tercerabarra")
   },
   computed: {},
@@ -655,7 +662,7 @@ export default {
       currentTime: dayjs(),
       time_ini: "07:00",
       time_fin: "12:00",
-      updateArgs: [true, true, { duration: 1000 }],
+      updateArgs: [true, true, {duration: 1000}],
       options_employed: [],
       persons_group: [],
       empleados_group: [],
@@ -896,6 +903,56 @@ export default {
           await this.page_loading_end();
         });
     },
+    async whatsapp() {
+      await this.page_loading_ini();
+      await fetch(`${process.env.IMAGEN}generarreporte/2`, {
+        method: "POST", // or 'PUT'
+        body: JSON.stringify({
+          id: this.bar2_data.id,
+          operario: this.bar2_data.operator,
+          temerario: this.bar2_data.processor,
+          expediente: this.bar2_data.registration_id,
+          cita: dayjs(this.bar2_data.start).format("DD/MM/YYYY HH:mm"),
+          asegurado: this.bar2_data.customer,
+          direccion: this.bar2_data.address,
+          detalles: this.bar2_data.description,
+          codigo_postal: this.bar2_data.description,
+          start: this.bar2_data.start,
+          specialty: this.bar2_data.specialty,
+          telf: this.bar2_data.phone,
+          importante: this.comment,
+          img: this.imagen ? this.imagen : ""
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(async resp => {
+          const response = await resp.json();
+          console.log("response", response);
+          const urlCompleta = response.message
+          console.log("urlPdf", urlCompleta);
+          const phone = this.bar2_data.phone;
+
+          // 1. Encontrar el índice de la última ocurrencia del caracter '/'
+          const indiceUltimaBarra = urlCompleta.lastIndexOf('/');
+          // indiceUltimaBarra será la posición del último '/' en la URL
+
+          // 2. Extraer la subcadena después del último '/'
+          const nombreArchivoConExtension = urlCompleta.substring(indiceUltimaBarra + 1);
+          // substring() extrae una parte de la cadena desde el índice especificado hasta el final
+          // indiceUltimaBarra + 1 para empezar justo después del '/'
+
+          console.log(nombreArchivoConExtension); // Imprimirá "3573815.pdf"
+          const newUrl = `https://api.whatsapp.com/send?phone=34${phone}&text=Descarga%20el%20PDF%20aqu%C3%AD%3A%20https://api.apps.com.pe/fileserver/${nombreArchivoConExtension}`;
+          window.open(newUrl, '_blank');
+          await this.page_loading_end();
+        })
+        .catch(async err => {
+          console.log(err);
+          await this.page_loading_end();
+        });
+    },
     formartdatedialog(val) {
       return dayjs(`${val}`)
         .subtract(0, "hours")
@@ -904,14 +961,15 @@ export default {
     boton() {
       location.href = `#dia12`;
     },
-    doScrollToPostion() {},
+    doScrollToPostion() {
+    },
     doScrollToTime() {
       this.$refs.gantt.scrollToTimehandle(dayjs().toString());
     },
     taskFiltered(values, state) {
       let taskFiltered = {};
       if (state) {
-        Object.keys(values).forEach(function(key) {
+        Object.keys(values).forEach(function (key) {
           let task = values[key],
             taskNameLowerCase = task.address.toLowerCase(),
             searchLowerCase = state.toLowerCase();
@@ -930,7 +988,7 @@ export default {
       // console.log("state.Registros", values);
       // return state.Registros;
       // let tasks = {};
-      Object.keys(taskFiltered).forEach(function(key) {
+      Object.keys(taskFiltered).forEach(function (key) {
         let task = taskFiltered[key];
         // console.log(task);
         if (!task.completed) {
@@ -954,6 +1012,7 @@ export default {
           // console.log("primer for");
           const element = array[i].gtArray;
           const operator = array[i].name;
+
           function esCereza(fruta) {
             return fruta.registration_id === `${item_find}`;
           }

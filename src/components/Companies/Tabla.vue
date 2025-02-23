@@ -76,23 +76,25 @@ export default {
         .onOk(async () => {
           this.$q.loading.show();
           console.log("json_send", this.json_send);
-          await this.$axios
-            .delete(`${process.env.IP}api/companies/${val.id}`)
-            .then(async resp => {
-              console.log("resp_companies", resp);
-              this.$q.notify({
-                message: `Se elimino ${val.name} con exito`
-              });
-              await this.$store.dispatch("planing/load_companies");
-              this.$q.loading.hide();
-              // this.persons_group = resp.data;
-              // await this.$router.push("/dia1");
-            })
-            .catch(err => {
-              console.error(err);
-              console.log("Error");
-              this.$q.loading.hide();
-            });
+          await this.$store.dispatch("planing/delete_companies", val.id);
+          this.$q.notify({
+            message: `Se elimino ${val.name} con exito`
+          });
+          await this.$store.dispatch("planing/load_companies");
+          this.$q.loading.hide();
+          // await this.$axios
+          //   .delete(`${process.env.IP}api/companies/${val.id}`)
+          //   .then(async resp => {
+          //     console.log("resp_companies", resp);
+          //
+          //     // this.persons_group = resp.data;
+          //     // await this.$router.push("/dia1");
+          //   })
+          //   .catch(err => {
+          //     console.error(err);
+          //     console.log("Error");
+          //     this.$q.loading.hide();
+          //   });
           // console.log('>>>> OK')
         })
         .onOk(() => {

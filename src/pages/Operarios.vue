@@ -44,6 +44,7 @@ export default {
         },
         {name: "phone", label: "Telf.", field: "phone", sortable: true},
         {name: "role_id", label: "Rol.", field: "role_id", sortable: true},
+        {name: "password", label: "Password.", field: "password", sortable: true},
         {
           name: "acciones",
           label: "Acciones",

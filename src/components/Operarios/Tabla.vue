@@ -20,6 +20,11 @@
               {{ props.row.role_id }}
             </q-td>
           </template>
+          <template v-slot:body-cell-password="props">
+            <q-td :props="props">
+              ******
+            </q-td>
+          </template>
           <template v-slot:body-cell-acciones="props">
             <q-td :props="props">
               <div class="q-gutter-xs">
@@ -69,7 +74,7 @@ export default {
   },
   methods: {
     colorForRol(val) {
-      console.log(val)
+      // console.log(val)
       if (val === 1) return "bg-blue text-white";
       if (val === 3) return "bg-green";
     },
@@ -88,23 +93,25 @@ export default {
         .onOk(async () => {
           this.$q.loading.show();
           console.log("json_send", this.json_send);
-          await this.$axios
-            .delete(`${process.env.IP}api/users/${val.id}`)
-            .then(async resp => {
-              console.log("resp_usuarios", resp);
-              this.$q.notify({
-                message: `Se elimino ${val.name} con exito`
-              });
-              await this.$store.dispatch("planing/load_operator");
-              this.$q.loading.hide();
-              // this.persons_group = resp.data;
-              // await this.$router.push("/dia1");
-            })
-            .catch(err => {
-              console.error(err);
-              console.log("Error");
-              this.$q.loading.hide();
-            });
+          await this.$store.dispatch("planing/delete_operator", val.id);
+          this.$q.notify({
+            message: `Se elimino ${val.name} con exito`
+          });
+          await this.$store.dispatch("planing/load_operator");
+          this.$q.loading.hide();
+          // await this.$axios
+          //   .delete(`${process.env.IP}api/users/${val.id}`)
+          //   .then(async resp => {
+          //     console.log("resp_usuarios", resp);
+          //
+          //     // this.persons_group = resp.data;
+          //     // await this.$router.push("/dia1");
+          //   })
+          //   .catch(err => {
+          //     console.error(err);
+          //     console.log("Error");
+          //     this.$q.loading.hide();
+          //   });
           // console.log('>>>> OK')
         })
         .onOk(() => {

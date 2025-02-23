@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      data_update: [],
+      data_update: {},
       activate_add: true,
       columns: [
         {
