@@ -7,24 +7,8 @@
         <q-input
           dense
           outlined
-          label="Nomber"
+          label="Nombre Empresa"
           v-model="json_send.name"
-        ></q-input>
-      </div>
-      <div class="col-xs-12 col-md-3 q-pa-xs">
-        <q-input
-          dense
-          outlined
-          label="Correo"
-          v-model="json_send.email"
-        ></q-input>
-      </div>
-      <div class="col-xs-12 col-md-3 q-pa-xs">
-        <q-input
-          dense
-          outlined
-          label="Telf."
-          v-model="json_send.phone"
         ></q-input>
       </div>
       <div class="col-xs-12 col-md-1 q-pa-xs">
@@ -32,7 +16,7 @@
           label="Guardar"
           color="green"
           class="full-width"
-          @click="save_operator"
+          @click="save_companies"
         ></q-btn>
       </div>
     </div>
@@ -41,24 +25,8 @@
         <q-input
           dense
           outlined
-          label="Nomber"
+          label="Nombre Empresa"
           v-model="update_data.name"
-        ></q-input>
-      </div>
-      <div class="col-xs-12 col-md-3 q-pa-xs">
-        <q-input
-          dense
-          outlined
-          label="Correo"
-          v-model="update_data.email"
-        ></q-input>
-      </div>
-      <div class="col-xs-12 col-md-3 q-pa-xs">
-        <q-input
-          dense
-          outlined
-          label="Telf."
-          v-model="update_data.phone"
         ></q-input>
       </div>
       <div class="col-xs-12 col-md-1 q-pa-xs">
@@ -66,7 +34,7 @@
           label="Update"
           color="info"
           class="full-width"
-          @click="update_operator"
+          @click="update_companies"
         ></q-btn>
       </div>
     </div>
@@ -98,8 +66,8 @@ export default {
       update_data: "",
       json_send: {
         // colorPair: `{"dark": "rgb(11, 209, 171,0.8)", "light": "rgb(11, 209, 171,0.1)"}`,
-        role_id: 3,
-        password: 'secret',
+        role_id: 3
+        // password: 'secret',
         // password_confirmation: 'secret'
       }
     };
@@ -117,20 +85,17 @@ export default {
     set_date() {
       this.update_data = this.data_update;
     },
-    async save_operator() {
+    async save_companies() {
       this.$q.loading.show();
       console.log("json_send", this.json_send);
       await this.$axios
-        .post(`${process.env.IP}api/users`, this.json_send)
+        .post(`${process.env.IP}api/companies`, this.json_send)
         .then(async resp => {
-          console.log("resp_usuarios", resp);
+          console.log("resp_companies", resp);
           // this.persons_group = resp.data;
           // await this.$router.push("/dia1");
-          await this.$store.dispatch("planing/load_operator");
-          this.json_send = {
-            role_id: 3,
-            password: 'secret',
-          };
+          await this.$store.dispatch("planing/load_companies");
+          this.json_send = {};
           this.$q.loading.hide();
         })
         .catch(err => {
@@ -139,22 +104,21 @@ export default {
           this.$q.loading.hide();
         });
     },
-    async update_operator() {
+    async update_companies() {
       this.$q.loading.show();
       console.log("json_send", this.update_data);
       await this.$axios
         .put(
-          `${process.env.IP}api/users/${this.update_data.id}`,
+          `${process.env.IP}api/companies/${this.update_data.id}`,
           this.update_data
         )
         .then(async resp => {
-          console.log("resp_usuarios", resp);
+          console.log("resp_companies", resp);
           this.$q.notify({
             message: `Se actualizo ${this.update_data.name} con exito`
           });
-          await this.$store.dispatch("planing/load_operator");
+          await this.$store.dispatch("planing/load_companies");
           this.$emit("click", this.update_data);
-
           // this.persons_group = resp.data;
           // await this.$router.push("/dia1");
         })

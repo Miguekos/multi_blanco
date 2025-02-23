@@ -4,6 +4,13 @@
       <div class="q-pa-xs">
         <div class="text-black">
           <!--          {{ filteredByAll }}-->
+          <!--          {{ $store.state.planing.persons }}-->
+          <!--          <div>-&#45;&#45;</div>-->
+          <!--          {{ $store.state.planing.operadores }}-->
+          <!--          <div>-&#45;&#45;</div>-->
+          <!--          {{ $store.state.planing.tramitadores }}-->
+          <!--          <div>-&#45;&#45;</div>-->
+          <!--          {{ $store.state.planing.companies }}-->
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-1 q-pa-xs text-black">
@@ -12,7 +19,7 @@
               dense
               outlined
               v-model="json_send.operator_id"
-              :options="$store.state.planing.persons"
+              :options="$store.state.planing.operadores"
               option-label="name"
               option-value="id"
               emit-value
@@ -22,7 +29,7 @@
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <q-select
-              :options="options_operator"
+              :options="$store.state.planing.tramitadores"
               option-label="name"
               option-value="name"
               emit-value
@@ -74,7 +81,7 @@
             <q-select
               stack-label
               dense
-              :options="options_enterprise"
+              :options="$store.state.planing.companies"
               option-label="name"
               option-value="name"
               emit-value
@@ -196,9 +203,11 @@
 </template>
 
 <script>
-import { date } from "quasar";
-import { mapActions } from "vuex";
+import {date} from "quasar";
+import {mapActions} from "vuex";
 import dayjs from "dayjs";
+import {load_companies} from "src/store/module-planing/actions";
+
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
@@ -286,7 +295,8 @@ export default {
       if (!search.length) return list;
       return list.filter(item => item.name.toLowerCase().indexOf(search) > -1);
     },
-    async onReset() {},
+    async onReset() {
+    },
     async onSubmit() {
       this.botonesload = true;
       this.$q.loading.show();
@@ -302,8 +312,9 @@ export default {
       console.log("start", start);
       console.log("end", end);
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
+        .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
+          date: null,
           start: start,
           end: end
         })
@@ -344,15 +355,16 @@ export default {
       console.log("start", start);
       console.log("end", end);
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
+        .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
+          date: null,
           start: start,
           end: end
         })
         .then(async resp => {
-          console.log(resp);
-          this.$store.commit("planing/set_datas", resp.data.data);
-          // await this.cargar_datas();
+          console.log("addTask", resp);
+          // this.$store.commit("planing/set_datas", resp.data.data);
+          await this.cargar_datas();
           // this.persons_group = resp.data;
           this.botonesload = false;
           this.$q.loading.hide();
@@ -385,6 +397,7 @@ export default {
     }
   },
   async created() {
+    this.$store.dispatch("planing/load_companies");
     await this.$axios
       .get(`${process.env.IP}api/users`)
       .then(async resp => {
@@ -400,6 +413,11 @@ export default {
           }
         }
         this.$store.commit("planing/set_persons", result);
+        const filteredUsers = result.filter(user => user.role_id === 3);
+        this.$store.commit("planing/set_operator", filteredUsers);
+        const filteredTramitadores = result.filter(user => user.role_id === 1);
+        this.$store.commit("planing/set_tramitadores", filteredTramitadores);
+
         // await this.$router.push("/dia1");
       })
       .catch(err => {

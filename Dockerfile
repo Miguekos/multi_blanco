@@ -1,4 +1,4 @@
-FROM node:13.7 as build-stage
+FROM node:16 as build-stage
 # COPY . ./app
 COPY ["package*.json" ,  "/app/"]
 WORKDIR /app
@@ -10,6 +10,8 @@ COPY ["." ,  "/app/"]
 RUN quasar build --modern
 # production stage
 FROM nginx:1.17.5-alpine as production-stage
+# Establece el Timezone a Madrid, España
+ENV TZ=Europe/Madrid
 COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

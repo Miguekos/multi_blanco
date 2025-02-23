@@ -1,8 +1,8 @@
 {
-  "name": "multiservicios_blanco",
+  "name": "reparalia_blanco",
   "version": "0.0.1",
-  "description": "Multiservicios Blanco",
-  "productName": "Multiservicios Blanco",
+  "description": "Reparalia Blanco",
+  "productName": "Reparalia Blanco",
   "author": "Miguel Rodriguez <miguekos1233@gmail.com>",
   "private": true,
   "scripts": {

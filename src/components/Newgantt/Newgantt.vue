@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Multiservicios Blanco
+          Reparalia Blanco
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}-6</div>

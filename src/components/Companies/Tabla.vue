@@ -4,20 +4,15 @@
       <div class="q-pa-md">
         <q-table
           dense
-          title="Operarios"
+          title="Comapanies"
           :data="info"
           :columns="columns"
-          row-key="email"
+          row-key="name"
           :pagination="pagination"
         >
           <template v-slot:body-cell-name="props">
-            <q-td :class="colorForRol(props.row.role_id)" :props="props">
+            <q-td :props="props">
               {{ props.row.name }}
-            </q-td>
-          </template>
-          <template v-slot:body-cell-role_id="props">
-            <q-td :class="colorForRol(props.row.role_id)" :props="props">
-              {{ props.row.role_id }}
             </q-td>
           </template>
           <template v-slot:body-cell-acciones="props">
@@ -33,7 +28,7 @@
                 <q-btn
                   dense
                   size="sm"
-                  @click="delete_operator(props.row)"
+                  @click="delete_companies(props.row)"
                   color="red"
                   icon="delete"
                 ></q-btn>
@@ -51,15 +46,13 @@
 export default {
   props: {
     columns: Array,
-    info: Array,
-    filterTable: String
+    info: Array
   },
-  name: "TablaOperarios",
-  computed: {},
+  name: "TablaCompanie",
   data() {
     return {
       pagination: {
-        sortBy: this.filterTable,
+        sortBy: "name",
         descending: false,
         page: 1,
         rowsPerPage: 20
@@ -68,16 +61,11 @@ export default {
     };
   },
   methods: {
-    colorForRol(val) {
-      console.log(val)
-      if (val === 1) return "bg-blue text-white";
-      if (val === 3) return "bg-green";
-    },
     activate_update(val) {
       console.log("activate_update", val);
       this.$emit("click", val);
     },
-    async delete_operator(val) {
+    async delete_companies(val) {
       this.$q
         .dialog({
           title: "Confirmar!",
@@ -89,13 +77,13 @@ export default {
           this.$q.loading.show();
           console.log("json_send", this.json_send);
           await this.$axios
-            .delete(`${process.env.IP}api/users/${val.id}`)
+            .delete(`${process.env.IP}api/companies/${val.id}`)
             .then(async resp => {
-              console.log("resp_usuarios", resp);
+              console.log("resp_companies", resp);
               this.$q.notify({
                 message: `Se elimino ${val.name} con exito`
               });
-              await this.$store.dispatch("planing/load_operator");
+              await this.$store.dispatch("planing/load_companies");
               this.$q.loading.hide();
               // this.persons_group = resp.data;
               // await this.$router.push("/dia1");

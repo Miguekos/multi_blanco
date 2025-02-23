@@ -1,4 +1,4 @@
-# Quasar App (multiservicios_blanco)
+# Quasar App (reparalia_blanco)
 
 A Quasar Framework app
 

@@ -13,7 +13,7 @@
         />
 
         <q-toolbar-title>
-          Multiservicios Blanco
+          Reparalia Blanco
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}-6</div>
@@ -46,7 +46,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
@@ -78,6 +78,12 @@ const linksData = [
     caption: "Control de operarios",
     icon: "groups",
     link: "#/operario"
+  },
+  {
+    title: "Empresas",
+    caption: "Control de Empresas",
+    icon: "groups",
+    link: "#/companies"
   },
   // {
   //   title: "Usuarios",

@@ -1,29 +1,28 @@
 <template>
   <div>
-    <FormRegisterOperator
+    <FormRegisterComapanies
       :data_update="data_update"
       :activate_add="activate_add"
       @click="func_activate_add"
     />
-    <Tablaoperario
-      :info="$store.state.planing.persons"
+    <TablaCompanies
+      :info="$store.state.planing.companies"
       :columns="columns"
       @click="func_activate_add"
-      filterTable="role_id"
     />
   </div>
 </template>
 
 <script>
 export default {
-  name: "Operarios",
+  name: "Companies",
   components: {
-    FormRegisterOperator: () => import("src/components/Operarios/FormRegister"),
-    Tablaoperario: () => import("src/components/Operarios/Tabla")
+    FormRegisterComapanies: () => import("src/components/Companies/FormRegister"),
+    TablaCompanies: () => import("src/components/Companies/Tabla")
   },
   data() {
     return {
-      data_update: {},
+      data_update: [],
       activate_add: true,
       columns: [
         {
@@ -35,15 +34,6 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        {
-          name: "email",
-          align: "center",
-          label: "Email",
-          field: "email",
-          sortable: true
-        },
-        {name: "phone", label: "Telf.", field: "phone", sortable: true},
-        {name: "role_id", label: "Rol.", field: "role_id", sortable: true},
         {
           name: "acciones",
           label: "Acciones",
@@ -66,7 +56,7 @@ export default {
   },
   async created() {
     this.$q.loading.show();
-    await this.$store.dispatch("planing/load_operator")
+    await this.$store.dispatch("planing/load_companies")
     this.$q.loading.hide();
   }
 };
