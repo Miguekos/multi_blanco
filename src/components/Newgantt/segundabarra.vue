@@ -311,12 +311,17 @@ export default {
       );
       console.log("start", start);
       console.log("end", end);
+      const token = localStorage.getItem('user-token');
       await this.$axios
         .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
           date: null,
           start: start,
           end: end
+        }, {
+          headers: {
+            Authorization: `${token}`
+          }
         })
         .then(async resp => {
           console.log(resp);
@@ -354,12 +359,17 @@ export default {
       );
       console.log("start", start);
       console.log("end", end);
+      const token = localStorage.getItem('user-token');
       await this.$axios
         .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
           date: null,
           start: start,
           end: end
+        }, {
+          headers: {
+            Authorization: `${token}`
+          }
         })
         .then(async resp => {
           console.log("addTask", resp);

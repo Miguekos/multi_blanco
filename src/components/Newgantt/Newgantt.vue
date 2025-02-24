@@ -129,7 +129,7 @@
 
         <q-card-section
           v-if="active_edit_task"
-          style="max-height: 80vh"
+          style="max-height: 80vh; max-width: 100%"
           class="scroll bg-orange-1"
         >
           <div class="row q-pb-lg">
@@ -306,7 +306,7 @@
           </div>
         </q-card-section>
 
-        <q-card-section v-else style="max-height: 95vh" class="scroll">
+        <q-card-section v-else style="max-height: 80vh; max-width: 100%" class="scroll">
           <div class="row q-pb-lg">
             <div class="col-12 q-pa-xs">
               <q-item>
@@ -405,14 +405,14 @@
           <!--          <q-separator vertical/>-->
 
           <!--          <div class="q-pr-lg">-->
-          <div class="q-pr-lg q-gutter-sm">
+          <div class="q-gutter-sm">
             <!--            <form method="get" action="https://api.apps.com.pe/fileserver/33242.pdf">-->
             <!--              <button type="submit">Download!</button>-->
             <!--            </form>-->
-            <q-btn align="right" @click="descargar" color="primary">
+            <q-btn size="sm" align="right" @click="descargar" color="primary">
               Descargar
             </q-btn>
-            <q-btn align="right" @click="whatsapp" color="green">
+            <q-btn size="sm" align="right" @click="whatsapp" color="green">
               Whatsapp
             </q-btn>
           </div>
@@ -422,6 +422,7 @@
             <q-btn
               v-if="active_edit_task"
               icon="check"
+              size="sm"
               @click="edit_task"
               color="info"
               rounded
@@ -429,12 +430,14 @@
             <q-btn
               v-if="!active_edit_task"
               icon="edit"
+              size="sm"
               @click="change_active_edit"
               color="orange"
               rounded
             ></q-btn>
             <q-btn
               icon="delete"
+              size="sm"
               @click="delete_task"
               :loading="del_load"
               color="red"
@@ -747,6 +750,7 @@ export default {
             await this.page_loading_end();
             this.active_edit_task = false;
             this.bar2 = false;
+            await this.cargar_datas();
           })
           .catch(err => {
             console.log(err);
@@ -944,7 +948,7 @@ export default {
           // indiceUltimaBarra + 1 para empezar justo después del '/'
 
           console.log(nombreArchivoConExtension); // Imprimirá "3573815.pdf"
-          const newUrl = `https://api.whatsapp.com/send?phone=34${phone}&text=Descarga%20el%20PDF%20aqu%C3%AD%3A%20https://api.apps.com.pe/fileserver/${nombreArchivoConExtension}`;
+          const newUrl = `https://api.whatsapp.com/send?phone=34${phone}&text=Para%20descarga%20el%20parte%20pincha%20aqu%C3%AD%3A%20https://api.apps.com.pe/fileserver/${nombreArchivoConExtension}`;
           window.open(newUrl, '_blank');
           await this.page_loading_end();
         })

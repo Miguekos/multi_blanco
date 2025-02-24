@@ -343,7 +343,7 @@ export default {
       console.log("start", start);
       console.log("end", end);
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
+        .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
           start: start,
           end: end
@@ -385,7 +385,7 @@ export default {
       console.log("start", start);
       console.log("end", end);
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
+        .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
           start: start,
           end: end

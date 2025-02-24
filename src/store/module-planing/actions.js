@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { axios, api } from "boot/axios";
+import {axios, api} from "boot/axios";
 
 function delete_id(val) {
   delete val.id;
@@ -35,7 +35,7 @@ function create_datas(array) {
   // console.log("datas", datas);
 }
 
-export async function cargar_datas({ commit }) {
+export async function cargar_datas({commit}) {
   console.log("cargar_datas");
   await api
     .get("/api/assignments/users-with-assignments")
@@ -51,15 +51,17 @@ export async function cargar_datas({ commit }) {
     });
 }
 
-export async function edit_datas({ commit }, payload) {
+export async function edit_datas({commit}, payload) {
   console.log("edit_datas");
   await api
-    .put(`/api/assigments/${payload.id}`, {
+    .put(`/api/assignments/${payload.id}`, {
       ...delete_id(payload)
     })
     .then(async resp => {
       // await load_operator()
-      commit("set_datas", create_datas(resp.data.data));
+      // commit("set_datas", create_datas(resp.data.data));
+
+      console.log("resp", resp);
       // const array_edit = resp.data.data;
       // let datas = [];
       // for (let i = 0; i < array_edit.length; i++) {
@@ -82,10 +84,10 @@ export async function edit_datas({ commit }, payload) {
     });
 }
 
-export async function delete_datas({ commit }, payload) {
+export async function delete_datas({commit}, payload) {
   console.log("delete_datas");
   await api
-    .delete(`/api/assigments/${payload}`)
+    .delete(`/api/assignments/${payload}`)
     .then(resp => {
       console.log("resp", resp);
       return resp.data;
@@ -98,7 +100,7 @@ export async function delete_datas({ commit }, payload) {
 }
 
 // OPERATOR
-export async function load_operator({ commit }) {
+export async function load_operator({commit}) {
   await api
     .get(`/api/users`)
     .then(async resp => {
@@ -131,7 +133,7 @@ export async function load_operator({ commit }) {
     });
 }
 
-export async function create_operator({ commit }, payload) {
+export async function create_operator({commit}, payload) {
   await api
     .post(`/api/users`, payload)
     .then(async resp => {
@@ -143,7 +145,7 @@ export async function create_operator({ commit }, payload) {
     });
 }
 
-export async function update_operator({ commit }, payload) {
+export async function update_operator({commit}, payload) {
   await api
     .put(`/api/users/${payload.id}`, payload)
     .then(async resp => {
@@ -155,7 +157,7 @@ export async function update_operator({ commit }, payload) {
     });
 }
 
-export async function delete_operator({ commit }, payload) {
+export async function delete_operator({commit}, payload) {
   await api
     .delete(`/api/users/${payload}`)
     .then(async resp => {
@@ -168,7 +170,7 @@ export async function delete_operator({ commit }, payload) {
 }
 
 // COMPANIES
-export async function load_companies({ commit }) {
+export async function load_companies({commit}) {
   await api
     .get(`/api/companies`)
     .then(async resp => {
@@ -180,7 +182,7 @@ export async function load_companies({ commit }) {
     });
 }
 
-export async function create_companies({ commit }, payload) {
+export async function create_companies({commit}, payload) {
   await api
     .post(`/api/companies`, payload)
     .then(async resp => {
@@ -192,7 +194,7 @@ export async function create_companies({ commit }, payload) {
     });
 }
 
-export async function update_companies({ commit }, payload) {
+export async function update_companies({commit}, payload) {
   await api
     .put(`/api/companies/${payload.id}`, payload)
     .then(async resp => {
@@ -204,7 +206,7 @@ export async function update_companies({ commit }, payload) {
     });
 }
 
-export async function delete_companies({ commit }, payload) {
+export async function delete_companies({commit}, payload) {
   await api
     .delete(`/api/companies/${payload}`)
     .then(async resp => {
