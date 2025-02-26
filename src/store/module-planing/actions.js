@@ -52,7 +52,7 @@ export async function cargar_datas({commit}) {
 }
 
 export async function edit_datas({commit}, payload) {
-  console.log("edit_datas");
+  console.log("edit_datas", payload);
   await api
     .put(`/api/assignments/${payload.id}`, {
       ...delete_id(payload)

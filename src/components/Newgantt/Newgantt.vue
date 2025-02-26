@@ -137,7 +137,7 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="text-red">
-                    Operador:
+                    Operador: {{ bar2_data.operator }}
                   </q-item-label>
                   <q-item-label caption class="text-black">
                     <q-select
@@ -145,7 +145,7 @@
                       dense
                       outlined
                       v-model="bar2_data.operator"
-                      :options="$store.state.planing.persons"
+                      :options="$store.state.planing.operadores"
                       option-label="name"
                       option-value="id"
                       emit-value
@@ -738,8 +738,8 @@ export default {
         );
         console.log("this.bar2_data", this.bar2_data);
         await this.edit_datas({
-          operator_id: this.bar2_data.operator,
           ...this.bar2_data,
+          operator_id: this.bar2_data.operator,
           start: start,
           end: end
         })
@@ -908,6 +908,12 @@ export default {
         });
     },
     async whatsapp() {
+      console.log("whatsapp", this.bar2_data);
+      const operator = this.$store.state.planing.operadores.filter(
+        item => item.id === this.bar2_data.operator_id
+      );
+      console.log("operator", operator[0].phone);
+      const phone_operator = operator[0].phone;
       await this.page_loading_ini();
       await fetch(`${process.env.IMAGEN}generarreporte/2`, {
         method: "POST", // or 'PUT'
@@ -936,7 +942,6 @@ export default {
           console.log("response", response);
           const urlCompleta = response.message
           console.log("urlPdf", urlCompleta);
-          const phone = this.bar2_data.phone;
 
           // 1. Encontrar el índice de la última ocurrencia del caracter '/'
           const indiceUltimaBarra = urlCompleta.lastIndexOf('/');
@@ -948,7 +953,7 @@ export default {
           // indiceUltimaBarra + 1 para empezar justo después del '/'
 
           console.log(nombreArchivoConExtension); // Imprimirá "3573815.pdf"
-          const newUrl = `https://api.whatsapp.com/send?phone=34${phone}&text=Para%20descarga%20el%20parte%20pincha%20aqu%C3%AD%3A%20https://api.apps.com.pe/fileserver/${nombreArchivoConExtension}`;
+          const newUrl = `https://api.whatsapp.com/send?phone=34${phone_operator}&text=Para%20descarga%20el%20parte%20pincha%20aqu%C3%AD%3A%20https://api.apps.com.pe/fileserver/${nombreArchivoConExtension}`;
           window.open(newUrl, '_blank');
           await this.page_loading_end();
         })
