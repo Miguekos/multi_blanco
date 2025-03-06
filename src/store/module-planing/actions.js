@@ -44,6 +44,7 @@ export async function cargar_datas({commit}) {
       // const array = resp.data.data;
       // commit("set_datas", resp.data.data);
       commit("set_datas", create_datas(resp.data.data));
+
     })
     .catch(err => {
       console.error(err);

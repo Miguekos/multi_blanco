@@ -487,6 +487,8 @@
 </template>
 
 <script>
+// Ejemplo de uso en un componente
+import socket from 'src/services/socketService';
 import {date} from "quasar";
 import {mapActions} from "vuex";
 
@@ -635,6 +637,8 @@ export default {
   computed: {},
   data() {
     return {
+      socket: null,
+      socketId: null,
       initialPagination: {
         sortBy: "start",
         descending: false,
@@ -751,6 +755,7 @@ export default {
             this.active_edit_task = false;
             this.bar2 = false;
             await this.cargar_datas();
+            socket.emit('mensaje', {data: this.bar2_data});
           })
           .catch(err => {
             console.log(err);
@@ -801,6 +806,7 @@ export default {
               await this.page_loading_ini();
               console.log("resp_delete.data", resp_delete);
               await this.cargar_datas();
+              socket.emit('mensaje', {data: this.bar2_data});
               this.$q.notify({
                 message: "Eliminado"
               });
@@ -1253,40 +1259,71 @@ export default {
     // }
   },
   async created() {
-    this.$q.loading.show();
-    this.$store.commit("planing/set_leftDrawerOpen", false);
-    await this.cargar_datas();
-    for (let i = 0; i < 92; i++) {
-      const fecha = dayjs().add(i, "day");
-      this.armando.push({
-        name_day: fecha.get("date"),
-        name_month: fecha.get("month"),
-        name: dayjs()
-          .add(i, "day")
-          .format("DD/MM/YYYY"),
-        inicio: dayjs()
-          .hour(6)
-          .minute(0)
-          .second(0)
-          .add(i, "day")
-          .toString(),
-        fin: dayjs()
-          .hour(19)
-          .minute(0)
-          .second(0)
-          .add(i, "day")
-          .toString()
+    try {
+      this.$q.loading.show();
+      // this.socket = io('http://localhost:3000');
+      socket.on('socket-id', (data) => {
+        console.log("socket-id", data);
+        this.socketId = data.id;
       });
+      //
+      //
+      socket.on('event-reload', async (data) => {
+        console.log("event-reload", data)
+        if (data.socketId !== this.socketId) {
+          console.log('Recargando datos de otro cliente');
+          this.$q.notify({
+            message: "Recargando datos de otro cliente"
+          })
+          await this.cargar_datas();
+        } else {
+          console.log('Cambio originado por este cliente, actualizacion minima');
+          //Realizar la actualizacion necesaria en el frontend.
+        }
+
+        // await this.cargar_datas();
+      });
+
+
+      this.$store.commit("planing/set_leftDrawerOpen", false);
+      await this.cargar_datas();
+      for (let i = 0; i < 92; i++) {
+        const fecha = dayjs().add(i, "day");
+        this.armando.push({
+          name_day: fecha.get("date"),
+          name_month: fecha.get("month"),
+          name: dayjs()
+            .add(i, "day")
+            .format("DD/MM/YYYY"),
+          inicio: dayjs()
+            .hour(6)
+            .minute(0)
+            .second(0)
+            .add(i, "day")
+            .toString(),
+          fin: dayjs()
+            .hour(19)
+            .minute(0)
+            .second(0)
+            .add(i, "day")
+            .toString()
+        });
+      }
+      console.log("this.$route.params", this.$route.params);
+      if (this.$route.params.id) {
+        console.log("this.$route.params", this.$route.params.id);
+        // await this.$router.push("/dia1");
+      } else {
+        console.log("this.$route.params", this.$route.params.id);
+        // await this.$router.push("/dia1");
+      }
+    } catch (e) {
+      console.log("created_Newgantt", e);
+    } finally {
+      this.$q.loading.hide();
     }
-    console.log("this.$route.params", this.$route.params);
-    if (this.$route.params.id) {
-      console.log("this.$route.params", this.$route.params.id);
-      // await this.$router.push("/dia1");
-    } else {
-      console.log("this.$route.params", this.$route.params.id);
-      // await this.$router.push("/dia1");
-    }
-    this.$q.loading.hide();
+
+
   }
 };
 </script>

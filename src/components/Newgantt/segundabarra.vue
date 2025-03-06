@@ -207,6 +207,7 @@ import {date} from "quasar";
 import {mapActions} from "vuex";
 import dayjs from "dayjs";
 import {load_companies} from "src/store/module-planing/actions";
+import socket from 'src/services/socketService';
 
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
@@ -300,6 +301,7 @@ export default {
     async onSubmit() {
       this.botonesload = true;
       this.$q.loading.show();
+      console.log("onSubmit---------------->")
       console.log("addTask", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
         `${this.date_ini} ${this.time_ini} +01:00`,
@@ -375,6 +377,7 @@ export default {
           console.log("addTask", resp);
           // this.$store.commit("planing/set_datas", resp.data.data);
           await this.cargar_datas();
+          socket.emit('mensaje', {data: resp});
           // this.persons_group = resp.data;
           this.botonesload = false;
           this.$q.loading.hide();
