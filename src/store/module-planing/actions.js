@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import {axios, api} from "boot/axios";
+import {hexToRgb} from "src/services/HexToRGB"
 
 function delete_id(val) {
   delete val.id;
@@ -10,16 +11,17 @@ function create_datas(array) {
   let datas = [];
   for (let i = 0; i < array.length; i++) {
     const element = array[i];
-    console.log(typeof element.colorPair);
+    console.log("element.colorPair", typeof element.colorPair);
     try {
       if (element.role_id === 3) {
-        const color = {
-          dark: "rgb(131, 89, 111,0.8)",
-          light: "rgb(131, 89, 111,0.1)"
-        };
+        const color = "#FF0000";
+        // console.log("hexToRgb", element.colorPair);
+        // console.log("hexToRgb2", hexToRgb(element.colorPair));
+        // console.log("hexToRgb3", hexToRgb(color));
         //const color = JSON.parse(newColor);
         // console.log("color", color);
         // delete element.colorPair;
+        // colorPair: element.colorPair ? hexToRgb(element.colorPair) : hexToRgb(color),
         datas.push({
           colorPair: element.colorPair ? element.colorPair : color,
           ...element

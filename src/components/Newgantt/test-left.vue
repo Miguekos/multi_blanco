@@ -1,6 +1,6 @@
 <template>
-  <div class="name" :style="{ background: data.colorPair.light }">
-    <div class="colorBar" :style="{ background: data.colorPair.dark }" />
+  <div class="name" :style="{ background: updateColorLight(data.colorPair)}">
+    <div class="colorBar" :style="{ background: updateColorDark(data.colorPair) }"/>
     <div class="type">{{ data.type }}</div>
     <div class="carId">{{ data.name }}</div>
     <div class="speed">{{ data.speed }}</div>
@@ -8,10 +8,22 @@
 </template>
 
 <script>
+import {hexToRgbLight, hexToRgbDark} from "src/services/HexToRGB"
+
 export default {
   name: "TestLeft",
   props: {
     data: Object
+  },
+  methods: {
+    updateColorLight(val) {
+      // console.log("val", val)
+      // console.log("hexToRgb(val)", hexToRgbLight(val))
+      return hexToRgbLight(val)
+    },
+    updateColorDark(val) {
+      return hexToRgbDark(val)
+    }
   }
 };
 </script>
@@ -27,6 +39,7 @@ export default {
   border-radius: 8px 0 0 8px;
   align-items: center;
 }
+
 .colorBar {
   width: 10px;
   height: 100%;

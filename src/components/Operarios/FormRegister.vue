@@ -19,13 +19,38 @@
           v-model="json_send.email"
         ></q-input>
       </div>
-      <div class="col-xs-12 col-md-3 q-pa-xs">
+      <div class="col-xs-12 col-md-2 q-pa-xs">
         <q-input
           dense
           outlined
           label="Telf."
           v-model="json_send.phone"
         ></q-input>
+      </div>
+      <div class="col-xs-12 col-md-1 q-pa-xs">
+        <div class="q-gutter-md row items-start">
+          <q-input
+            dense
+            filled
+            v-model="json_send.colorPair"
+            :rules="['anyColor']"
+            hint="With validation"
+            class="my-input"
+          >
+            <template v-slot:append>
+              <q-icon name="colorize" class="cursor-pointer">
+                <q-popup-proxy transition-show="scale" transition-hide="scale">
+                  <q-color
+                    v-model="json_send.colorPair"
+                    no-header
+                    no-footer
+                    default-view="palette"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
       </div>
       <div class="col-xs-12 col-md-1 q-pa-xs">
         <q-btn
@@ -53,7 +78,7 @@
           v-model="update_data.email"
         ></q-input>
       </div>
-      <div class="col-xs-12 col-md-3 q-pa-xs">
+      <div class="col-xs-12 col-md-2 q-pa-xs">
         <q-input
           dense
           outlined
@@ -68,6 +93,31 @@
           label="Password."
           v-model="update_data.password"
         ></q-input>
+      </div>
+      <div class="col-xs-12 col-md-1 q-pa-xs">
+        <div class="q-gutter-md row items-start">
+          <q-input
+            dense
+            filled
+            v-model="update_data.colorPair"
+            :rules="['anyColor']"
+            hint="With validation"
+            class="my-input"
+          >
+            <template v-slot:append>
+              <q-icon name="colorize" class="cursor-pointer">
+                <q-popup-proxy transition-show="scale" transition-hide="scale">
+                  <q-color
+                    v-model="update_data.colorPair"
+                    no-header
+                    no-footer
+                    default-view="palette"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
       </div>
       <div class="col-xs-12 col-md-1 q-pa-xs">
         <q-btn
@@ -103,14 +153,18 @@ export default {
   name: "FormRegister",
   data() {
     return {
-      update_data: "",
+      update_data: {},
       json_send: {
-        // colorPair: `{"dark": "rgb(11, 209, 171,0.8)", "light": "rgb(11, 209, 171,0.1)"}`,
+        colorPair: "#0b76e0",
         role_id: 3,
         password: 'secret',
         // password_confirmation: 'secret'
       }
     };
+  },
+  components: {
+    // ColorPick
+    // ColorPick: () => import("./colorPick.vue")
   },
   computed: {
     data_update_empty() {
@@ -128,12 +182,14 @@ export default {
     async save_operator() {
       this.$q.loading.show();
       console.log("json_send", this.json_send);
+      // this.json_send = {
+      //   role_id: 3,
+      //   password: 'secret',
+      //   colorPair: `{"dark": "rgb(11, 209, 171,0.8)", "light": "rgb(11, 209, 171,0.1)"}`
+      // };
       await this.$store.dispatch("planing/create_operator", this.json_send);
       await this.$store.dispatch("planing/load_operator");
-      this.json_send = {
-        role_id: 3,
-        password: 'secret',
-      };
+
       this.$q.notify({
         message: `Se actualizo ${this.json_send?.name} con exito`
       });
@@ -159,7 +215,7 @@ export default {
     },
     async update_operator() {
       this.$q.loading.show();
-      console.log("json_send", this.update_data);
+      console.log("update_data", this.update_data);
       await this.$store.dispatch("planing/update_operator", this.update_data);
       await this.$store.dispatch("planing/load_operator");
       this.$emit("click", this.update_data);

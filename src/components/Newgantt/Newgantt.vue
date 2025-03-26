@@ -711,6 +711,11 @@ export default {
       titleHeight: 40,
       titleWidth: 250,
       scale: 30
+      // cellWidth: 90,
+      // cellHeight: 50,
+      // titleHeight: 40,
+      // titleWidth: 250,
+      // scale: 30
       // startTime: dayjs().hour(0).toString(),
       // endTime: dayjs().hour(23).toString(),
       // datas: []
@@ -999,8 +1004,9 @@ export default {
     get_registry(values, val) {
       let taskFiltered = this.taskFiltered(values, `${val}`);
       let tasks = [];
-      // console.log("taskFiltered", JSON.stringify(taskFiltered));
-      // console.log("state.Registros", values);
+      console.log("taskFiltered", JSON.stringify(taskFiltered));
+      console.log("state.Registros", values);
+      console.log("val", val);
       // return state.Registros;
       // let tasks = {};
       Object.keys(taskFiltered).forEach(function (key) {
@@ -1018,73 +1024,39 @@ export default {
       console.log("Buscar 2", val2);
       if (val.length > 2 || val2.length > 2) {
         const array = this.$store.getters["planing/get_datas"];
-        // console.log("val", val)
         const item_find = val;
         const item_zip_code = val2;
-        // console.log(this.$store.getters['planing/get_datas'])
         let result = [];
         for (let i = 0; i < array.length; i++) {
-          // console.log("primer for");
           const element = array[i].gtArray;
           const operator = array[i].name;
 
-          function esCereza(fruta) {
-            return fruta.registration_id === `${item_find}`;
-          }
-
-          if (element.find(esCereza)) {
-            result = element.find(esCereza);
-            // console.log("result", result);
-            this.updateTimeLines(result.start, result.end, {
-              ...result,
+          const foundItem = element.find(fruta => fruta.registration_id === `${item_find}`);
+          if (foundItem) {
+            result.push({
+              ...foundItem,
               operator: operator
             });
-          } else {
-            // console.log("nada");
           }
-        }
-        for (let i = 0; i < array.length; i++) {
-          const element = array[i].gtArray;
-          const operator = array[i].name;
-          // console.log("element", element)
-          // console.log("operator", array[i]);
+
           const find_element = this.get_registry(element, item_zip_code);
-          // console.log("result_nuevo", find_element);
           for (let j = 0; j < find_element.length; j++) {
             let last_finder = find_element[j];
-            // console.log("last_finder", last_finder);
-            if (last_finder === undefined) {
-              // console.log("undefined", last_finder);
-            } else {
-              // console.log("no undefined", last_finder);
+            if (last_finder !== undefined) {
               result.push({
                 ...last_finder,
                 operator_name: operator
               });
             }
           }
-          // result = [ ...result, ...find_element ]
-          // console.log("result->", result)
         }
 
-        console.log("result.length", result.length);
-        // console.log("find_element", result);
-        // for (let i = 0; i < result.length; i++) {
-        //   for (let j = 0; j < ; j++) {
-        //
-        //   }
-        //   const last_element = result[i]
-        //   console.log("last_element", last_element)
-        // }
         if (result.length > 0) {
-          console.log("if");
           this.result_search = result;
           this.status_result_search = true;
-          // this.updateTimeLines(result[0].start, result[0].end, result[0]);
         } else {
           console.log("Nothing here");
         }
-        // this.updateTimeLines(result.start, result.end, result);
       } else {
         this.$q.notify({
           message: "Campo de busqueda vacio.!"
@@ -1288,20 +1260,25 @@ export default {
       this.$store.commit("planing/set_leftDrawerOpen", false);
       await this.cargar_datas();
       for (let i = 0; i < 92; i++) {
-        const fecha = dayjs().add(i, "day");
+        // es lessDays puedo definir cuantos dias atras quiero que se muestre
+        const lessDays = 1
+        const fecha = dayjs().subtract(lessDays, "day").add(i, "day");
         this.armando.push({
           name_day: fecha.get("date"),
           name_month: fecha.get("month"),
           name: dayjs()
+            .subtract(lessDays, "day")
             .add(i, "day")
             .format("DD/MM/YYYY"),
           inicio: dayjs()
+            .subtract(lessDays, "day")
             .hour(6)
             .minute(0)
             .second(0)
             .add(i, "day")
             .toString(),
           fin: dayjs()
+            .subtract(lessDays, "day")
             .hour(19)
             .minute(0)
             .second(0)
@@ -1309,6 +1286,7 @@ export default {
             .toString()
         });
       }
+      console.log("armando", this.armando[0])
       console.log("this.$route.params", this.$route.params);
       if (this.$route.params.id) {
         console.log("this.$route.params", this.$route.params.id);

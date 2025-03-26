@@ -11,12 +11,12 @@
           :pagination="pagination"
         >
           <template v-slot:body-cell-name="props">
-            <q-td :class="colorForRol(props.row.role_id)" :props="props">
+            <q-td :style="{ background: updateColorDark(props.row.colorPair)}" class="text-white" :props="props">
               {{ props.row.name }}
             </q-td>
           </template>
           <template v-slot:body-cell-role_id="props">
-            <q-td :class="colorForRol(props.row.role_id)" :props="props">
+            <q-td :style="{ background: updateColorDark(props.row.colorPair),}" class="text-white" :props="props">
               {{ props.row.role_id }}
             </q-td>
           </template>
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import {hexToRgbLight, hexToRgbDark} from "src/services/HexToRGB"
+
 export default {
   props: {
     columns: Array,
@@ -73,10 +75,13 @@ export default {
     };
   },
   methods: {
-    colorForRol(val) {
-      // console.log(val)
-      if (val === 1) return "bg-blue text-white";
-      if (val === 3) return "bg-green";
+    updateColorLight(val) {
+      // console.log("val", val)
+      // console.log("hexToRgb(val)", hexToRgbLight(val))
+      return hexToRgbLight(val)
+    },
+    updateColorDark(val) {
+      return hexToRgbDark(val)
     },
     activate_update(val) {
       console.log("activate_update", val);

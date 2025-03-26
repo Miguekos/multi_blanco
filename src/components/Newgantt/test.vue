@@ -54,10 +54,11 @@
 
 <script>
 import dayjs from "dayjs";
+import { hexToRgbMiddle } from "src/services/HexToRGB"
 
-const NOW_PLAN = "#D5F8EA";
-const FUTHER_PLAN = "#b0eafd";
-const PAST_PLAN = "#e6e6e6";
+// const NOW_PLAN = "#D5F8EA";
+// const FUTHER_PLAN = "#b0eafd";
+// const PAST_PLAN = "#e6e6e6";
 export default {
   name: "Test",
   props: {
@@ -70,8 +71,11 @@ export default {
   },
   data() {
     return {
+      NOW_PLAN: hexToRgbMiddle(this.data.colorPair),
+      FUTHER_PLAN: hexToRgbMiddle(this.data.colorPair),
+      PAST_PLAN: "#e6e6e6",
       id: "",
-      color: "",
+      color: "red",
       dayjs: dayjs
     };
   },
@@ -84,15 +88,15 @@ export default {
       }
     },
     statusColor() {
-      let { item, currentTime } = this;
+      let {item, currentTime} = this;
       let start = dayjs(item.start);
       let end = dayjs(item.end);
       if (start.isBefore(currentTime) && end.isAfter(currentTime)) {
-        return NOW_PLAN; // NOW
+        return this.NOW_PLAN; // NOW
       } else if (end.isBefore(currentTime)) {
-        return PAST_PLAN; // PAST
+        return this.PAST_PLAN; // PAST
       } else {
-        return FUTHER_PLAN; // Future
+        return this.FUTHER_PLAN; // Future
       }
     },
     startToString() {
@@ -122,10 +126,12 @@ export default {
   text-align: center;
   padding-left: 5px;
 }
+
 .runTime {
   display: flex;
   flex-direction: column;
 }
+
 .plan {
   display: flex;
   align-items: center;
@@ -149,6 +155,7 @@ export default {
 .detail ul {
   list-style: none;
   padding: 0px;
+
   li {
     span {
       display: inline-block;
@@ -156,6 +163,7 @@ export default {
       color: #777;
       font-size: 0.8rem;
     }
+
     span:first-child {
       text-align: right;
     }
@@ -164,12 +172,14 @@ export default {
     }
   }
 }
+
 .scroll-container {
   width: 350px;
   height: 200px;
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
+
 .scroll-page {
   display: flex;
   align-items: center;

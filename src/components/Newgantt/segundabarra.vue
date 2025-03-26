@@ -342,7 +342,7 @@ export default {
       this.resetParams();
     },
     buscar() {
-      // console.log("this.id_address", this.id_address);
+      console.log("this.id_address", this.id_address, this.id_buscar);
       this.$emit("click", this.id_buscar, this.id_address);
       this.id_buscar = "";
       this.id_address = "";
