@@ -174,14 +174,12 @@
             <!--            <input v-model="time_ini" type="time">-->
             <vue-timepicker
               v-model="time_ini"
-              :hour-range="[7, [8, 18], 19]"
               :minute-interval="30"
             ></vue-timepicker>
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <vue-timepicker
               v-model="time_fin"
-              :hour-range="[7, [8, 18], 19]"
               :minute-interval="30"
             ></vue-timepicker>
           </div>
