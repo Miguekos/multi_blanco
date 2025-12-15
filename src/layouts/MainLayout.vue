@@ -13,10 +13,12 @@
         />
 
         <q-toolbar-title>
-          Multiservicios Blanco
+          Reparalia Blanco v 1.0
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-6</div>
+        <div>
+          <BotonSalir/>
+        </div>
       </q-toolbar>
       <!--      <div class="text-white">-->
       <!--        <SegundaLinea />-->
@@ -46,7 +48,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
@@ -79,6 +81,12 @@ const linksData = [
     icon: "groups",
     link: "#/operario"
   },
+  {
+    title: "Empresas",
+    caption: "Control de Empresas",
+    icon: "groups",
+    link: "#/companies"
+  },
   // {
   //   title: "Usuarios",
   //   caption: "Controla de usuarios",
@@ -90,7 +98,8 @@ const linksData = [
 export default {
   name: "MainLayout",
   components: {
-    EssentialLink
+    EssentialLink,
+    BotonSalir: () => import("src/components/LogoutButton.vue")
     // SegundaLinea: () => import('src/components/Newgantt/segundabarra'),
     // TerceraLinea: () => import('src/components/Newgantt/tercerabarra')
   },

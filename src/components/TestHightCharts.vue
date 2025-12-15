@@ -451,7 +451,7 @@ export default {
       };
       const date = new Date();
       // console.log("fechaLista", fechaLista);
-      return date.horas(5).getTime();
+      return date.horas(6).getTime(); // Ajustado para restar 1 hora adicional
     },
     agregar() {
       this.chartOpti.series = this.series;

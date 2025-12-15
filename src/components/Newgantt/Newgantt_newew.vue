@@ -574,11 +574,11 @@ export default {
             name: this.id_registro,
             comentario: this.comentario,
             start: dayjs(
-              `${this.date_ini} +01:00`,
+              `${this.date_ini} +00:00`, // Ajustado offset de +01:00 a +00:00
               "DD-MM-YYYY HH:mm Z"
             ).toString(),
             end: dayjs(
-              `${this.date_fin} +01:00`,
+              `${this.date_fin} +00:00`, // Ajustado offset de +01:00 a +00:00
               "DD-MM-YYYY HH:mm Z"
             ).toString()
           });
@@ -602,13 +602,13 @@ export default {
           .add(i, "day")
           .format("DD/MM/YYYY"),
         inicio: dayjs()
-          .hour(6)
+          .hour(5) // Ajustado de 6 a 5
           .minute(0)
           .second(0)
           .add(i, "day")
           .toString(),
         fin: dayjs()
-          .hour(19)
+          .hour(18) // Ajustado de 19 a 18
           .minute(0)
           .second(0)
           .add(i, "day")

@@ -198,7 +198,7 @@ export default {
       };
 
       var date = new Date();
-      var fechaLista = date.horas(5).getTime();
+      var fechaLista = date.horas(6).getTime(); // Ajustado para restar 1 hora adicional
       // console.log("fechaLista", fechaLista);
       return fechaLista;
     }

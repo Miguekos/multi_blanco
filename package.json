@@ -1,11 +1,13 @@
 {
-  "name": "multiservicios_blanco",
+  "name": "reparalia_blanco",
   "version": "0.0.1",
-  "description": "Multiservicios Blanco",
-  "productName": "Multiservicios Blanco",
+  "description": "Reparalia Blanco",
+  "productName": "Reparalia Blanco",
   "author": "Miguel Rodriguez <miguekos1233@gmail.com>",
   "private": true,
   "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider quasar dev",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider quasar build",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
@@ -17,6 +19,7 @@
     "jquery-timepicker": "^1.3.3",
     "moment": "^2.29.1",
     "quasar": "^1.0.0",
+    "socket.io-client": "^4.8.1",
     "v-gantt-chart": "^1.5.2",
     "vue-i18n": "^8.0.0",
     "vue2-timepicker": "^1.1.6"
@@ -25,6 +28,7 @@
     "@quasar/app": "^2.0.0",
     "@quasar/quasar-app-extension-dotenv": "^1.1.0",
     "babel-eslint": "^10.0.1",
+    "cross-env": "^10.1.0",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.7.0",

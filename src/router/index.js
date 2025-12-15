@@ -14,9 +14,9 @@ Vue.use(VueRouter);
  * with the Router instance.
  */
 
-export default function(/* { store, ssrContext } */) {
+export default function ({store, ssrContext}) {
   const Router = new VueRouter({
-    scrollBehavior: () => ({ x: 0, y: 0 }),
+    scrollBehavior: () => ({x: 0, y: 0}),
     routes,
 
     // Leave these as they are and change in quasar.conf.js instead!
@@ -24,6 +24,25 @@ export default function(/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  });
+
+
+  Router.beforeEach((to, from, next) => {
+    console.log("Router.beforeEach");
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      // console.log("to", to);
+      // console.log("from", from);
+      // console.log("to.meta.requiresAuth", to.meta.requiresAuth);
+      // console.log("store.getters['auth/isLoggedIn']", store.getters['auth/isLoggedIn']);
+      // if (to.meta.requiresAuth) {
+      if (!store.getters['auth/isLoggedIn']) {
+        next('/login');
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
   });
 
   return Router;

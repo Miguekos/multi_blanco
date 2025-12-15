@@ -4,6 +4,13 @@
       <div class="q-pa-xs">
         <div class="text-black">
           <!--          {{ filteredByAll }}-->
+          <!--          {{ $store.state.planing.persons }}-->
+          <!--          <div>-&#45;&#45;</div>-->
+          <!--          {{ $store.state.planing.operadores }}-->
+          <!--          <div>-&#45;&#45;</div>-->
+          <!--          {{ $store.state.planing.tramitadores }}-->
+          <!--          <div>-&#45;&#45;</div>-->
+          <!--          {{ $store.state.planing.companies }}-->
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-1 q-pa-xs text-black">
@@ -12,7 +19,7 @@
               dense
               outlined
               v-model="json_send.operator_id"
-              :options="$store.state.planing.persons"
+              :options="$store.state.planing.operadores"
               option-label="name"
               option-value="id"
               emit-value
@@ -22,7 +29,7 @@
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <q-select
-              :options="options_operator"
+              :options="$store.state.planing.tramitadores"
               option-label="name"
               option-value="name"
               emit-value
@@ -74,7 +81,7 @@
             <q-select
               stack-label
               dense
-              :options="options_enterprise"
+              :options="$store.state.planing.companies"
               option-label="name"
               option-value="name"
               emit-value
@@ -167,14 +174,12 @@
             <!--            <input v-model="time_ini" type="time">-->
             <vue-timepicker
               v-model="time_ini"
-              :hour-range="[7, [8, 18], 19]"
               :minute-interval="30"
             ></vue-timepicker>
           </div>
           <div class="col-xs-12 col-md-1 q-pa-xs">
             <vue-timepicker
               v-model="time_fin"
-              :hour-range="[7, [8, 18], 19]"
               :minute-interval="30"
             ></vue-timepicker>
           </div>
@@ -199,6 +204,14 @@
 import { date } from "quasar";
 import { mapActions } from "vuex";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { load_companies } from "src/store/module-planing/actions";
+import socket from "src/services/socketService";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
 const formattedDateSinSegundos = date.formatDate(timeStamp, "DD-MM-YYYY HH:00");
@@ -294,23 +307,34 @@ export default {
     async onSubmit() {
       this.botonesload = true;
       this.$q.loading.show();
-      console.log("addTask", `${this.date_ini} ${this.time_ini}`);
+      console.log("onSubmit---------------->");
+      console.log("addTask-->", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
-      console.log("start", start);
-      console.log("end", end);
+      console.log("start-->America/Lima", start);
+      console.log("end-->America/Lima", end);
+      const token = localStorage.getItem("user-token");
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
-          ...this.json_send,
-          start: start,
-          end: end
-        })
+        .post(
+          `${process.env.IP}api/assignments`,
+          {
+            ...this.json_send,
+            date: null,
+            start: start,
+            end: end
+          },
+          {
+            headers: {
+              Authorization: `${token}`
+            }
+          }
+        )
         .then(async resp => {
           console.log(resp);
           this.$store.commit("planing/set_datas", resp.data.data);
@@ -328,7 +352,7 @@ export default {
       this.resetParams();
     },
     buscar() {
-      // console.log("this.id_address", this.id_address);
+      console.log("this.id_address", this.id_address, this.id_buscar);
       this.$emit("click", this.id_buscar, this.id_address);
       this.id_buscar = "";
       this.id_address = "";
@@ -336,27 +360,38 @@ export default {
     async addTask() {
       this.botonesload = true;
       this.$q.loading.show();
-      console.log("addTask", `${this.date_ini} ${this.time_ini}`);
+      console.log("addTask->", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
-      console.log("start", start);
-      console.log("end", end);
+      console.log("start->", start);
+      console.log("end->", end);
+      const token = localStorage.getItem("user-token");
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
-          ...this.json_send,
-          start: start,
-          end: end
-        })
+        .post(
+          `${process.env.IP}api/assignments`,
+          {
+            ...this.json_send,
+            date: null,
+            start: start,
+            end: end
+          },
+          {
+            headers: {
+              Authorization: `${token}`
+            }
+          }
+        )
         .then(async resp => {
-          console.log(resp);
-          this.$store.commit("planing/set_datas", resp.data.data);
-          // await this.cargar_datas();
+          console.log("addTask", resp);
+          // this.$store.commit("planing/set_datas", resp.data.data);
+          await this.cargar_datas();
+          socket.emit("mensaje", { data: resp });
           // this.persons_group = resp.data;
           this.botonesload = false;
           this.$q.loading.hide();
@@ -389,27 +424,8 @@ export default {
     }
   },
   async created() {
-    await this.$axios
-      .get(`${process.env.IP}api/users`)
-      .then(async resp => {
-        console.log("resp_usuarios", resp);
-        // this.persons_group = resp.data;
-        let result = [];
-        const array = resp.data.users;
-        for (let i = 0; i < array.length; i++) {
-          const element = array[i];
-          if (element.name === "Admin" || element.name === "Processor") {
-          } else {
-            result.push(element);
-          }
-        }
-        this.$store.commit("planing/set_persons", result);
-        // await this.$router.push("/dia1");
-      })
-      .catch(err => {
-        console.error(err);
-        console.log("Error");
-      });
+    this.$store.dispatch("planing/load_companies");
+    this.$store.dispatch("planing/load_operator");
   }
 };
 </script>

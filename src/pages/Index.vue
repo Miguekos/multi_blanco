@@ -9,8 +9,9 @@ import { date } from "quasar";
 const { addToDate } = date;
 
 let timeStamp = Date.now();
+const adjustedTimeStamp = date.subtractFromDate(timeStamp, { hours: 1 }); // Restamos 1 hora
 // let newDate = addToDate(timeStamp, { hours: 3 })
-let formattedString = date.formatDate(timeStamp, "HH:00");
+let formattedString = date.formatDate(adjustedTimeStamp, "HH:00"); // Usamos el tiempo ajustado
 
 console.log("formattedString", formattedString);
 // console.log("newDate", date.formatDate(newDate, 'HH:00'))

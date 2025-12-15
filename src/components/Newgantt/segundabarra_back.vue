@@ -333,17 +333,17 @@ export default {
       this.$q.loading.show();
       console.log("addTask", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} +00:00`, // Ajustado offset de +01:00 a +00:00
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} +00:00`, // Ajustado offset de +01:00 a +00:00
         "DD-MM-YYYY HH:mm Z"
       );
       console.log("start", start);
       console.log("end", end);
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
+        .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
           start: start,
           end: end
@@ -375,17 +375,17 @@ export default {
       this.$q.loading.show();
       console.log("addTask", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} -01:00`, // Ajustado offset de +01:00 a +00:00
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} -01:00`, // Ajustado offset de +01:00 a +00:00
         "DD-MM-YYYY HH:mm Z"
       );
       console.log("start", start);
       console.log("end", end);
       await this.$axios
-        .post(`${process.env.IP}api/assigments`, {
+        .post(`${process.env.IP}api/assignments`, {
           ...this.json_send,
           start: start,
           end: end

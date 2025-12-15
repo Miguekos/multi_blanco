@@ -12,18 +12,20 @@
         />
 
         <q-toolbar-title>
-          Multiservicios Blanco
+          Reparalia Blanco v1.0
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}-6</div>
+        <div>
+          <BotonSalir/>
+        </div>
       </q-toolbar>
       <div class="text-white">
-        <SegundaLinea @click="buscar" />
+        <SegundaLinea @click="buscar"/>
       </div>
       <!--      <div>-->
       <!--        <TerceraLinea @click="buscar" />-->
       <!--      </div>-->
-      <q-separator color="red" />
+      <q-separator color="red"/>
     </q-header>
     <!--    {{ $store.state.planing.datas }}-->
     <!--    {{$store.getters['planing/get_datas']}}-->
@@ -83,7 +85,7 @@
           </div>
         </template>
       </v-gantt-chart>
-      <q-separator color="red-3" class="q-pb-xs" />
+      <q-separator color="red-3" class="q-pb-xs"/>
     </div>
     <q-dialog
       v-model="bar2"
@@ -96,7 +98,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <q-img alt="logo" src="logo_multi_blanco.png" />
+              <q-img alt="logo" src="logo_multi_blanco.png"/>
             </q-avatar>
           </q-item-section>
 
@@ -123,11 +125,11 @@
           </q-item-section>
         </q-item>
 
-        <q-separator />
+        <q-separator/>
 
         <q-card-section
           v-if="active_edit_task"
-          style="max-height: 80vh"
+          style="max-height: 80vh; max-width: 100%"
           class="scroll bg-orange-1"
         >
           <div class="row q-pb-lg">
@@ -135,7 +137,7 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="text-red">
-                    Operador:
+                    Operador: {{ bar2_data.operator }}
                   </q-item-label>
                   <q-item-label caption class="text-black">
                     <q-select
@@ -143,7 +145,7 @@
                       dense
                       outlined
                       v-model="bar2_data.operator"
-                      :options="$store.state.planing.persons"
+                      :options="$store.state.planing.operadores"
                       option-label="name"
                       option-value="id"
                       emit-value
@@ -183,7 +185,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -210,7 +212,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -304,7 +306,7 @@
           </div>
         </q-card-section>
 
-        <q-card-section v-else style="max-height: 80vh" class="scroll">
+        <q-card-section v-else style="max-height: 80vh; max-width: 100%" class="scroll">
           <div class="row q-pb-lg">
             <div class="col-12 q-pa-xs">
               <q-item>
@@ -326,7 +328,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -347,7 +349,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-separator />
+              <q-separator/>
 
               <q-item>
                 <q-item-section>
@@ -386,15 +388,15 @@
 
         <q-card-section horizontal></q-card-section>
 
-        <q-separator />
+        <q-separator/>
 
         <q-card-actions>
-          <q-btn flat round icon="event" />
+          <q-btn flat round icon="event"/>
           <div class="q-pr-lg">
             Inicio: <b> {{ formartdatedialog(bar2_data.start) }}</b>
           </div>
 
-          <q-separator vertical />
+          <q-separator vertical/>
 
           <div class="q-pl-lg q-pr-lg">
             Fin: <b> {{ formartdatedialog(bar2_data.end) }}</b>
@@ -402,20 +404,25 @@
 
           <!--          <q-separator vertical/>-->
 
-          <div class="q-pr-lg">
+          <!--          <div class="q-pr-lg">-->
+          <div class="q-gutter-sm">
             <!--            <form method="get" action="https://api.apps.com.pe/fileserver/33242.pdf">-->
             <!--              <button type="submit">Download!</button>-->
             <!--            </form>-->
-            <q-btn align="right" @click="descargar" color="primary">
+            <q-btn size="sm" align="right" @click="descargar" color="primary">
               Descargar
+            </q-btn>
+            <q-btn size="sm" align="right" @click="whatsapp" color="green">
+              Whatsapp
             </q-btn>
           </div>
 
-          <q-space />
+          <q-space/>
           <div class="q-gutter-xs">
             <q-btn
               v-if="active_edit_task"
               icon="check"
+              size="sm"
               @click="edit_task"
               color="info"
               rounded
@@ -423,12 +430,14 @@
             <q-btn
               v-if="!active_edit_task"
               icon="edit"
+              size="sm"
               @click="change_active_edit"
               color="orange"
               rounded
             ></q-btn>
             <q-btn
               icon="delete"
+              size="sm"
               @click="delete_task"
               :loading="del_load"
               color="red"
@@ -478,8 +487,10 @@
 </template>
 
 <script>
-import { date } from "quasar";
-import { mapActions } from "vuex";
+// Ejemplo de uso en un componente
+import socket from 'src/services/socketService';
+import {date} from "quasar";
+import {mapActions} from "vuex";
 
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
@@ -497,7 +508,11 @@ import "dayjs/locale/es";
 
 dayjs.locale("es");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone");
 dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4320`
   .split(",")
@@ -548,8 +563,8 @@ const columns_search = [
     field: "operator_name",
     sortable: true
   },
-  { name: "phone", align: "left", label: "Telf.", field: "phone" },
-  { name: "address", align: "left", label: "Direccion", field: "address" },
+  {name: "phone", align: "left", label: "Telf.", field: "phone"},
+  {name: "address", align: "left", label: "Direccion", field: "address"},
   {
     name: "start",
     align: "right",
@@ -619,12 +634,15 @@ export default {
   components: {
     Test,
     TestLeft,
-    SegundaLinea: () => import("src/components/Newgantt/segundabarra")
+    SegundaLinea: () => import("src/components/Newgantt/segundabarra"),
+    BotonSalir: () => import("src/components/LogoutButton.vue")
     // TerceraLinea: () => import("src/components/Newgantt/tercerabarra")
   },
   computed: {},
   data() {
     return {
+      socket: null,
+      socketId: null,
       initialPagination: {
         sortBy: "start",
         descending: false,
@@ -655,7 +673,7 @@ export default {
       currentTime: dayjs(),
       time_ini: "07:00",
       time_fin: "12:00",
-      updateArgs: [true, true, { duration: 1000 }],
+      updateArgs: [true, true, {duration: 1000}],
       options_employed: [],
       persons_group: [],
       empleados_group: [],
@@ -697,6 +715,11 @@ export default {
       titleHeight: 40,
       titleWidth: 250,
       scale: 30
+      // cellWidth: 90,
+      // cellHeight: 50,
+      // titleHeight: 40,
+      // titleWidth: 250,
+      // scale: 30
       // startTime: dayjs().hour(0).toString(),
       // endTime: dayjs().hour(23).toString(),
       // datas: []
@@ -715,21 +738,23 @@ export default {
     async page_loading_end() {
       await this.$q.loading.hide();
     },
-    async edit_task() {
+      async edit_task() {
       try {
         await this.page_loading_ini();
-        const start = dayjs(
-          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini} +01:00`,
-          "DD-MM-YYYY HH:mm Z"
+        const start = dayjs.tz(
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini}`,
+          "DD-MM-YYYY HH:mm",
+          "Europe/Madrid"
         );
-        const end = dayjs(
-          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin} +01:00`,
-          "DD-MM-YYYY HH:mm Z"
+        const end = dayjs.tz(
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin}`,
+          "DD-MM-YYYY HH:mm",
+          "Europe/Madrid"
         );
         console.log("this.bar2_data", this.bar2_data);
         await this.edit_datas({
-          operator_id: this.bar2_data.operator,
           ...this.bar2_data,
+          operator_id: this.bar2_data.operator,
           start: start,
           end: end
         })
@@ -740,6 +765,8 @@ export default {
             await this.page_loading_end();
             this.active_edit_task = false;
             this.bar2 = false;
+            await this.cargar_datas();
+            socket.emit('mensaje', {data: this.bar2_data});
           })
           .catch(err => {
             console.log(err);
@@ -790,6 +817,7 @@ export default {
               await this.page_loading_ini();
               console.log("resp_delete.data", resp_delete);
               await this.cargar_datas();
+              socket.emit('mensaje', {data: this.bar2_data});
               this.$q.notify({
                 message: "Eliminado"
               });
@@ -896,22 +924,78 @@ export default {
           await this.page_loading_end();
         });
     },
+    async whatsapp() {
+      console.log("whatsapp", this.bar2_data);
+      const operator = this.$store.state.planing.operadores.filter(
+        item => item.id === this.bar2_data.operator_id
+      );
+      console.log("operator", operator[0].phone);
+      const phone_operator = operator[0].phone;
+      await this.page_loading_ini();
+      await fetch(`${process.env.IMAGEN}generarreporte/2`, {
+        method: "POST", // or 'PUT'
+        body: JSON.stringify({
+          id: this.bar2_data.id,
+          operario: this.bar2_data.operator,
+          temerario: this.bar2_data.processor,
+          expediente: this.bar2_data.registration_id,
+          cita: dayjs(this.bar2_data.start).format("DD/MM/YYYY HH:mm"),
+          asegurado: this.bar2_data.customer,
+          direccion: this.bar2_data.address,
+          detalles: this.bar2_data.description,
+          codigo_postal: this.bar2_data.description,
+          start: this.bar2_data.start,
+          specialty: this.bar2_data.specialty,
+          telf: this.bar2_data.phone,
+          importante: this.comment,
+          img: this.imagen ? this.imagen : ""
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(async resp => {
+          const response = await resp.json();
+          console.log("response", response);
+          const urlCompleta = response.message
+          console.log("urlPdf", urlCompleta);
+
+          // 1. Encontrar el índice de la última ocurrencia del caracter '/'
+          const indiceUltimaBarra = urlCompleta.lastIndexOf('/');
+          // indiceUltimaBarra será la posición del último '/' en la URL
+
+          // 2. Extraer la subcadena después del último '/'
+          const nombreArchivoConExtension = urlCompleta.substring(indiceUltimaBarra + 1);
+          // substring() extrae una parte de la cadena desde el índice especificado hasta el final
+          // indiceUltimaBarra + 1 para empezar justo después del '/'
+
+          console.log(nombreArchivoConExtension); // Imprimirá "3573815.pdf"
+          const newUrl = `https://api.whatsapp.com/send?phone=34${phone_operator}&text=Para%20descarga%20el%20parte%20pincha%20aqu%C3%AD%3A%20https://api.apps.com.pe/fileserver/${nombreArchivoConExtension}`;
+          window.open(newUrl, '_blank');
+          await this.page_loading_end();
+        })
+        .catch(async err => {
+          console.log(err);
+          await this.page_loading_end();
+        });
+    },
     formartdatedialog(val) {
       return dayjs(`${val}`)
-        .subtract(0, "hours")
+        .subtract(1, "hours") // Resta 1 hora para mostrar
         .format("HH:mm");
     },
     boton() {
       location.href = `#dia12`;
     },
-    doScrollToPostion() {},
+    doScrollToPostion() {
+    },
     doScrollToTime() {
       this.$refs.gantt.scrollToTimehandle(dayjs().toString());
     },
     taskFiltered(values, state) {
       let taskFiltered = {};
       if (state) {
-        Object.keys(values).forEach(function(key) {
+        Object.keys(values).forEach(function (key) {
           let task = values[key],
             taskNameLowerCase = task.address.toLowerCase(),
             searchLowerCase = state.toLowerCase();
@@ -926,11 +1010,12 @@ export default {
     get_registry(values, val) {
       let taskFiltered = this.taskFiltered(values, `${val}`);
       let tasks = [];
-      // console.log("taskFiltered", JSON.stringify(taskFiltered));
-      // console.log("state.Registros", values);
+      console.log("taskFiltered", JSON.stringify(taskFiltered));
+      console.log("state.Registros", values);
+      console.log("val", val);
       // return state.Registros;
       // let tasks = {};
-      Object.keys(taskFiltered).forEach(function(key) {
+      Object.keys(taskFiltered).forEach(function (key) {
         let task = taskFiltered[key];
         // console.log(task);
         if (!task.completed) {
@@ -945,72 +1030,39 @@ export default {
       console.log("Buscar 2", val2);
       if (val.length > 2 || val2.length > 2) {
         const array = this.$store.getters["planing/get_datas"];
-        // console.log("val", val)
         const item_find = val;
         const item_zip_code = val2;
-        // console.log(this.$store.getters['planing/get_datas'])
         let result = [];
         for (let i = 0; i < array.length; i++) {
-          // console.log("primer for");
           const element = array[i].gtArray;
           const operator = array[i].name;
-          function esCereza(fruta) {
-            return fruta.registration_id === `${item_find}`;
-          }
 
-          if (element.find(esCereza)) {
-            result = element.find(esCereza);
-            // console.log("result", result);
-            this.updateTimeLines(result.start, result.end, {
-              ...result,
+          const foundItem = element.find(fruta => fruta.registration_id === `${item_find}`);
+          if (foundItem) {
+            result.push({
+              ...foundItem,
               operator: operator
             });
-          } else {
-            // console.log("nada");
           }
-        }
-        for (let i = 0; i < array.length; i++) {
-          const element = array[i].gtArray;
-          const operator = array[i].name;
-          // console.log("element", element)
-          // console.log("operator", array[i]);
+
           const find_element = this.get_registry(element, item_zip_code);
-          // console.log("result_nuevo", find_element);
           for (let j = 0; j < find_element.length; j++) {
             let last_finder = find_element[j];
-            // console.log("last_finder", last_finder);
-            if (last_finder === undefined) {
-              // console.log("undefined", last_finder);
-            } else {
-              // console.log("no undefined", last_finder);
+            if (last_finder !== undefined) {
               result.push({
                 ...last_finder,
                 operator_name: operator
               });
             }
           }
-          // result = [ ...result, ...find_element ]
-          // console.log("result->", result)
         }
 
-        console.log("result.length", result.length);
-        // console.log("find_element", result);
-        // for (let i = 0; i < result.length; i++) {
-        //   for (let j = 0; j < ; j++) {
-        //
-        //   }
-        //   const last_element = result[i]
-        //   console.log("last_element", last_element)
-        // }
         if (result.length > 0) {
-          console.log("if");
           this.result_search = result;
           this.status_result_search = true;
-          // this.updateTimeLines(result[0].start, result[0].end, result[0]);
         } else {
           console.log("Nothing here");
         }
-        // this.updateTimeLines(result.start, result.end, result);
       } else {
         this.$q.notify({
           message: "Campo de busqueda vacio.!"
@@ -1163,13 +1215,15 @@ export default {
           element.gtArray.push({
             name: this.id_registro,
             comentario: this.comentario,
-            start: dayjs(
-              `${this.date_ini} +01:00`,
-              "DD-MM-YYYY HH:mm Z"
+            start: dayjs.tz(
+              this.date_ini, // this.date_ini ya tiene el formato "DD-MM-YYYY HH:mm"
+              "DD-MM-YYYY HH:mm",
+              "Europe/Madrid"
             ).toString(),
-            end: dayjs(
-              `${this.date_fin} +01:00`,
-              "DD-MM-YYYY HH:mm Z"
+            end: dayjs.tz(
+              this.date_fin, // this.date_fin ya tiene el formato "DD-MM-YYYY HH:mm"
+              "DD-MM-YYYY HH:mm",
+              "Europe/Madrid"
             ).toString()
           });
         }
@@ -1185,40 +1239,77 @@ export default {
     // }
   },
   async created() {
-    this.$q.loading.show();
-    this.$store.commit("planing/set_leftDrawerOpen", false);
-    await this.cargar_datas();
-    for (let i = 0; i < 92; i++) {
-      const fecha = dayjs().add(i, "day");
-      this.armando.push({
-        name_day: fecha.get("date"),
-        name_month: fecha.get("month"),
-        name: dayjs()
-          .add(i, "day")
-          .format("DD/MM/YYYY"),
-        inicio: dayjs()
-          .hour(6)
-          .minute(0)
-          .second(0)
-          .add(i, "day")
-          .toString(),
-        fin: dayjs()
-          .hour(19)
-          .minute(0)
-          .second(0)
-          .add(i, "day")
-          .toString()
+    try {
+      this.$q.loading.show();
+      // this.socket = io('http://localhost:3000');
+      socket.on('socket-id', (data) => {
+        console.log("socket-id", data);
+        this.socketId = data.id;
       });
+      //
+      //
+      socket.on('event-reload', async (data) => {
+        console.log("event-reload", data)
+        if (data.socketId !== this.socketId) {
+          console.log('Recargando datos de otro cliente');
+          this.$q.notify({
+            message: "Recargando datos de otro cliente"
+          })
+          await this.cargar_datas();
+        } else {
+          console.log('Cambio originado por este cliente, actualizacion minima');
+          //Realizar la actualizacion necesaria en el frontend.
+        }
+
+        // await this.cargar_datas();
+      });
+
+
+      this.$store.commit("planing/set_leftDrawerOpen", false);
+      await this.cargar_datas();
+      for (let i = 0; i < 92; i++) {
+        // es lessDays puedo definir cuantos dias atras quiero que se muestre
+        const lessDays = 1
+        const fecha = dayjs().subtract(lessDays, "day").add(i, "day");
+        this.armando.push({
+          name_day: fecha.get("date"),
+          name_month: fecha.get("month"),
+          name: dayjs()
+            .subtract(lessDays, "day")
+            .add(i, "day")
+            .format("DD/MM/YYYY"),
+          inicio: dayjs()
+            .subtract(lessDays, "day")
+            .hour(5) // Ajustado de 6 a 5
+            .minute(0)
+            .second(0)
+            .add(i, "day")
+            .toString(),
+          fin: dayjs()
+            .subtract(lessDays, "day")
+            .hour(18) // Ajustado de 19 a 18
+            .minute(0)
+            .second(0)
+            .add(i, "day")
+            .toString()
+        });
+      }
+      console.log("armando", this.armando[0])
+      console.log("this.$route.params", this.$route.params);
+      if (this.$route.params.id) {
+        console.log("this.$route.params", this.$route.params.id);
+        // await this.$router.push("/dia1");
+      } else {
+        console.log("this.$route.params", this.$route.params.id);
+        // await this.$router.push("/dia1");
+      }
+    } catch (e) {
+      console.log("created_Newgantt", e);
+    } finally {
+      this.$q.loading.hide();
     }
-    console.log("this.$route.params", this.$route.params);
-    if (this.$route.params.id) {
-      console.log("this.$route.params", this.$route.params.id);
-      // await this.$router.push("/dia1");
-    } else {
-      console.log("this.$route.params", this.$route.params.id);
-      // await this.$router.push("/dia1");
-    }
-    this.$q.loading.hide();
+
+
   }
 };
 </script>
