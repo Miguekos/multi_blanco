@@ -1,7 +1,7 @@
 // src/services/authService.js
 import axios from 'axios';
 
-const API_URL = process.env.IP;
+const API_URL = process.env.IP || '';
 
 export async function login(name, password) {
   const response = await axios.post(`${API_URL}api/login`, {name, password});
