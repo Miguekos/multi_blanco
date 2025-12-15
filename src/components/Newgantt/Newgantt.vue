@@ -871,7 +871,7 @@ export default {
     },
     async descargar() {
       await this.page_loading_ini();
-      fetch(`${process.env.IMAGEN}generarreporte/1`, {
+      fetch(`${process.env.IMAGEN}generarreporte/5`, {
         method: "POST", // or 'PUT'
         body: JSON.stringify({
           id: this.bar2_data.id,
@@ -932,7 +932,7 @@ export default {
       console.log("operator", operator[0].phone);
       const phone_operator = operator[0].phone;
       await this.page_loading_ini();
-      await fetch(`${process.env.IMAGEN}generarreporte/2`, {
+      await fetch(`${process.env.IMAGEN}generarreporte/6`, {
         method: "POST", // or 'PUT'
         body: JSON.stringify({
           id: this.bar2_data.id,
