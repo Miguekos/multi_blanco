@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Reparalia Blanco
+          Reparalia Blanco v1.0
         </q-toolbar-title>
 
         <div>
@@ -508,7 +508,11 @@ import "dayjs/locale/es";
 
 dayjs.locale("es");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone");
 dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const scaleList = `1,2,3,4,5,6,10,12,15,20,30,60,120,180,240,360,720,1440,2880,4320`
   .split(",")
@@ -734,16 +738,18 @@ export default {
     async page_loading_end() {
       await this.$q.loading.hide();
     },
-    async edit_task() {
+      async edit_task() {
       try {
         await this.page_loading_ini();
-        const start = dayjs(
-          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini} +01:00`,
-          "DD-MM-YYYY HH:mm Z"
+        const start = dayjs.tz(
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_ini}`,
+          "DD-MM-YYYY HH:mm",
+          "Europe/Madrid"
         );
-        const end = dayjs(
-          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin} +01:00`,
-          "DD-MM-YYYY HH:mm Z"
+        const end = dayjs.tz(
+          `${this.bar2_data.date_ini} ${this.bar2_data.time_fin}`,
+          "DD-MM-YYYY HH:mm",
+          "Europe/Madrid"
         );
         console.log("this.bar2_data", this.bar2_data);
         await this.edit_datas({
@@ -975,7 +981,7 @@ export default {
     },
     formartdatedialog(val) {
       return dayjs(`${val}`)
-        .subtract(0, "hours")
+        .subtract(1, "hours") // Resta 1 hora para mostrar
         .format("HH:mm");
     },
     boton() {
@@ -1209,13 +1215,15 @@ export default {
           element.gtArray.push({
             name: this.id_registro,
             comentario: this.comentario,
-            start: dayjs(
-              `${this.date_ini} +01:00`,
-              "DD-MM-YYYY HH:mm Z"
+            start: dayjs.tz(
+              this.date_ini, // this.date_ini ya tiene el formato "DD-MM-YYYY HH:mm"
+              "DD-MM-YYYY HH:mm",
+              "Europe/Madrid"
             ).toString(),
-            end: dayjs(
-              `${this.date_fin} +01:00`,
-              "DD-MM-YYYY HH:mm Z"
+            end: dayjs.tz(
+              this.date_fin, // this.date_fin ya tiene el formato "DD-MM-YYYY HH:mm"
+              "DD-MM-YYYY HH:mm",
+              "Europe/Madrid"
             ).toString()
           });
         }
@@ -1272,14 +1280,14 @@ export default {
             .format("DD/MM/YYYY"),
           inicio: dayjs()
             .subtract(lessDays, "day")
-            .hour(6)
+            .hour(5) // Ajustado de 6 a 5
             .minute(0)
             .second(0)
             .add(i, "day")
             .toString(),
           fin: dayjs()
             .subtract(lessDays, "day")
-            .hour(19)
+            .hour(18) // Ajustado de 19 a 18
             .minute(0)
             .second(0)
             .add(i, "day")

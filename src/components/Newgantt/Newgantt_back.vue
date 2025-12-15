@@ -528,11 +528,11 @@ export default {
             name: this.id_registro,
             comentario: this.comentario,
             start: dayjs(
-              `${this.date_ini} +01:00`,
+              `${this.date_ini} +00:00`, // Ajustado offset de +01:00 a +00:00
               "DD-MM-YYYY HH:mm Z"
             ).toString(),
             end: dayjs(
-              `${this.date_fin} +01:00`,
+              `${this.date_fin} +00:00`, // Ajustado offset de +01:00 a +00:00
               "DD-MM-YYYY HH:mm Z"
             ).toString()
           });

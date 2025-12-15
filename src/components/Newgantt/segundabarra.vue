@@ -201,11 +201,16 @@
 </template>
 
 <script>
-import {date} from "quasar";
-import {mapActions} from "vuex";
+import { date } from "quasar";
+import { mapActions } from "vuex";
 import dayjs from "dayjs";
-import {load_companies} from "src/store/module-planing/actions";
-import socket from 'src/services/socketService';
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { load_companies } from "src/store/module-planing/actions";
+import socket from "src/services/socketService";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const timeStamp = Date.now();
 const formattedString = date.formatDate(timeStamp, "DD-MM-YYYY HH:mm");
@@ -294,35 +299,38 @@ export default {
       if (!search.length) return list;
       return list.filter(item => item.name.toLowerCase().indexOf(search) > -1);
     },
-    async onReset() {
-    },
+    async onReset() {},
     async onSubmit() {
       this.botonesload = true;
       this.$q.loading.show();
-      console.log("onSubmit---------------->")
-      console.log("addTask", `${this.date_ini} ${this.time_ini}`);
+      console.log("onSubmit---------------->");
+      console.log("addTask-->", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
-      console.log("start", start);
-      console.log("end", end);
-      const token = localStorage.getItem('user-token');
+      console.log("start-->America/Lima", start);
+      console.log("end-->America/Lima", end);
+      const token = localStorage.getItem("user-token");
       await this.$axios
-        .post(`${process.env.IP}api/assignments`, {
-          ...this.json_send,
-          date: null,
-          start: start,
-          end: end
-        }, {
-          headers: {
-            Authorization: `${token}`
+        .post(
+          `${process.env.IP}api/assignments`,
+          {
+            ...this.json_send,
+            date: null,
+            start: start,
+            end: end
+          },
+          {
+            headers: {
+              Authorization: `${token}`
+            }
           }
-        })
+        )
         .then(async resp => {
           console.log(resp);
           this.$store.commit("planing/set_datas", resp.data.data);
@@ -348,34 +356,38 @@ export default {
     async addTask() {
       this.botonesload = true;
       this.$q.loading.show();
-      console.log("addTask", `${this.date_ini} ${this.time_ini}`);
+      console.log("addTask->", `${this.date_ini} ${this.time_ini}`);
       const start = dayjs(
-        `${this.date_ini} ${this.time_ini} +01:00`,
+        `${this.date_ini} ${this.time_ini} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
       const end = dayjs(
-        `${this.date_ini} ${this.time_fin} +01:00`,
+        `${this.date_ini} ${this.time_fin} +02:00`,
         "DD-MM-YYYY HH:mm Z"
       );
-      console.log("start", start);
-      console.log("end", end);
-      const token = localStorage.getItem('user-token');
+      console.log("start->", start);
+      console.log("end->", end);
+      const token = localStorage.getItem("user-token");
       await this.$axios
-        .post(`${process.env.IP}api/assignments`, {
-          ...this.json_send,
-          date: null,
-          start: start,
-          end: end
-        }, {
-          headers: {
-            Authorization: `${token}`
+        .post(
+          `${process.env.IP}api/assignments`,
+          {
+            ...this.json_send,
+            date: null,
+            start: start,
+            end: end
+          },
+          {
+            headers: {
+              Authorization: `${token}`
+            }
           }
-        })
+        )
         .then(async resp => {
           console.log("addTask", resp);
           // this.$store.commit("planing/set_datas", resp.data.data);
           await this.cargar_datas();
-          socket.emit('mensaje', {data: resp});
+          socket.emit("mensaje", { data: resp });
           // this.persons_group = resp.data;
           this.botonesload = false;
           this.$q.loading.hide();

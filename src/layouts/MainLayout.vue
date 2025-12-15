@@ -13,7 +13,7 @@
         />
 
         <q-toolbar-title>
-          Reparalia Blanco
+          Reparalia Blanco v 1.0
         </q-toolbar-title>
 
         <div>
