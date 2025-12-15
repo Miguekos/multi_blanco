@@ -1,32 +1,37 @@
-# Quasar App (reparalia_blanco)
+# Quasar App (reparatodo_cr)
 
 A Quasar Framework app
 
 ## Install the dependencies
+
 ```bash
 npm install
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
+
 ```bash
 quasar dev
 ```
 
 ### Lint the files
+
 ```bash
 npm run lint
 ```
 
 ### Build the app for production
+
 ```bash
 quasar build
 ```
 
 ### Customize the configuration
+
 See [Configuring quasar.conf.js](https://v1.quasar.dev/quasar-cli/quasar-conf-js).
 
-
 ### More info
+
 ```bash
 https://github.com/ibmsoft/vue-echarts-v3
 https://echarts.apache.org/examples/en/editor.html?c=custom-gantt-flight
@@ -41,8 +46,6 @@ https://github.com/w1301625107/Vue-Gantt-chart
 https://www.grapecity.com/wijmo/demos/Chart/Special/GanttRepeat/vue
 ```
 
-
-
 https://www.vuescript.com/dropdown-time-picker-vue-2-x/
 https://vuejsexamples.net/vue2-timepicker/
 https://alexiscolin.github.io/vue-timeselector/
@@ -53,6 +56,5 @@ https://github.com/mariomka/vue-datetime
 
 https://jqueryfiledownload.apphb.com/
 https://github.com/johnculviner/jquery.fileDownload
-
 
 https://www.sitepoint.com/10-jquery-time-picker-plugins/

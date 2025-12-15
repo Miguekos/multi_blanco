@@ -2,7 +2,7 @@
   <!--  <q-layout view="hhh lpR fFf">-->
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-white">
-      <q-toolbar class="bg-red-8">
+      <q-toolbar class="bg-blue-8">
         <q-btn
           flat
           dense
@@ -13,7 +13,7 @@
         />
 
         <q-toolbar-title>
-          Reparalia Blanco v 1.0
+          Reparatodo CR v 1.0
         </q-toolbar-title>
 
         <div>

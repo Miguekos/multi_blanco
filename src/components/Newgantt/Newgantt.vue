@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Reparalia Blanco v1.0
+          Reparatodo CR v1.0
         </q-toolbar-title>
 
         <div>
